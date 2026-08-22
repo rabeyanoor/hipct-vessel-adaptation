@@ -2,7 +2,7 @@
 """
 Converts the Human Organ Atlas kidney_right volumes (LADAF-2021-17, same
 specimen as kidney_1_dense/kidney_1_voi) from the eternalaudrey/hipct_3d HF
-mirror into memmaps for MultiOrganHiPCTDataset (baki.sh item 3, "train on a
+mirror into memmaps for MultiOrganHiPCTDataset (docs/todo_log.txt item 3, "train on a
 wider range of real spacings"). See HOA_KIDNEY_MULTISPACING_CONFIG in config.py.
 
 Data layout (not in the dataset card, found by looking at the files): each row

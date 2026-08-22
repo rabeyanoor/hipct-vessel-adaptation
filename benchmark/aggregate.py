@@ -14,7 +14,7 @@ with a bootstrap CI of the mean difference and a two-sided Wilcoxon signed-rank
 p-value (exact for these small n).
 
 Usage:
-    python -m benchmark.aggregate --results benchmark_results --out results/tables.json
+    python -m benchmark.aggregate --results results/scores --out results/tables.json
 """
 
 import argparse
@@ -121,7 +121,7 @@ def fmt(entry, m, digits=3):
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
-    p.add_argument("--results", default="benchmark_results")
+    p.add_argument("--results", default="results/scores")
     p.add_argument("--out", default=None)
     a = p.parse_args()
     runs = load(a.results)

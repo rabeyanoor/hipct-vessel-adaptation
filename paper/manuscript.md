@@ -4,7 +4,7 @@
 
 **Target journal:** Medical Image Analysis (Elsevier), full-length article.
 **Status:** draft. Anything marked `[TODO]` depends on experiments that are
-set up (see `baki.sh`, section 7) but not run yet. Measured numbers give their
+set up (see `docs/todo_log.txt`, section 7) but not run yet. Measured numbers give their
 source file. Do not submit while any `[TODO]` is left. Reading notes for every
 cited paper: `related_papers_notes.md`.
 
@@ -196,7 +196,7 @@ Team 2's near-zero scores on kidney_5 and the 13 µm region are not an import er
 
 ### 5.2 Spacing input vs. field of view
 
-`[TODO: native / tell50 / fov50 for each LoRA model on the two zoomed volumes, with paired differences and CIs. Write the interpretation only after seeing the numbers. First-round result to compare with (test.sh 3.5): on 40 field-of-view-matched patches of kidney_1_voi, spacing-conditioned LoRA went from Dice 0.0058 (native) to 0.2215, and plain LoRA from 0.1672 to 0.2895; on a separate draw the matched gap (0.3681 vs. 0.2618) gave Mann-Whitney U p = 0.0216.]`
+`[TODO: native / tell50 / fov50 for each LoRA model on the two zoomed volumes, with paired differences and CIs. Write the interpretation only after seeing the numbers. First-round result to compare with (docs/results_log.txt 3.5): on 40 field-of-view-matched patches of kidney_1_voi, spacing-conditioned LoRA went from Dice 0.0058 (native) to 0.2215, and plain LoRA from 0.1672 to 0.2895; on a separate draw the matched gap (0.3681 vs. 0.2618) gave Mann-Whitney U p = 0.0216.]`
 
 ### 5.3 Effect of spacing augmentation
 
@@ -204,17 +204,17 @@ Team 2's near-zero scores on kidney_5 and the 13 µm region are not an import er
 
 ### 5.4 Ablations
 
-`[TODO: 64³ vs. 128³ patches; with vs. without the full-resolution head; foreground sampling on/off; clDice on/off. First-round clDice result (test.sh 3.7): without clDice, training-volume Dice fell from 0.3145 to 0.1898 and the 5.2 µm Dice stayed very low (0.0058 vs. 0.0015).]`
+`[TODO: 64³ vs. 128³ patches; with vs. without the full-resolution head; foreground sampling on/off; clDice on/off. First-round clDice result (docs/results_log.txt 3.7): without clDice, training-volume Dice fell from 0.3145 to 0.1898 and the 5.2 µm Dice stayed very low (0.0058 vs. 0.0015).]`
 
 ### 5.5 What the FiLM layers learn
 
-In the first-round spacing-conditioned model (100 epochs), γ moved far from 1 at the training spacing in all 24 adapted layers. For example, in layer 19 its mean was 6.52 and its maximum 21.6 at 50 µm, and in layer 2 its maximum was 19.7. At 5.2 µm, γ stayed close to 1 in the same layers (layer 19: mean 1.59, maximum 3.23; layer 2: maximum 3.06) (film_layer_analysis.json; test.sh 3.6). So the model came to depend on a strong modulation that only exists at the training spacing. At 5.2 µm the adapter falls back to something like plain LoRA, but not quite, because its LoRA weights were trained together with that strong modulation. With the log-spacing input of the second round, the picture changes (results/film/*.json, analyze_film_sweep.py). Without spacing augmentation (s_base, seed 0), the mean |γ − 1| over the 24 layers is small and almost flat in the spacing: 0.067 at 50 µm, 0.047 at 13 µm, 0.061 at 5.2 µm and between 0.047 and 0.108 anywhere from 1 to 100 µm. The FiLM networks have learned little more than a constant, which is expected because their input was 0 or 0.005 for every training patch. With spacing augmentation (s_aug, seeds 0 and 1), the modulation is smallest around the training spacing (0.046-0.051 between 50 and 63 µm) and grows steadily as the voxels get finer: 0.051 and 0.048 at 50 µm, 0.159 and 0.155 at 13 µm, 0.245 and 0.238 at 5.2 µm. The two seeds agree to within 0.01 at every spacing, so this is a stable, learned dependence on the spacing, not noise. It is the opposite of the first round, where the modulation was large at 50 µm (1.75) and vanished at 5.2 µm (0.19). Whether the extra modulation at fine spacings actually helps segmentation there is tested by the tell50 setting in Section 5.2. `[TODO: add s_base seeds 1-2 and s_aug seed 2 when trained.]`
+In the first-round spacing-conditioned model (100 epochs), γ moved far from 1 at the training spacing in all 24 adapted layers. For example, in layer 19 its mean was 6.52 and its maximum 21.6 at 50 µm, and in layer 2 its maximum was 19.7. At 5.2 µm, γ stayed close to 1 in the same layers (layer 19: mean 1.59, maximum 3.23; layer 2: maximum 3.06) (first_round/results/film_layer_analysis.json; docs/results_log.txt 3.6). So the model came to depend on a strong modulation that only exists at the training spacing. At 5.2 µm the adapter falls back to something like plain LoRA, but not quite, because its LoRA weights were trained together with that strong modulation. With the log-spacing input of the second round, the picture changes (results/film/*.json, analyze_film_sweep.py). Without spacing augmentation (s_base, seed 0), the mean |γ − 1| over the 24 layers is small and almost flat in the spacing: 0.067 at 50 µm, 0.047 at 13 µm, 0.061 at 5.2 µm and between 0.047 and 0.108 anywhere from 1 to 100 µm. The FiLM networks have learned little more than a constant, which is expected because their input was 0 or 0.005 for every training patch. With spacing augmentation (s_aug, seeds 0 and 1), the modulation is smallest around the training spacing (0.046-0.051 between 50 and 63 µm) and grows steadily as the voxels get finer: 0.051 and 0.048 at 50 µm, 0.159 and 0.155 at 13 µm, 0.245 and 0.238 at 5.2 µm. The two seeds agree to within 0.01 at every spacing, so this is a stable, learned dependence on the spacing, not noise. It is the opposite of the first round, where the modulation was large at 50 µm (1.75) and vanished at 5.2 µm (0.19). Whether the extra modulation at fine spacings actually helps segmentation there is tested by the tell50 setting in Section 5.2. `[TODO: add s_base seeds 1-2 and s_aug seed 2 when trained.]`
 
 ### 5.6 First-round study
 
 The first experiments were scored on random 64³ patches from the training volumes and from kidney_1_voi, leaving out patches without vessels. The training-volume numbers are therefore not held-out results. We report them only to show how the question arose; Table 1 replaces them.
 
-Over three seeds at 100 epochs, spacing-conditioned LoRA reached Dice 0.2718 ± 0.0464 on training-volume patches against 0.1838 ± 0.0644 for plain LoRA. On kidney_1_voi it reached 0.0102 ± 0.0079 against 0.0990 ± 0.0591 (per seed: 0.0058, 0.0193, 0.0055 vs. 0.1672, 0.0620, 0.0679; test.sh 3.11). Only 5 of the 40 kidney_1_voi patches contained any vessel in the main run. On kidney_1_voi, the skeletons of spacing-conditioned LoRA had a median of 11 connected pieces and 15.5 branch points, against 1 and 0.5 in the labels and 6 and 1.0 for plain LoRA (test.sh 3.10).
+Over three seeds at 100 epochs, spacing-conditioned LoRA reached Dice 0.2718 ± 0.0464 on training-volume patches against 0.1838 ± 0.0644 for plain LoRA. On kidney_1_voi it reached 0.0102 ± 0.0079 against 0.0990 ± 0.0591 (per seed: 0.0058, 0.0193, 0.0055 vs. 0.1672, 0.0620, 0.0679; docs/results_log.txt 3.11). Only 5 of the 40 kidney_1_voi patches contained any vessel in the main run. On kidney_1_voi, the skeletons of spacing-conditioned LoRA had a median of 11 connected pieces and 15.5 branch points, against 1 and 0.5 in the labels and 6 and 1.0 for plain LoRA (docs/results_log.txt 3.10).
 
 ### 5.7 Structure of the errors
 

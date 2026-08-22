@@ -26,7 +26,7 @@ import matplotlib.pyplot as plt
 
 from generate_summary_tables import MAIN_100EP_COMPARISON
 
-OUTPUT_DIR = "figures"
+OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "figures")
 
 # colorblind-safe colors, same as in figures 1-3
 PLAIN_COLOR = "#2a78d6"
@@ -44,7 +44,12 @@ plt.rcParams.update({
 })
 
 
+# result files of the first round live in first_round/results/
+RESULTS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "results")
+
+
 def _load_json(path):
+    path = os.path.join(RESULTS_DIR, path)
     if not os.path.exists(path):
         return None
     with open(path) as f:
@@ -54,7 +59,7 @@ def _load_json(path):
 def figure4_dice_comparison():
     """Dice per seed, in-dist and OOD in separate panels (OOD is ~15x smaller),
     bars = mean +- std, dots = single seeds."""
-    seed_files = sorted(glob.glob("multiseed_seed*_results.json"))
+    seed_files = sorted(glob.glob(os.path.join(RESULTS_DIR, "multiseed_seed*_results.json")))
     series = {}
     for arch in ("plain_lora", "spacing_lora"):
         existing = MAIN_100EP_COMPARISON.get(arch, {})

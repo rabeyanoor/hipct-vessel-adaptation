@@ -2,9 +2,9 @@
 """
 Training script for the second round of experiments (MedIA version).
 
-Same models and loss as train_plain_lora.py / train_spacing_lora.py, with the
-changes that came out of reading the related work and checking the first
-results:
+Same models and loss as first_round/train_plain_lora.py and
+first_round/train_spacing_lora.py, with the changes that came out of reading
+the related work and checking the first results:
   - fixed number of optimiser steps per epoch (--iters), instead of skipping
     empty patches, which left only ~5 real steps per epoch before
   - foreground oversampling (--fg-prob), as in nnU-Net

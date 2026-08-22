@@ -16,8 +16,8 @@ compare() gives paired differences between two runs (bootstrap CI of the mean
 difference and a Wilcoxon signed-rank p-value).
 
 Usage:
-    python -m benchmark.score data/benchmark/preds/<run> --out benchmark_results/<run>.json
-    python -m benchmark.score --compare benchmark_results/a.json benchmark_results/b.json
+    python -m benchmark.score data/benchmark/preds/<run> --out results/scores/<run>.json
+    python -m benchmark.score --compare results/scores/a.json results/scores/b.json
 """
 
 import argparse

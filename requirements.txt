@@ -1,0 +1,16 @@
+# Tested with Python 3.11 (local, CPU) and the Kaggle Python image (T4 GPU).
+# The Kaggle runs installed monai==1.6.1, tifffile and imagecodecs on top of the image's PyTorch.
+torch>=2.1
+monai==1.6.1
+numpy
+scipy
+scikit-image
+tifffile
+imagecodecs
+SimpleITK
+networkx
+gudhi
+matplotlib
+# only for downloading data / running the Kaggle pipeline
+huggingface_hub
+kaggle

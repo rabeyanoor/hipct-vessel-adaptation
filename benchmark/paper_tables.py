@@ -1,6 +1,6 @@
 # benchmark/paper_tables.py
 """
-Builds every results table of the paper (PAPER_MEDIA.md, Section 5) from the
+Builds every results table of the paper (paper/manuscript.md, Section 5) from the
 scored runs in one folder (benchmark/score.py JSON files), so each number in
 the paper can be regenerated with one command.
 

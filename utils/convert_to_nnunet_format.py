@@ -4,7 +4,7 @@ Exports the SenNet+HOA kidney memmaps (from utils/convert_kidney_gt_to_memmap.py
 to the nnU-Net v2 raw dataset format, for the nnU-Net baseline (README
 section 7).
 
-Uses the same split as train_plain_lora.py/train_spacing_lora.py
+Uses the same split as first_round/train_plain_lora.py and first_round/train_spacing_lora.py
 (kidney_1_dense, kidney_2, kidney_3_dense, kidney_3_sparse for training,
 kidney_1_voi held out) so the comparison is fair.
 
@@ -103,7 +103,7 @@ def convert_all():
     print(f"  nnUNetv2_plan_and_preprocess -d {DATASET_ID} --verify_dataset_integrity")
     print(f"  nnUNetv2_train {DATASET_ID} 3d_fullres 0")
     print(f"  # then evaluate the trained model against imagesOOD_not_for_training/"
-          f"labelsOOD_not_for_training the same way evaluate_real_gt.py evaluates the other models")
+          f"labelsOOD_not_for_training the same way first_round/evaluate_real_gt.py evaluates the other models")
 
 
 if __name__ == "__main__":

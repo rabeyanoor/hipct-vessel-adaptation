@@ -30,10 +30,10 @@ ORGAN_CONFIG = {
 # (LADAF-2021-17-Right) at other native resolutions. No expert GT, so they get
 # Frangi pseudo-labels through MultiOrganHiPCTDataset like the organs above.
 # Don't mix them with the RealGTKidneyDataset numbers (README section 6).
-# For baki.sh item 3: kidney_1_dense/voi only cover 50um/5.2um.
+# For docs/todo_log.txt item 3: kidney_1_dense/voi only cover 50um/5.2um.
 # WARNING: do not train on the 6.5um and 2.6um entries. The 6.5um VOI is the
 # source of the 13um test volume (kidney_additional_voi_13um) and the 2.6um VOI
-# is very likely the source of kidney_1_voi (5.2um). See baki.sh section 7.
+# is very likely the source of kidney_1_voi (5.2um). See docs/todo_log.txt section 7.
 HOA_KIDNEY_MULTISPACING_CONFIG = {
     "kidney_hoa17_25um": {
         "spacing": [25.0, 25.0, 25.0],

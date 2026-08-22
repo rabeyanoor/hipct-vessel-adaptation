@@ -74,7 +74,12 @@ def _hr(char="=", width=100):
     print(char * width)
 
 
+# result files of the first round live in first_round/results/
+RESULTS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "results")
+
+
 def _load_json(path):
+    path = os.path.join(RESULTS_DIR, path)
     if not os.path.exists(path):
         return None
     with open(path) as f:
@@ -196,7 +201,7 @@ def section_multiseed():
         return
 
     # existing 100-epoch run (default seed) + every multiseed_seed<N>_results.json on disk
-    seed_files = sorted(glob.glob("multiseed_seed*_results.json"))
+    seed_files = sorted(glob.glob(os.path.join(RESULTS_DIR, "multiseed_seed*_results.json")))
     if not seed_files:
         print("  not yet available -- kaggle_kernels/kaggle_multiseed_kernel*.py has not completed yet "
               "(see baki.sh section 2 for status)")
@@ -204,7 +209,7 @@ def section_multiseed():
         return
 
     print(f"  Existing checkpoint (unspecified seed) + {len(seed_files)} additional seed run(s) "
-          f"({', '.join(seed_files)}):")
+          f"({', '.join(os.path.basename(f) for f in seed_files)}):")
     for arch in ("plain_lora", "spacing_lora"):
         existing = MAIN_100EP_COMPARISON.get(arch, {})
         in_vals = [existing.get("in_dist_dice")]

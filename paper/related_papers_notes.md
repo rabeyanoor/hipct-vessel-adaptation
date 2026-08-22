@@ -1,7 +1,7 @@
 # Notes on the related papers
 
 One entry per paper: what they did, the numbers that matter for us, and where
-it goes in PAPER_MEDIA.md. PDFs of most of them are in `new/`. Read each paper
+it goes in manuscript.md. PDFs of most of them are in `new/`. Read each paper
 yourself before citing it; these notes only tell you what to look for.
 
 Venue/volume details were checked on PubMed or the paper itself on
