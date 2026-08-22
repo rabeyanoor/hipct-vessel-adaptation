@@ -1,0 +1,62 @@
+{
+  "plain_lora_lr3e-05_alpha0.25": {
+    "lr": 3e-05,
+    "alpha": 0.25,
+    "dice": 0.030613400484412523
+  },
+  "plain_lora_lr3e-05_alpha0.6": {
+    "lr": 3e-05,
+    "alpha": 0.6,
+    "dice": 0.032007610365894834
+  },
+  "plain_lora_lr0.0001_alpha0.25": {
+    "lr": 0.0001,
+    "alpha": 0.25,
+    "dice": 0.02034261069019294
+  },
+  "plain_lora_lr0.0001_alpha0.6": {
+    "lr": 0.0001,
+    "alpha": 0.6,
+    "dice": 0.019205516649094534
+  },
+  "plain_lora_lr0.0002_alpha0.25": {
+    "lr": 0.0002,
+    "alpha": 0.25,
+    "dice": 0.03186325634555942
+  },
+  "plain_lora_lr0.0002_alpha0.6": {
+    "lr": 0.0002,
+    "alpha": 0.6,
+    "dice": 0.01839696209401609
+  },
+  "spacing_lora_lr3e-05_alpha0.25": {
+    "lr": 3e-05,
+    "alpha": 0.25,
+    "dice": 0.0709134885109961
+  },
+  "spacing_lora_lr3e-05_alpha0.6": {
+    "lr": 3e-05,
+    "alpha": 0.6,
+    "dice": 0.06825968888177372
+  },
+  "spacing_lora_lr0.0001_alpha0.25": {
+    "lr": 0.0001,
+    "alpha": 0.25,
+    "dice": 0.13639905823305631
+  },
+  "spacing_lora_lr0.0001_alpha0.6": {
+    "lr": 0.0001,
+    "alpha": 0.6,
+    "dice": 0.12228456383351893
+  },
+  "spacing_lora_lr0.0002_alpha0.25": {
+    "lr": 0.0002,
+    "alpha": 0.25,
+    "dice": 0.10772082857404124
+  },
+  "spacing_lora_lr0.0002_alpha0.6": {
+    "lr": 0.0002,
+    "alpha": 0.6,
+    "dice": 0.059847418027108204
+  }
+}

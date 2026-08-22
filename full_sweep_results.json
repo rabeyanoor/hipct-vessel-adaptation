@@ -1,0 +1,92 @@
+{
+  "plain_lora_lr5e-05_alpha0.25": {
+    "lr": 5e-05,
+    "alpha": 0.25,
+    "dice": 0.14022102053753438
+  },
+  "plain_lora_lr5e-05_alpha0.5": {
+    "lr": 5e-05,
+    "alpha": 0.5,
+    "dice": 0.14404463028106626
+  },
+  "plain_lora_lr5e-05_alpha0.75": {
+    "lr": 5e-05,
+    "alpha": 0.75,
+    "dice": 0.15692912129187872
+  },
+  "plain_lora_lr0.0001_alpha0.25": {
+    "lr": 0.0001,
+    "alpha": 0.25,
+    "dice": 0.14564667680216106
+  },
+  "plain_lora_lr0.0001_alpha0.5": {
+    "lr": 0.0001,
+    "alpha": 0.5,
+    "dice": 0.1466274601301517
+  },
+  "plain_lora_lr0.0001_alpha0.75": {
+    "lr": 0.0001,
+    "alpha": 0.75,
+    "dice": 0.144244146914306
+  },
+  "plain_lora_lr0.0002_alpha0.25": {
+    "lr": 0.0002,
+    "alpha": 0.25,
+    "dice": 0.1589224573505238
+  },
+  "plain_lora_lr0.0002_alpha0.5": {
+    "lr": 0.0002,
+    "alpha": 0.5,
+    "dice": 0.17238426936091855
+  },
+  "plain_lora_lr0.0002_alpha0.75": {
+    "lr": 0.0002,
+    "alpha": 0.75,
+    "dice": 0.161953217356561
+  },
+  "spacing_lora_lr5e-05_alpha0.25": {
+    "lr": 5e-05,
+    "alpha": 0.25,
+    "dice": 0.15287763516418637
+  },
+  "spacing_lora_lr5e-05_alpha0.5": {
+    "lr": 5e-05,
+    "alpha": 0.5,
+    "dice": 0.15900251320563258
+  },
+  "spacing_lora_lr5e-05_alpha0.75": {
+    "lr": 5e-05,
+    "alpha": 0.75,
+    "dice": 0.1589873293368146
+  },
+  "spacing_lora_lr0.0001_alpha0.25": {
+    "lr": 0.0001,
+    "alpha": 0.25,
+    "dice": 0.15343692301772535
+  },
+  "spacing_lora_lr0.0001_alpha0.5": {
+    "lr": 0.0001,
+    "alpha": 0.5,
+    "dice": 0.15392318608239294
+  },
+  "spacing_lora_lr0.0001_alpha0.75": {
+    "lr": 0.0001,
+    "alpha": 0.75,
+    "dice": 0.1555105753056705
+  },
+  "spacing_lora_lr0.0002_alpha0.25": {
+    "lr": 0.0002,
+    "alpha": 0.25,
+    "dice": 0.12584763184189796
+  },
+  "spacing_lora_lr0.0002_alpha0.5": {
+    "lr": 0.0002,
+    "alpha": 0.5,
+    "dice": 0.12946607737336308
+  },
+  "spacing_lora_lr0.0002_alpha0.75": {
+    "lr": 0.0002,
+    "alpha": 0.75,
+    "dice": 0.1365417668223381
+  }
+}

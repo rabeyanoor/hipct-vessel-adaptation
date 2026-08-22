@@ -12,9 +12,9 @@ disk usage.
 
 kidney_3_dense is a special case: it ships ONLY label files, because its dense
 annotations are a more thoroughly-curated subset of the same raw slices as
-kidney_3_sparse (verified: kidney_3_dense/labels/0496.tif's index has a
-matching train/kidney_3_sparse/images/0496.tif). Its images are read from
-kidney_3_sparse instead.
+kidney_3_sparse -- label and image slices share the same numeric index (e.g.
+kidney_3_dense/labels/0496.tif corresponds to train/kidney_3_sparse/images/
+0496.tif). Its images are read from kidney_3_sparse instead.
 """
 
 import io

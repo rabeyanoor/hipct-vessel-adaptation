@@ -11,13 +11,18 @@ except Exception:
     HAS_CLDICE = False
 
 class HiPVesselLoss(nn.Module):
-    def __init__(self, alpha=0.5, beta=0.05, gamma=1.0, max_pos_weight=50.0):
+    def __init__(self, alpha=0.5, beta=0.05, gamma=1.0, max_pos_weight=50.0, use_cldice=True):
         super().__init__()
         self.alpha = alpha
         self.beta = beta
         self.gamma = gamma
         self.max_pos_weight = max_pos_weight
-        if HAS_CLDICE:
+        # use_cldice lets an ablation run disable the clDice term even when the
+        # library imported fine, to isolate its contribution from Dice/BCE/
+        # anisotropic penalty -- separate from HAS_CLDICE, which reflects
+        # whether the term is available at all.
+        self.use_cldice = use_cldice and HAS_CLDICE
+        if self.use_cldice:
             self.cldice_fn = soft_cldice()
 
     def forward(self, pred, target, spacing, logits=None):
@@ -26,7 +31,7 @@ class HiPVesselLoss(nn.Module):
         dice_loss = 1.0 - (2. * intersection + 1e-5) / (torch.sum(pred) + torch.sum(target) + 1e-5)
 
         # 2. Topological Continuity Loss (clDice)
-        cldice_l = self.cldice_fn(pred, target) if HAS_CLDICE else torch.tensor(0.0, device=pred.device)
+        cldice_l = self.cldice_fn(pred, target) if self.use_cldice else torch.tensor(0.0, device=pred.device)
 
         # 3. Anisotropic Penalty based on Voxel Spacing
         if isinstance(spacing, torch.Tensor) and spacing.dim() == 2:
@@ -37,7 +42,7 @@ class HiPVesselLoss(nn.Module):
         dz, dy, dx = torch.gradient(pred, dim=(-3, -2, -1))
         aniso_penalty = torch.mean((dz / sp[0])**2 + (dy / sp[1])**2 + (dx / sp[2])**2)
 
-        total_loss = dice_loss + (self.alpha * cldice_l if HAS_CLDICE else 0.0) + (self.beta * aniso_penalty)
+        total_loss = dice_loss + (self.alpha * cldice_l if self.use_cldice else 0.0) + (self.beta * aniso_penalty)
 
         # 4. Class-weighted BCE on raw logits, numerically stable even once the
         # sigmoid output saturates near 0/1 (unlike probability-space Dice/

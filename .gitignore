@@ -6,6 +6,7 @@ __pycache__/
 
 # Virtual environment
 venv/
+.venv/
 env/
 
 # Large / generated data (see README setup instructions to regenerate)
@@ -23,7 +24,18 @@ checkpoints/
 checkpoints_real_gt/
 checkpoints_plain_lora/
 checkpoints_spacing_lora/
+checkpoints_plain_lora_100ep_gpu/
+checkpoints_spacing_lora_100ep_gpu/
+checkpoints_spacing_lora_no_cldice/
 *.pth
+
+# Ablation run output (regenerate with run_ablation.py)
+ablation_results.json
+
+# nnU-Net baseline (regenerate with utils/convert_to_nnunet_format.py)
+data/nnUNet_raw/
+data/nnUNet_preprocessed/
+data/nnUNet_results/
 
 # Third-party cloned repos + downloaded checkpoints (see README setup: re-clone/re-download)
 external/SAM-Med3D/
