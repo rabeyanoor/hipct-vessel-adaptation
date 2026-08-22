@@ -1,0 +1,4 @@
+organ,raw_dir,n_slices,declared_spacing_um,embedded_filename_spacing_um,spacing_check,memmap_shape_dhw,real_annotation_files_found,vessel_gt_available
+heart,data/raw/heart_jp2,2074,26.04,26.04,MATCH,"[2074, 960, 960]",0,NO -- pseudo-label only (Frangi vesselness)
+lung,data/raw/lung_jp2,1229,169.36,169.36,MATCH,"[1229, 870, 870]",0,NO -- pseudo-label only (Frangi vesselness)
+kidney,data/raw/kidney_jp2,2141,50.0,50.0,MATCH,"[2141, 1108, 1644]",0,NO -- pseudo-label only (Frangi vesselness)
