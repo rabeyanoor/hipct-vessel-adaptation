@@ -1,15 +1,8 @@
 # models/spacing_lora_model.py
 """
-Spacing-Conditioned LoRA model -- this project's main proposed method: same
-architecture as PlainLoRAModel (frozen SAM-Med3D backbone, LoRA in attention
-qkv/proj, trainable mask_decoder), except the LoRA branches are additionally
-modulated by real physical voxel spacing (see models/spacing_lora.py).
-
-Direct comparison point for PlainLoRAModel (no spacing conditioning) and
-HiPVesselAdaptModel (spacing-conditioned, but via a single post-encoder
-adapter rather than in-encoder LoRA) -- same frozen backbone, same
-trainable-parameter order of magnitude, same real-GT data and training
-protocol (see train_plain_lora.py / train_real_gt.py for the others).
+Spacing-Conditioned LoRA model (main method). Same as PlainLoRAModel (frozen
+SAM-Med3D backbone, LoRA in attention qkv/proj, trainable mask_decoder), but the
+LoRA branches are modulated by the voxel spacing (see models/spacing_lora.py).
 """
 
 import os
@@ -23,13 +16,14 @@ sam_model_registry3D = import_sam_model_registry3D()
 HAS_SAM_MED3D = sam_model_registry3D is not None
 
 from models.spacing_lora import inject_spacing_lora
+from models.refine_head import RefineHead
 
 DEFAULT_SAM_MED3D_CHECKPOINT = os.path.abspath("./external/SAM-Med3D/ckpt/sam_med3d.pth")
 
 
 class SpacingConditionedLoRAModel(nn.Module):
     def __init__(self, checkpoint_path=DEFAULT_SAM_MED3D_CHECKPOINT, model_type="vit_b_ori",
-                 lora_r=4, lora_alpha=1.0):
+                 lora_r=4, lora_alpha=1.0, refine=False, spacing_encoding="raw"):
         super().__init__()
         if not HAS_SAM_MED3D:
             raise RuntimeError("SAM-Med3D not importable -- check external/SAM-Med3D setup.")
@@ -45,23 +39,27 @@ class SpacingConditionedLoRAModel(nn.Module):
 
         for param in self.sam_model.image_encoder.parameters():
             param.requires_grad = False
-        self.lora_layers = inject_spacing_lora(self.sam_model.image_encoder, r=lora_r, alpha=lora_alpha)
-        print(f"[*] Injected Spacing-Conditioned LoRA (r={lora_r}, alpha={lora_alpha}) "
-              f"into {len(self.lora_layers)} attention layers")
+        self.lora_layers = inject_spacing_lora(self.sam_model.image_encoder, r=lora_r, alpha=lora_alpha,
+                                               spacing_encoding=spacing_encoding)
+        print(f"[*] Injected Spacing-Conditioned LoRA (r={lora_r}, alpha={lora_alpha}, "
+              f"spacing input {spacing_encoding}) into {len(self.lora_layers)} attention layers")
 
         for param in self.sam_model.mask_decoder.parameters():
             param.requires_grad = True
 
+        # optional full-resolution head (models/refine_head.py); off by default
+        # so the checkpoints from the first experiments still load
+        self.refine_head = RefineHead() if refine else None
+
     def forward(self, x, spacing):
-        """spacing: (B, 3) real physical voxel spacing -- REQUIRED (unlike
-        PlainLoRAModel, where it's accepted but unused)."""
+        """spacing: (B, 3) voxel spacing, required here."""
         orig_spatial = x.shape[2:]
 
         for layer in self.lora_layers:
             layer.current_spacing = spacing
         image_embeddings = self.sam_model.image_encoder(x)
         for layer in self.lora_layers:
-            layer.current_spacing = None  # avoid holding a stale reference between calls
+            layer.current_spacing = None  # clear so it is not reused by accident
 
         batch_size = x.shape[0]
         ref_size = self.sam_model.prompt_encoder.input_image_size
@@ -87,5 +85,7 @@ class SpacingConditionedLoRAModel(nn.Module):
                 low_res_masks, size=orig_spatial, mode="trilinear", align_corners=False
             )
         logits = low_res_masks
+        if self.refine_head is not None:
+            logits = self.refine_head(x, logits)
         mask_pred = torch.sigmoid(logits)
         return mask_pred, logits

@@ -44,3 +44,15 @@ external/clDice/
 # OS / editor cruft
 .DS_Store
 *.swp
+
+# Zenodo test data, ROI benchmark and new training runs (regenerate, see README)
+data/zenodo/
+data/fg_index/
+data/benchmark/
+checkpoints_v2/
+
+# PDFs of related papers (not part of the code)
+new/
+
+# Raw Kaggle kernel downloads (curated copies live in results/)
+kaggle_outputs/

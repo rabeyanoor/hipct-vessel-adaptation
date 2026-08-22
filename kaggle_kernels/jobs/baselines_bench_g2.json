@@ -1,0 +1,76 @@
+{
+ "gpu0": [
+  {
+   "name": "nnunet",
+   "cmds": [
+    "pip install -q nnunetv2==2.8.1",
+    "export nnUNet_raw=/tmp/nn/raw nnUNet_preprocessed=/tmp/nn/pre nnUNet_results=$OUT/nnunet_results; python -m benchmark.run_nnunet prepare --raw-tiff-root $COMP_TRAIN",
+    "export nnUNet_raw=/tmp/nn/raw nnUNet_preprocessed=/tmp/nn/pre nnUNet_results=$OUT/nnunet_results; python -m benchmark.run_nnunet train",
+    "export nnUNet_raw=/tmp/nn/raw nnUNet_preprocessed=/tmp/nn/pre nnUNet_results=$OUT/nnunet_results; python -m benchmark.run_nnunet predict --tag resampled --roi-dir $ROI_DIR --pred-root $OUT/preds",
+    "export nnUNet_raw=/tmp/nn/raw nnUNet_preprocessed=/tmp/nn/pre nnUNet_results=$OUT/nnunet_results; python -m benchmark.run_nnunet predict --tag native --roi-dir $ROI_DIR --pred-root $OUT/preds"
+   ]
+  }
+ ],
+ "gpu1": [
+  {
+   "name": "vesselfm",
+   "cmds": [
+    "git clone -q https://github.com/bwittmann/vesselFM.git /tmp/vesselFM && git -C /tmp/vesselFM checkout -q d33b952223220fb40caa1f4daa4b627256de9508",
+    "python -m venv /tmp/vfm_env && /tmp/vfm_env/bin/pip install -q torch==2.5.1 numpy==1.26.4 monai==1.3.2 hydra-core==1.3.2 scikit-image==0.24.0 scikit-learn==1.5.2 SimpleITK==2.4.0 tqdm==4.67.0 huggingface_hub==0.29.1 nibabel",
+    "python -m benchmark.run_vesselfm --vesselfm-dir /tmp/vesselFM --python /tmp/vfm_env/bin/python --roi-dir $ROI_DIR --pred-root $OUT/preds"
+   ]
+  },
+  {
+   "name": "bench_p_aug_s0_gpu",
+   "cmds": [
+    "python -m benchmark.infer --model plain_lora --checkpoint \"$TRAINED/checkpoints/p_aug_s0/model_best.pth\" --patch 128 --refine  --run-name p_aug_s0_native__gpu --roi-dir $ROI_DIR --pred-root $OUT/preds --sets kidney_5 kidney_6 kidney_additional_voi_13um kidney_1_voi",
+    "python -m benchmark.infer --model plain_lora --checkpoint \"$TRAINED/checkpoints/p_aug_s0/model_best.pth\" --patch 128 --refine --resample-um 50 --run-name p_aug_s0_fov50__gpu --roi-dir $ROI_DIR --pred-root $OUT/preds --sets kidney_5 kidney_6 kidney_additional_voi_13um kidney_1_voi"
+   ]
+  },
+  {
+   "name": "bench_s_base_s1_gpu",
+   "cmds": [
+    "python -m benchmark.infer --model spacing_lora --checkpoint \"$TRAINED/checkpoints/s_base_s1/model_best.pth\" --patch 128 --refine --spacing-encoding log  --run-name s_base_s1_native__gpu --roi-dir $ROI_DIR --pred-root $OUT/preds --sets kidney_5 kidney_6 kidney_additional_voi_13um kidney_1_voi",
+    "python -m benchmark.infer --model spacing_lora --checkpoint \"$TRAINED/checkpoints/s_base_s1/model_best.pth\" --patch 128 --refine --spacing-encoding log --resample-um 50 --run-name s_base_s1_fov50__gpu --roi-dir $ROI_DIR --pred-root $OUT/preds --sets kidney_5 kidney_6 kidney_additional_voi_13um kidney_1_voi",
+    "python -m benchmark.infer --model spacing_lora --checkpoint \"$TRAINED/checkpoints/s_base_s1/model_best.pth\" --patch 128 --refine --spacing-encoding log --spacing-um 50 --run-name s_base_s1_tell50__gpu --roi-dir $ROI_DIR --pred-root $OUT/preds --sets kidney_5 kidney_6 kidney_additional_voi_13um kidney_1_voi"
+   ]
+  },
+  {
+   "name": "bench_p_base_s1_gpu",
+   "cmds": [
+    "python -m benchmark.infer --model plain_lora --checkpoint \"$TRAINED/checkpoints/p_base_s1/model_best.pth\" --patch 128 --refine  --run-name p_base_s1_native__gpu --roi-dir $ROI_DIR --pred-root $OUT/preds --sets kidney_5 kidney_6 kidney_additional_voi_13um kidney_1_voi",
+    "python -m benchmark.infer --model plain_lora --checkpoint \"$TRAINED/checkpoints/p_base_s1/model_best.pth\" --patch 128 --refine --resample-um 50 --run-name p_base_s1_fov50__gpu --roi-dir $ROI_DIR --pred-root $OUT/preds --sets kidney_5 kidney_6 kidney_additional_voi_13um kidney_1_voi"
+   ]
+  },
+  {
+   "name": "bench_p_aug_s2_gpu",
+   "cmds": [
+    "python -m benchmark.infer --model plain_lora --checkpoint \"$TRAINED/checkpoints/p_aug_s2/model_best.pth\" --patch 128 --refine  --run-name p_aug_s2_native__gpu --roi-dir $ROI_DIR --pred-root $OUT/preds --sets kidney_5 kidney_6 kidney_additional_voi_13um kidney_1_voi",
+    "python -m benchmark.infer --model plain_lora --checkpoint \"$TRAINED/checkpoints/p_aug_s2/model_best.pth\" --patch 128 --refine --resample-um 50 --run-name p_aug_s2_fov50__gpu --roi-dir $ROI_DIR --pred-root $OUT/preds --sets kidney_5 kidney_6 kidney_additional_voi_13um kidney_1_voi"
+   ]
+  },
+  {
+   "name": "bench_s_aug_s2_gpu",
+   "cmds": [
+    "python -m benchmark.infer --model spacing_lora --checkpoint \"$TRAINED/checkpoints/s_aug_s2/model_best.pth\" --patch 128 --refine --spacing-encoding log  --run-name s_aug_s2_native__gpu --roi-dir $ROI_DIR --pred-root $OUT/preds --sets kidney_5 kidney_6 kidney_additional_voi_13um kidney_1_voi",
+    "python -m benchmark.infer --model spacing_lora --checkpoint \"$TRAINED/checkpoints/s_aug_s2/model_best.pth\" --patch 128 --refine --spacing-encoding log --resample-um 50 --run-name s_aug_s2_fov50__gpu --roi-dir $ROI_DIR --pred-root $OUT/preds --sets kidney_5 kidney_6 kidney_additional_voi_13um kidney_1_voi",
+    "python -m benchmark.infer --model spacing_lora --checkpoint \"$TRAINED/checkpoints/s_aug_s2/model_best.pth\" --patch 128 --refine --spacing-encoding log --spacing-um 50 --run-name s_aug_s2_tell50__gpu --roi-dir $ROI_DIR --pred-root $OUT/preds --sets kidney_5 kidney_6 kidney_additional_voi_13um kidney_1_voi"
+   ]
+  },
+  {
+   "name": "bench_s_base_s2_gpu",
+   "cmds": [
+    "python -m benchmark.infer --model spacing_lora --checkpoint \"$TRAINED/checkpoints/s_base_s2/model_best.pth\" --patch 128 --refine --spacing-encoding log  --run-name s_base_s2_native__gpu --roi-dir $ROI_DIR --pred-root $OUT/preds --sets kidney_5 kidney_6 kidney_additional_voi_13um kidney_1_voi",
+    "python -m benchmark.infer --model spacing_lora --checkpoint \"$TRAINED/checkpoints/s_base_s2/model_best.pth\" --patch 128 --refine --spacing-encoding log --resample-um 50 --run-name s_base_s2_fov50__gpu --roi-dir $ROI_DIR --pred-root $OUT/preds --sets kidney_5 kidney_6 kidney_additional_voi_13um kidney_1_voi",
+    "python -m benchmark.infer --model spacing_lora --checkpoint \"$TRAINED/checkpoints/s_base_s2/model_best.pth\" --patch 128 --refine --spacing-encoding log --spacing-um 50 --run-name s_base_s2_tell50__gpu --roi-dir $ROI_DIR --pred-root $OUT/preds --sets kidney_5 kidney_6 kidney_additional_voi_13um kidney_1_voi"
+   ]
+  },
+  {
+   "name": "bench_p_base_s2_gpu",
+   "cmds": [
+    "python -m benchmark.infer --model plain_lora --checkpoint \"$TRAINED/checkpoints/p_base_s2/model_best.pth\" --patch 128 --refine  --run-name p_base_s2_native__gpu --roi-dir $ROI_DIR --pred-root $OUT/preds --sets kidney_5 kidney_6 kidney_additional_voi_13um kidney_1_voi",
+    "python -m benchmark.infer --model plain_lora --checkpoint \"$TRAINED/checkpoints/p_base_s2/model_best.pth\" --patch 128 --refine --resample-um 50 --run-name p_base_s2_fov50__gpu --roi-dir $ROI_DIR --pred-root $OUT/preds --sets kidney_5 kidney_6 kidney_additional_voi_13um kidney_1_voi"
+   ]
+  }
+ ]
+}

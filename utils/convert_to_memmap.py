@@ -1,16 +1,14 @@
 # utils/convert_to_memmap.py
 """
-Converts each organ's raw .jp2 slice stack directly into a flat, uncompressed
-np.memmap array on disk (+ a small JSON sidecar with shape/dtype).
+Converts each organ's .jp2 slice stack into an uncompressed np.memmap file
+(+ a small JSON file with shape/dtype).
 
-Why: data/<organ>.nii.gz is gzip-compressed, and SimpleITK/ITK cannot randomly
-seek into a compressed NIfTI stream -- every SetExtractIndex/SetExtractSize
-read re-decompresses from the start of the file. Measured cost: 15-56 seconds
-to pull a single 64^3 patch, which makes real training/eval infeasible.
+Reason: .nii.gz is gzip-compressed and SimpleITK can't seek in it, so every
+patch read decompresses from the start of the file. That took 15-56 seconds
+per 64^3 patch, way too slow for training.
 
-Reading raw .jp2 slices one at a time (instead of doing one giant in-memory
-volume read) also keeps peak RAM bounded to a single 2D slice, which matters
-on this machine (15GB total RAM, ~8.6GB available).
+Slices are read one by one so RAM use stays at one 2D slice (this machine has
+15GB RAM, ~8.6GB free).
 """
 
 import glob

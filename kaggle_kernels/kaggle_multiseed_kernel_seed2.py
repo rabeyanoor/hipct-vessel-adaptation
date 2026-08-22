@@ -1,37 +1,26 @@
 """
-Kaggle kernel: a THIRD seeded 100-epoch run of both Plain LoRA and
-Spacing-Conditioned LoRA (seed=2), for multi-seed statistical reporting
-(baki.sh section 2 / colab_run.py's run_multiseed()). Sibling of
-kaggle_multiseed_kernel.py (seed=1, completed 2026-09-16, see test.sh
-section 3.11) -- same script, only SEED and the output filename differ.
+Kaggle kernel: third 100-epoch run of Plain LoRA and Spacing-Conditioned LoRA,
+seed=2, for the multi-seed results (baki.sh section 2 / colab_run.py's
+run_multiseed()). Same as kaggle_multiseed_kernel.py (seed=1, finished
+2026-09-16, test.sh 3.11); only SEED and the output file name differ.
 
-Scope note, stated honestly: the full multiseed plan (colab_run.py,
-n_seeds=3) is 6 full 100-epoch training runs (3 seeds x 2 architectures) --
-more than a single Kaggle account's weekly free-GPU quota (6h) can fit in
-one go. The seed=1 run actually used only ~9788s of nargisakterr's 21600s
-weekly quota (measured via api.quota_view() after it completed), leaving
-enough headroom (~11800s) to run this second seed on the SAME account's
-remaining weekly quota rather than waiting for a reset or a third account.
-Combined with the existing 100-epoch checkpoint (unspecified seed) and the
-seed=1 run, this gives n=3 per architecture -- the originally-planned
-multiseed size, finally reached.
+The seed=1 run used only ~9788s of nargisakterr's 21600s weekly quota
+(checked with api.quota_view()), so there is enough left (~11800s) to run
+seed=2 on the same account without waiting for a reset. With the existing
+100-epoch checkpoint (default seed) and seed=1 this gives n=3 per
+architecture, as planned.
 
-Setup (steps 1-4) is copied from kaggle_train_kernel.py verbatim -- same
-six environment fixes documented in test.sh section 3.9 (input-path
-detection, raw_tiff_root mode to avoid the working-directory disk quota,
-clDice import fix, SAM-Med3D import fix, T4 GPU machine_shape, positional-
-embedding patch) apply identically here since it's the same training code.
+Setup steps 1-4 are copied from kaggle_train_kernel.py (same six fixes as in
+test.sh 3.9: input paths, raw_tiff_root mode for the disk quota, clDice
+import, SAM-Med3D import, T4 machine_shape, pos_embed patch).
 
-Prerequisites on the Kaggle account this kernel is pushed under (not this
-project's usual rabeya100x -- see kernel-metadata-multiseed.json's "id"):
-  1. The code dataset (rabeya100x/hip-vesseladapt-code) must be shared with
-     this account, or made public -- it's private and owned by a different
-     account.
-  2. This account must have accepted the blood-vessel-segmentation
-     competition's rules on Kaggle's website, or the competition data won't
-     attach.
-Both require logging into Kaggle as that account directly; neither can be
-done via the API.
+Before pushing from the other account (see "id" in
+kernel-metadata-multiseed-seed2.json):
+  1. The private code dataset rabeya100x/hip-vesseladapt-code has to be
+     shared with that account (or made public).
+  2. That account has to accept the blood-vessel-segmentation competition
+     rules on the Kaggle website, otherwise the data won't attach.
+Both have to be done on the website, not through the API.
 """
 
 import json
@@ -45,9 +34,8 @@ SEED = 2
 
 
 def find_by_marker(root, is_match, max_depth=4):
-    """Recursively search under root (bounded depth) for a directory
-    satisfying is_match(path) -- Kaggle's /kaggle/input layout varies (flat
-    vs nested under datasets/<owner>/<name> and competitions/<slug>)."""
+    """Search under root (limited depth) for a directory where is_match(path)
+    is true; the /kaggle/input layout is not always the same."""
     stack = [(root, 0)]
     while stack:
         path, depth = stack.pop()
@@ -135,8 +123,7 @@ if not os.path.exists(ckpt_path):
 print(f"[✓] Checkpoint ready: {os.path.getsize(ckpt_path)/1e9:.2f} GB")
 
 # 4. Data source: read TIFF slices directly from the attached competition
-#    folder (RealGTKidneyDataset's raw_tiff_root mode) -- see
-#    kaggle_train_kernel.py's docstring / test.sh section 3.9 bug 2 for why.
+#    folder (raw_tiff_root mode), see test.sh section 3.9 bug 2.
 RAW_TIFF_ROOT = os.path.join(COMP_DIR, "train")
 print(f"[*] Reading TIFF slices directly from: {RAW_TIFF_ROOT} (no memmap conversion)")
 

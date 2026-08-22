@@ -1,0 +1,35 @@
+{
+ "model": "spacing",
+ "out": "/kaggle/working/out/checkpoints/s_aug_s1",
+ "raw_tiff_root": [
+  "/kaggle/input/competitions/blood-vessel-segmentation/train"
+ ],
+ "patch": 128,
+ "batch": 1,
+ "accum": 2,
+ "epochs": 12,
+ "iters": 250,
+ "lr": 0.0001,
+ "warmup": 200,
+ "lora_r": 4,
+ "unfreeze_blocks": 0,
+ "decoder": "full",
+ "val_roi_dir": "/kaggle/working/hip-vesseladapt/data/benchmark/val_rois",
+ "val_every": 2,
+ "fg_prob": 0.5,
+ "fov_scale": [
+  0.25,
+  2.0
+ ],
+ "refine": true,
+ "no_cldice": false,
+ "loss_alpha": 0.5,
+ "loss_beta": 0.05,
+ "loss_gamma": 1.0,
+ "seed": 1,
+ "workers": 4,
+ "sampler": "slab",
+ "patches_per_slab": 32,
+ "spacing_encoding": "log",
+ "time_limit_min": 90.0
+}

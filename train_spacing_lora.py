@@ -1,12 +1,10 @@
 # train_spacing_lora.py
 """
-Trains SpacingConditionedLoRAModel (frozen SAM-Med3D + spacing-modulated LoRA
-+ decoder) against the real SenNet+HOA kidney GT -- this project's main
-proposed method, trained with the SAME protocol, data split, and evaluation
-as PlainLoRAModel (train_plain_lora.py) and HiPVesselAdaptModel
-(train_real_gt.py), so the three are directly comparable.
+Trains SpacingConditionedLoRAModel (frozen SAM-Med3D + spacing-modulated LoRA +
+decoder) on the SenNet+HOA kidney labels. Same data split and settings as
+train_plain_lora.py and train_real_gt.py so the results can be compared.
 
-Resumable, checkpoints every epoch, same convention as the other two.
+Resumable, saves a checkpoint every epoch.
 """
 
 import json

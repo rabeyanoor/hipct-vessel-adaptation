@@ -1,0 +1,30 @@
+{
+ "gpu0": [
+  {
+   "name": "train_p_aug_s0",
+   "cmds": [
+    "python train_lora_v2.py --model plain --fov-scale 0.25 2.0 --patch 128 --fg-prob 0.5 --refine --epochs 12 --iters 250 --val-every 2 --workers 3 --raw-tiff-root $COMP_TRAIN --val-roi-dir $VAL_ROI_DIR --time-limit-min 90 --seed 0 --out $OUT/checkpoints/p_aug_s0"
+   ]
+  },
+  {
+   "name": "train_s_base_s1",
+   "cmds": [
+    "python train_lora_v2.py --model spacing --spacing-encoding log --patch 128 --fg-prob 0.5 --refine --epochs 12 --iters 250 --val-every 2 --workers 3 --raw-tiff-root $COMP_TRAIN --val-roi-dir $VAL_ROI_DIR --time-limit-min 90 --seed 1 --out $OUT/checkpoints/s_base_s1"
+   ]
+  }
+ ],
+ "gpu1": [
+  {
+   "name": "train_p_base_s1",
+   "cmds": [
+    "python train_lora_v2.py --model plain --patch 128 --fg-prob 0.5 --refine --epochs 12 --iters 250 --val-every 2 --workers 3 --raw-tiff-root $COMP_TRAIN --val-roi-dir $VAL_ROI_DIR --time-limit-min 90 --seed 1 --out $OUT/checkpoints/p_base_s1"
+   ]
+  },
+  {
+   "name": "train_p_aug_s2",
+   "cmds": [
+    "python train_lora_v2.py --model plain --fov-scale 0.25 2.0 --patch 128 --fg-prob 0.5 --refine --epochs 12 --iters 250 --val-every 2 --workers 3 --raw-tiff-root $COMP_TRAIN --val-roi-dir $VAL_ROI_DIR --time-limit-min 90 --seed 2 --out $OUT/checkpoints/p_aug_s2"
+   ]
+  }
+ ]
+}

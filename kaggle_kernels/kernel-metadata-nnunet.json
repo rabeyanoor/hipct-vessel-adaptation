@@ -1,0 +1,20 @@
+{
+  "id": "rabeya100x/hip-vesseladapt-nnunet",
+  "title": "hip-vesseladapt-nnunet",
+  "code_file": "kaggle_nnunet_kernel.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "machine_shape": "NvidiaTeslaT4",
+  "enable_internet": true,
+  "kernel_sources": [],
+  "model_sources": [],
+  "dataset_sources": [
+    "rabeya100x/hip-vesseladapt-code",
+    "rabeya100x/hipct-benchmark-rois"
+  ],
+  "competition_sources": [
+    "blood-vessel-segmentation"
+  ]
+}

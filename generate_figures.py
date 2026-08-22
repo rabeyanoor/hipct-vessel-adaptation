@@ -1,24 +1,14 @@
 # generate_figures.py
 """
-Generates the three real-data figures for the paper (PAPER_DRAFT.md) as PNG
-files, at publication resolution (300 dpi). Reads only this project's own
-result JSON files -- multiseed_seed*_results.json, film_layer_analysis.json,
-vascular_graph_results.json -- plus MAIN_100EP_COMPARISON (imported from
-generate_summary_tables.py, the same constants that script's own text tables
-use, so the two never drift apart).
+Makes the three data figures for the paper (figures 4-6) as 300 dpi PNGs.
+Reads multiseed_seed*_results.json, film_layer_analysis.json,
+vascular_graph_results.json and MAIN_100EP_COMPARISON from
+generate_summary_tables.py (so figures and tables use the same numbers).
 
-Scope, per feedback_no_plotting_in_repo.md (memory, superseded 2026-09-16):
-this script is a deliberate, narrow exception to keeping the rest of the
-codebase numeric/text-only -- ordinary evaluation/diagnostic scripts
-(evaluate_real_gt.py, analyze_film_layers.py's own stdout, etc.) still don't
-plot anything themselves; this is the one place chart-generation code lives,
-and only for these three specific paper figures.
+The other scripts only print numbers; all plotting is in this file.
 
-Two more figures already exist as mechanism diagrams (shared backbone/FiLM
-branch/resolution setup) -- those are conceptual, not data, and were built as
-a separate online artifact rather than matplotlib; see PAPER_DRAFT.md's
-figures section for that link. Two figures from the six-figure plan are not
-yet built at all (qualitative prediction renders, FOV-confound bar chart).
+Figures 1-3 are method diagrams drawn separately. Still missing: qualitative
+prediction examples and an FOV-confound bar chart.
 
 Run: python3 generate_figures.py
 Output: figures/figure4_dice_comparison.png, figures/figure5_film_layers.png,
@@ -38,9 +28,7 @@ from generate_summary_tables import MAIN_100EP_COMPARISON
 
 OUTPUT_DIR = "figures"
 
-# Same validated (colorblind-safe, checked with the dataviz skill's
-# validate_palette.js, not eyeballed) pair used in the companion Artifact
-# figures, so the whole figure set reads as one consistent system.
+# colorblind-safe colors, same as in figures 1-3
 PLAIN_COLOR = "#2a78d6"
 SPACING_COLOR = "#eb6834"
 INK = "#1D2220"
@@ -64,9 +52,8 @@ def _load_json(path):
 
 
 def figure4_dice_comparison():
-    """n-seed Dice comparison, in-distribution vs OOD, separate panels
-    (different scales -- OOD is roughly 15x smaller, a shared axis would
-    flatten it to nothing) with individual seed points over the mean+-std bar."""
+    """Dice per seed, in-dist and OOD in separate panels (OOD is ~15x smaller),
+    bars = mean +- std, dots = single seeds."""
     seed_files = sorted(glob.glob("multiseed_seed*_results.json"))
     series = {}
     for arch in ("plain_lora", "spacing_lora"):
@@ -117,9 +104,7 @@ def figure4_dice_comparison():
 
 
 def figure5_film_layers():
-    """Dumbbell chart: gamma_max per layer, in-distribution vs OOD spacing,
-    all 24 injected layers -- shows the identity-reversion is uniform, not
-    one outlier layer hiding inside a fine-looking average."""
+    """Dumbbell plot of gamma_max per layer (all 24), in-dist vs OOD spacing."""
     data = _load_json("film_layer_analysis.json")
     if data is None:
         print("[!] film_layer_analysis.json not found -- run "
@@ -154,8 +139,7 @@ def figure5_film_layers():
 
 
 def figure6_vascular_graph():
-    """Predicted vs real-GT skeleton-graph medians, 4 conditions x 2 metrics --
-    filled bar = predicted, outlined bar = real GT, same color = same model."""
+    """Skeleton graph medians, prediction (filled) vs GT (outline), 4 conditions."""
     data = _load_json("vascular_graph_results.json")
     if data is None:
         print("[!] vascular_graph_results.json not found")

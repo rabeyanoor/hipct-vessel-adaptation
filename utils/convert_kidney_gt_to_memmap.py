@@ -1,20 +1,15 @@
 # utils/convert_kidney_gt_to_memmap.py
 """
-Converts the real expert-annotated SenNet+HOA kidney samples (image + label
-TIFF slices, stored inside data/blood-vessel-segmentation.zip) into np.memmap
-arrays for fast random-access patch extraction -- same rationale as
-utils/convert_to_memmap.py for the Frangi-pseudo-labeled organs.
+Converts the SenNet+HOA kidney samples (image + label TIFFs inside
+data/blood-vessel-segmentation.zip) to np.memmap for fast patch reading, like
+utils/convert_to_memmap.py does for the other organs.
 
-Reads directly from the zip via Python's zipfile (which supports efficient
-random access to individual members, unlike gzip streams) rather than bulk-
-extracting to a separate raw folder first, to avoid ~30-40GB of redundant
-disk usage.
+Reads straight from the zip (zipfile allows random access) so we don't need
+another ~30-40GB for an extracted copy.
 
-kidney_3_dense is a special case: it ships ONLY label files, because its dense
-annotations are a more thoroughly-curated subset of the same raw slices as
-kidney_3_sparse -- label and image slices share the same numeric index (e.g.
-kidney_3_dense/labels/0496.tif corresponds to train/kidney_3_sparse/images/
-0496.tif). Its images are read from kidney_3_sparse instead.
+kidney_3_dense only has label files; its images are the same slices as
+kidney_3_sparse with the same numbers (kidney_3_dense/labels/0496.tif goes with
+train/kidney_3_sparse/images/0496.tif), so images are read from there.
 """
 
 import io

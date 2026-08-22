@@ -1,25 +1,17 @@
 # generate_summary_tables.py
 """
-Assembles every real result this project has produced into one consolidated,
-text-only report -- source material for the paper's results section, not a
-new experiment. No plotting anywhere (project rule) -- every table below is
-plain aligned text.
+Prints all results in one text report (for writing the results section of
+the paper). Text tables only, no plots.
 
-Two kinds of numbers, clearly labeled apart:
-  1. Read live from this repo's own *_results.json files (sweep_results.json,
-     full_sweep_results.json, vascular_graph_results.json, ablation_results.json
-     and multiseed_seed1_results.json if/when they exist) -- always current,
-     computed fresh from whatever's on disk when this script runs.
-  2. TRANSCRIBED from test.sh (the 100-epoch main comparison, FOV-confound
-     test, FiLM breakdown, clDice ablation) -- these were never saved as JSON
-     by the scripts that produced them (evaluate_fov_confound.py,
-     analyze_film_layers.py, run_ablation.py's manual invocation), so they are
-     copied here as literal constants with their test.sh section cited. If
-     test.sh's numbers for these sections ever change, this file's constants
-     need updating by hand to match -- they do not auto-sync.
+Two sources:
+  1. The *_results.json files in the repo (sweep_results.json,
+     full_sweep_results.json, vascular_graph_results.json, ablation_results.json,
+     multiseed_seed*_results.json) if they exist, read every time it runs.
+  2. Numbers copied from test.sh (100-epoch comparison, FOV test, FiLM
+     breakdown, clDice ablation), because those scripts never saved JSON. The
+     test.sh section is noted next to each; update by hand if test.sh changes.
 
-Missing JSON files print as "not yet available" rather than crashing, since
-several (multiseed in particular) are still in progress.
+Missing JSON files are shown as "not yet available".
 """
 
 import glob
@@ -66,7 +58,7 @@ CLDICE_ABLATION = {
 
 VASCULAR_GRAPH_MEDIANS = {
     # test.sh section 3.10 -- median across non-empty patches, computed from vascular_graph_results.json
-    # (also re-derived live below if the JSON is present; kept here as a fallback/cross-check reference)
+    # (recomputed from the JSON below if it exists; this is the fallback)
     "plain_lora_in_dist": {"n": "23/80", "pred_components": 3.0, "gt_components": 3.0,
                             "pred_branch": 0.0, "gt_branch": 1.0, "pred_endpoints": 6.0, "gt_endpoints": 8.0},
     "plain_lora_ood": {"n": "5/40", "pred_components": 6.0, "gt_components": 1.0,
@@ -203,9 +195,7 @@ def section_multiseed():
         _hr()
         return
 
-    # Combine the existing 100-epoch checkpoint (unspecified seed, section 1 above) with
-    # every multiseed_seed<N>_results.json found on disk -- n grows as more seeds are added,
-    # no need to update this script each time.
+    # existing 100-epoch run (default seed) + every multiseed_seed<N>_results.json on disk
     seed_files = sorted(glob.glob("multiseed_seed*_results.json"))
     if not seed_files:
         print("  not yet available -- kaggle_kernels/kaggle_multiseed_kernel*.py has not completed yet "

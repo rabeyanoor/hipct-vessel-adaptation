@@ -1,20 +1,11 @@
 # run_ablation.py
 """
-Progressive ablation: SAM-Med3D (zero-shot) -> +LoRA (Plain LoRA) -> +spacing
-conditioning (Spacing-Conditioned LoRA) -> +clDice loss term. Isolates each
-component's contribution one stage at a time instead of comparing four
-unrelated, independently-configured models.
+Ablation: SAM-Med3D (zero-shot) -> +LoRA (Plain LoRA) -> +spacing conditioning
+(Spacing-Conditioned LoRA) -> +clDice loss term, one step at a time.
 
-Stages 1-3 reuse the exact model classes and training functions already used
-for section 5.2/5.3's results (evaluate_real_gt.py's default model_class for
-zero-shot, train_plain_lora.py, train_spacing_lora.py) -- this only adds the
-4th comparison point (clDice loss term on vs off, via HiPVesselLoss's
-use_cldice flag) and wraps all four into one run so they're trained/evaluated
-under an identical protocol and reported together in one place.
-
-Each stage still trains for real (this is not a shortcut/mock) -- run it with
---epochs matched to whatever the main comparison used, and give it the time
-that implies.
+Stages 1-3 use the same models and training functions as README 5.2/5.3.
+Stage 4 is Spacing-Conditioned LoRA with use_cldice=False. Every stage trains a
+model, so set --epochs to match the main runs.
 """
 
 import argparse

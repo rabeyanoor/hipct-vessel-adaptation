@@ -1,9 +1,8 @@
 # utils/topology_metrics.py
 """
-Betti number computation for binary 3D vessel masks, via cubical-complex
-persistent homology (gudhi). b0 = connected components, b1 = independent loops
-(topological handles) -- both meaningful for vessel networks, which should form
-one connected tree/graph (few components) with branching but few spurious loops.
+Betti numbers of binary 3D vessel masks using cubical persistent homology
+(gudhi). b0 = connected components, b1 = loops. A vessel tree should have few
+components and few loops.
 """
 
 import numpy as np

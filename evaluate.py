@@ -9,9 +9,8 @@ from utils.dataset import MultiOrganHiPCTDataset
 
 def evaluate(checkpoint_path="__default__", label="Multi-Organ Quantitative Evaluation"):
     """
-    checkpoint_path: path to a fine-tuned checkpoint to load, None to evaluate the
-        fresh pretrained SAM-Med3D backbone with an untrained adapter/decoder head
-        (the zero-shot baseline), or "__default__" to use TRAIN_CONFIG's path.
+    checkpoint_path: fine-tuned checkpoint, None for zero-shot (pretrained backbone,
+        untrained adapter), or "__default__" for TRAIN_CONFIG's path.
     """
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"[*] Running {label} on device: {device}")

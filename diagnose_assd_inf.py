@@ -1,24 +1,16 @@
 # diagnose_assd_inf.py
 """
-Root-causes the still-open ASSD=inf finding from the ORIGINAL 10-epoch CPU
-run (test.sh section 3.2: PhysicsAwareAdapter and Spacing-Conditioned LoRA
-both hit ASSD=inf; Plain LoRA on the identical protocol did not). baki.sh
-section 6 records this as still only partially checked: the "completely
-empty prediction" hypothesis was tested on 15 patches and REJECTED (0
-confirmed) -- so the real cause was still unknown before this script.
+Looks into the ASSD=inf from the first 10-epoch CPU run (test.sh 3.2:
+PhysicsAwareAdapter and Spacing-Conditioned LoRA gave ASSD=inf, Plain LoRA did
+not). A first check of the "empty prediction" idea on 15 patches found nothing.
 
-Runs each of the two affected 10-epoch CPU checkpoints over many real-GT
-patches, calling MONAI's SurfaceDistanceMetric on EACH non-empty-target
-patch individually (not just the averaged run evaluate_real_gt.py does), and
-records prediction/target foreground fraction alongside the per-patch ASSD
-value or raised exception. Tests a second, more specific hypothesis MONAI's
-own surface-distance code makes plausible: a FULLY SATURATED prediction
-(every voxel in the patch predicted foreground, not zero voxels) has no
-detectable surface after erosion either -- same "no boundary to measure
-distance from" failure mode as a completely empty mask, but the opposite
-extreme, so the earlier all-zero check would have missed it entirely.
+Runs both 10-epoch checkpoints over many patches and computes ASSD for each
+non-empty patch separately, saving prediction/target foreground fractions and
+any warning or exception. Also checks the opposite case: a fully saturated
+prediction (all voxels foreground) also has no surface, and the earlier
+all-zero check would not have caught it.
 
-Text-only output, no plotting, per project rule.
+Prints text only.
 """
 
 import warnings

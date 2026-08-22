@@ -13,14 +13,9 @@ STATE_PATH = os.path.join(TRAIN_CONFIG["checkpoint_dir"], "train_state.json")
 
 def train(resume=True, extra_epochs=None):
     """
-    resume: if True and a checkpoint + state file exist, continue from the saved
-        epoch count instead of starting fresh. This machine's background jobs get
-        OOM-killed unpredictably by other processes sharing it, so a single long
-        run is fragile -- checkpointing every epoch (not just at the end) and
-        resuming means a kill only costs the epoch in progress, not the whole run.
-    extra_epochs: how many additional epochs to run this invocation (defaults to
-        TRAIN_CONFIG["num_epochs"] for a fresh run, or the same amount again when
-        resuming, so repeated calls make steady incremental progress).
+    resume: continue from the saved checkpoint/epoch count if they exist
+        (jobs on this machine sometimes get OOM-killed).
+    extra_epochs: epochs to run in this call (default TRAIN_CONFIG["num_epochs"]).
     """
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"[*] Training on device: {device}", flush=True)
@@ -83,9 +78,7 @@ def train(resume=True, extra_epochs=None):
         avg_loss = total_loss / max(1, len(loader))
         print(f"[✓] Epoch [{epoch}/{target_epochs}] Complete - Avg Loss: {avg_loss:.4f}", flush=True)
 
-        # Checkpoint after every epoch, not just at the end -- this machine's
-        # background jobs get OOM-killed unpredictably, so this is what makes
-        # long training resumable instead of losing all progress on a kill.
+        # save every epoch so a crash doesn't lose the whole run
         torch.save(model.state_dict(), best_path)
         with open(STATE_PATH, "w") as f:
             json.dump({"completed_epochs": epoch}, f)

@@ -1,12 +1,10 @@
 # evaluate_real_gt.py
 """
-Evaluates HiPVesselAdaptModel against the REAL expert-annotated SenNet+HOA
-kidney ground truth (utils/real_gt_dataset.py) -- separate from evaluate.py,
-which evaluates against the Frangi pseudo-labels for Heart/Lung/Kidney.
+Evaluation on the SenNet+HOA kidney expert labels (utils/real_gt_dataset.py).
+evaluate.py is the version for the Frangi pseudo-labels.
 
-Reports Dice, IoU, clDice, HD95, ASSD, foreground statistics, parameter counts,
-and per-patch inference time. Supports checkpoint_path=None for a zero-shot
-(no fine-tuning) baseline, matching baseline_zeroshot.py's convention.
+Prints Dice, IoU, clDice, HD95, ASSD, foreground fraction, parameter counts and
+inference time. checkpoint_path=None gives the zero-shot baseline.
 """
 
 import os
@@ -34,11 +32,7 @@ def _safe_metric(metric_obj, pred, target):
         val = metric_obj.aggregate().item()
         return val if val == val else None  # filter NaN
     except Exception as e:
-        # HD95/ASSD are the ones observed to fail this way (e.g. on GPU
-        # tensors) while Dice/IoU/clDice succeed on the same batch -- print
-        # the real reason once per metric type instead of only ever
-        # returning a bare None, so a run's log says why n=0 rather than
-        # leaving it silently unexplained.
+        # print the error once per metric so it's visible in the log
         key = type(metric_obj).__name__
         if key not in _warned_metric_failures:
             _warned_metric_failures.add(key)
@@ -48,10 +42,8 @@ def _safe_metric(metric_obj, pred, target):
 
 
 def evaluate_model_on_loader(model, device, loader, label):
-    """Runs `model` over every batch in `loader` and prints/returns the same
-    Dice/IoU/clDice/HD95/ASSD summary evaluate_real_gt() always has -- shared
-    so other analysis scripts (e.g. evaluate_fov_confound.py) that need a
-    differently-built loader don't have to duplicate the metric logic."""
+    """Runs the model over `loader` and prints/returns Dice/IoU/clDice/HD95/ASSD.
+    Also used by evaluate_fov_confound.py with its own loader."""
     total_params = sum(p.numel() for p in model.parameters())
     trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
 
@@ -73,38 +65,28 @@ def evaluate_model_on_loader(model, device, loader, label):
 
             t0 = time.time()
             outputs = model(images, spacings)
-            mask_pred, logits = outputs[0], outputs[-1]  # supports both 2-tuple and 3-tuple model returns
+            mask_pred, logits = outputs[0], outputs[-1]  # models return 2 or 3 values
             inference_times.append(time.time() - t0)
 
             binary_pred = (mask_pred > 0.5).float()
             fg_fractions.append(targets.mean().item())
 
-            # Real kidney vasculature is sparse enough that most random 64^3
-            # patches contain no annotated vessel at all (12/15 patches in an
-            # earlier test batch had zero target foreground). Segmentation-
-            # accuracy and topology metrics (clDice, HD95, ASSD) are mathematically
-            # undefined or misleadingly favorable on an empty target (clDice
-            # silently returns ~0.999 regardless of the prediction when the
-            # target is empty), so they are only meaningful -- and only
-            # averaged here -- over patches that actually contain real vessel.
+            # Most random 64^3 patches have no vessel (12/15 in an early test).
+            # The metrics are undefined or misleading on an empty target (clDice
+            # gives ~0.999 whatever the prediction), so only average over
+            # patches that contain vessel.
             if targets.sum().item() == 0:
                 n_empty_target_patches += 1
                 continue
 
             d = _safe_metric(dice_metric, binary_pred, targets)
             i = _safe_metric(iou_metric, binary_pred, targets)
-            # HD95/ASSD go through a CuPy-JIT-compiled distance transform on
-            # GPU tensors; on a Kaggle kernel this JIT compile fails outright
-            # ("Thrust requires at least C++17") rather than falling back,
-            # which _safe_metric was silently swallowing as a bare None for
-            # every single patch. Dice/IoU/clDice never hit this path, so
-            # moving just these two to CPU sidesteps the broken GPU compile
-            # instead of depending on the environment's CUDA/CuPy toolchain.
+            # On GPU, HD95/ASSD use a CuPy-compiled kernel that fails on Kaggle
+            # ("Thrust requires at least C++17"), so compute them on CPU.
             h = _safe_metric(hd95_metric, binary_pred.cpu(), targets.cpu())
             a = _safe_metric(assd_metric, binary_pred.cpu(), targets.cpu())
-            # soft_cldice.forward(y_true, y_pred) returns 1-clDice (a LOSS, same
-            # convention as soft_dice() in the same file) -- convert to the actual
-            # score, and pass args in the documented (y_true, y_pred) order.
+            # soft_cldice returns 1 - clDice (a loss), convert to the score.
+            # argument order is (y_true, y_pred)
             cl = 1.0 - cldice_fn(targets, binary_pred).item()
 
             if d is not None: dice_scores.append(d)
@@ -138,9 +120,7 @@ def evaluate_model_on_loader(model, device, loader, label):
         "hd95": _avg(hd95_scores), "assd": _avg(assd_scores),
         "total_params": total_params, "trainable_params": trainable_params,
         "mean_inference_ms": _avg(inference_times) * 1000,
-        # Raw per-patch scores, not just the aggregate -- needed for anything
-        # that wants a significance test rather than just comparing means
-        # (e.g. the section 5.5 FOV-matched Dice gap between architectures).
+        # per-patch scores, used for the significance test (README 5.5)
         "dice_scores": dice_scores, "iou_scores": iou_scores, "cldice_scores": cldice_scores,
     }
 

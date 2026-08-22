@@ -1,0 +1,5 @@
+{"gpu0": [{"name": "score_teams", "cmds": [
+ "python -m utils.fetch_zenodo_subset team_predictions --workers 2",
+ "python -m benchmark.import_team_rle --teams 1 2 3 4 5 --roi-dir $ROI_DIR",
+ "mkdir -p $OUT/scores && for t in 1 2 3 4 5; do python -m benchmark.score data/benchmark/preds/kaggle_team$t --roi-dir $ROI_DIR --out $OUT/scores/kaggle_team$t.json || exit 1; done"
+]}]}

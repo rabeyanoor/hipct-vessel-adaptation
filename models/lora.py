@@ -1,13 +1,11 @@
 # models/lora.py
 """
-Plain LoRA (Low-Rank Adaptation) for SAM-Med3D's frozen image_encoder attention
-layers -- the "PEFT without spacing awareness" baseline requested to isolate
-whether spacing conditioning (PhysicsAwareAdapter) contributes anything beyond
-what generic low-rank adaptation already provides.
+Plain LoRA for the attention layers of SAM-Med3D's frozen image_encoder.
+Baseline without any spacing input, to see if spacing conditioning adds
+anything over normal low-rank adaptation.
 
-Targets `qkv` and `proj` (the two nn.Linear layers in each 3D attention block,
-see external/SAM-Med3D/segment_anything/modeling/image_encoder3D.py's
-Attention class) -- the standard LoRA injection points for ViT-style attention.
+Targets `qkv` and `proj` (the two nn.Linear layers in each attention block of
+external/SAM-Med3D/segment_anything/modeling/image_encoder3D.py).
 """
 
 import math

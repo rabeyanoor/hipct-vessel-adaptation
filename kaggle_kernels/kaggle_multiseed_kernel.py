@@ -1,38 +1,27 @@
 """
-Kaggle kernel: one additional seeded 100-epoch run of both Plain LoRA and
-Spacing-Conditioned LoRA, for multi-seed statistical reporting (baki.sh
-section 2 / colab_run.py's run_multiseed()).
+Kaggle kernel: one more 100-epoch run of Plain LoRA and Spacing-Conditioned
+LoRA with seed=1, for the multi-seed results (baki.sh section 2 /
+colab_run.py's run_multiseed()).
 
-Scope note, stated honestly: the full multiseed plan (colab_run.py,
-n_seeds=3) is 6 full 100-epoch training runs (3 seeds x 2 architectures) --
-roughly 4-5x what a single Kaggle account's weekly free-GPU quota (6h) can
-fit, based on how much of the quota the original 100-epoch retrain (both
-architectures, kaggle_train_kernel.py, test.sh section 3.4) used. This
-kernel runs exactly ONE seed (seed=1) for BOTH architectures -- the same
-shape/size of job as kaggle_train_kernel.py, which is known to complete
-within one account's weekly quota since it already has. Combined with the
-existing checkpoints_plain_lora_100ep_gpu / checkpoints_spacing_lora_100ep_gpu
-runs (unspecified seed, treated as the first data point) this gives n=2 per
-architecture -- a real, if modest, multiseed result. A third seed can be
-added later (e.g. once rabeya100x's quota resets 2026-09-19, or from another
-account) to reach n=3.
+The full plan (3 seeds x 2 architectures x 100 epochs) is about 4-5x what one
+account's weekly GPU quota (6h) allows, judging by the original 100-epoch run
+(kaggle_train_kernel.py, test.sh 3.4). So this kernel does one seed for both
+architectures, the same size as kaggle_train_kernel.py. Together with the
+existing 100-epoch checkpoints (default seed) that gives n=2; a third seed can
+be run later (after rabeya100x's quota resets on 2026-09-19, or on another
+account).
 
-Setup (steps 1-4) is copied from kaggle_train_kernel.py verbatim -- same
-six environment fixes documented in test.sh section 3.9 (input-path
-detection, raw_tiff_root mode to avoid the working-directory disk quota,
-clDice import fix, SAM-Med3D import fix, T4 GPU machine_shape, positional-
-embedding patch) apply identically here since it's the same training code.
+Setup steps 1-4 are copied from kaggle_train_kernel.py (same six fixes as in
+test.sh 3.9: input paths, raw_tiff_root mode for the disk quota, clDice
+import, SAM-Med3D import, T4 machine_shape, pos_embed patch).
 
-Prerequisites on the Kaggle account this kernel is pushed under (not this
-project's usual rabeya100x -- see kernel-metadata-multiseed.json's "id"):
-  1. The code dataset (rabeya100x/hip-vesseladapt-code) must be shared with
-     this account, or made public -- it's private and owned by a different
-     account.
-  2. This account must have accepted the blood-vessel-segmentation
-     competition's rules on Kaggle's website, or the competition data won't
-     attach.
-Both require logging into Kaggle as that account directly; neither can be
-done via the API.
+Before pushing from the other account (see "id" in
+kernel-metadata-multiseed.json):
+  1. The private code dataset rabeya100x/hip-vesseladapt-code has to be
+     shared with that account (or made public).
+  2. That account has to accept the blood-vessel-segmentation competition
+     rules on the Kaggle website, otherwise the data won't attach.
+Both have to be done on the website, not through the API.
 """
 
 import json
@@ -46,9 +35,8 @@ SEED = 1
 
 
 def find_by_marker(root, is_match, max_depth=4):
-    """Recursively search under root (bounded depth) for a directory
-    satisfying is_match(path) -- Kaggle's /kaggle/input layout varies (flat
-    vs nested under datasets/<owner>/<name> and competitions/<slug>)."""
+    """Search under root (limited depth) for a directory where is_match(path)
+    is true; the /kaggle/input layout is not always the same."""
     stack = [(root, 0)]
     while stack:
         path, depth = stack.pop()
@@ -136,8 +124,7 @@ if not os.path.exists(ckpt_path):
 print(f"[✓] Checkpoint ready: {os.path.getsize(ckpt_path)/1e9:.2f} GB")
 
 # 4. Data source: read TIFF slices directly from the attached competition
-#    folder (RealGTKidneyDataset's raw_tiff_root mode) -- see
-#    kaggle_train_kernel.py's docstring / test.sh section 3.9 bug 2 for why.
+#    folder (raw_tiff_root mode), see test.sh section 3.9 bug 2.
 RAW_TIFF_ROOT = os.path.join(COMP_DIR, "train")
 print(f"[*] Reading TIFF slices directly from: {RAW_TIFF_ROOT} (no memmap conversion)")
 

@@ -19,16 +19,11 @@ class HiPVesselAdaptModel(nn.Module):
     def __init__(self, checkpoint_path=DEFAULT_SAM_MED3D_CHECKPOINT, model_type="vit_b_ori"):
         super().__init__()
         # 1. Base Backbone Model (SAM-Med3D)
-        # NOTE: the officially released checkpoint was trained with model_type=
-        # "vit_b_ori" (768-dim encoder, 128^3 pretraining resolution) -- NOT the
-        # registry's "vit_b" (384-dim, 256^3), which is an architecturally
-        # different, untrained variant. Loading pretrained weights into "vit_b"
-        # would silently fail to match shapes.
+        # The released checkpoint is "vit_b_ori" (768-dim, 128^3), not the
+        # registry's "vit_b" (384-dim, 256^3) -- shapes won't match with vit_b.
         if HAS_SAM_MED3D:
-            # Build the architecture unloaded -- SAM-Med3D's own `checkpoint=` path
-            # assumes a raw state_dict, but the official released checkpoint is a
-            # full training checkpoint dict (epoch/optimizer/model_state_dict/...),
-            # so we load and remap it ourselves below.
+            # SAM-Med3D's checkpoint= expects a plain state_dict, but the released
+            # file is a full training checkpoint, so load it ourselves below.
             if model_type in sam_model_registry3D:
                 self.sam_model = sam_model_registry3D[model_type](checkpoint=None)
             else:
@@ -55,7 +50,7 @@ class HiPVesselAdaptModel(nn.Module):
             self.sam_model = None
             embed_dim = 384
 
-        # 2. Novel Research Modules (Trainable)
+        # 2. Trainable modules
         self.physics_adapter = PhysicsAwareAdapter(embed_dim=embed_dim, reduction=4)
         self.collapse_head = CollapseDetectionHead(in_channels=1)
         
@@ -72,29 +67,19 @@ class HiPVesselAdaptModel(nn.Module):
         """
         orig_spatial = x.shape[2:]
         if self.sam_model is not None:
-            # 1. Base Feature Extraction -- image_encoder is frozen (requires_grad=False
-            # on all its params), so building an autograd graph through its 12
-            # transformer blocks just to discard it wastes activation memory
-            # for no benefit.
+            # 1. Encoder is frozen, no need to keep its graph (saves memory)
             with torch.no_grad():
                 image_embeddings = self.sam_model.image_encoder(x)
 
             # 2. Inject Physical Spacing Conditioning
             adapted_embeddings = self.physics_adapter(image_embeddings, spacing)
 
-            # 3. Dense & Sparse Prompt Embeddings
-            # SAM-Med3D's mask_decoder is a promptable head with no automated
-            # mode: without a prompt it has no spatial cue and the sigmoid
-            # output saturates toward predicting foreground everywhere. We
-            # auto-prompt with two whole-volume corner points standing in for
-            # a bounding box. SAM-Med3D's own `_embed_boxes` still carries a
-            # `reshape(-1, 2, 2)` from the original 2D implementation, which
-            # is incompatible with this 3D port's 3-dim positional encoding,
-            # so the same "segment the whole volume" intent is expressed via
-            # the point-prompt path instead, which is properly 3D-native.
-            # Coordinates are expressed in the prompt encoder's own configured
-            # input_image_size (not our patch size), since that is the frame
-            # `forward_with_coords` normalizes against.
+            # 3. Prompt embeddings
+            # The decoder needs a prompt; without one it ends up predicting
+            # foreground everywhere. Use two corner points covering the whole
+            # volume (like a full box). _embed_boxes still has a 2D reshape
+            # that breaks in 3D, so points are used instead. Coordinates are in
+            # the prompt encoder's input_image_size, not the patch size.
             batch_size = x.shape[0]
             ref_size = self.sam_model.prompt_encoder.input_image_size
             corner_points = torch.tensor(

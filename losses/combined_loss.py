@@ -17,10 +17,7 @@ class HiPVesselLoss(nn.Module):
         self.beta = beta
         self.gamma = gamma
         self.max_pos_weight = max_pos_weight
-        # use_cldice lets an ablation run disable the clDice term even when the
-        # library imported fine, to isolate its contribution from Dice/BCE/
-        # anisotropic penalty -- separate from HAS_CLDICE, which reflects
-        # whether the term is available at all.
+        # use_cldice=False turns the term off for the ablation
         self.use_cldice = use_cldice and HAS_CLDICE
         if self.use_cldice:
             self.cldice_fn = soft_cldice()
@@ -44,12 +41,9 @@ class HiPVesselLoss(nn.Module):
 
         total_loss = dice_loss + (self.alpha * cldice_l if self.use_cldice else 0.0) + (self.beta * aniso_penalty)
 
-        # 4. Class-weighted BCE on raw logits, numerically stable even once the
-        # sigmoid output saturates near 0/1 (unlike probability-space Dice/
-        # clDice, whose gradients vanish at saturation). Foreground is only
-        # ~1-5% of voxels here, so pos_weight is computed per-batch from the
-        # actual foreground ratio to keep gradients meaningful across
-        # organs/patches with very different sparsity.
+        # 4. Weighted BCE on logits. Still gives gradients when the sigmoid is
+        # saturated (Dice/clDice don't). Foreground is only ~1-5% of voxels, so
+        # pos_weight comes from the foreground ratio of the batch.
         if logits is not None:
             with torch.no_grad():
                 num_pos = target.sum()

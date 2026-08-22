@@ -1,14 +1,10 @@
 # train_real_gt.py
 """
-Trains HiPVesselAdaptModel's PhysicsAwareAdapter + mask_decoder (frozen
-image_encoder -- NOT full/whole-backbone fine-tuning, despite this module's
-name) against the REAL expert-annotated SenNet+HOA kidney GT -- a controlled
-baseline to compare against Plain LoRA (train_plain_lora.py) and
-(eventually) Spacing-Conditioned LoRA on the SAME real-GT data, same frozen
-backbone, same trainable-parameter budget.
+Trains PhysicsAwareAdapter + mask_decoder of HiPVesselAdaptModel (encoder
+frozen, so not full fine-tuning) on the SenNet+HOA kidney expert labels.
+Compared against train_plain_lora.py and train_spacing_lora.py on the same data.
 
-Resumable, checkpoints every epoch (this machine's background jobs get
-OOM-killed unpredictably by other processes sharing it -- see README).
+Resumable, saves a checkpoint every epoch.
 """
 
 import json
@@ -30,9 +26,8 @@ STATE_PATH = os.path.join(CHECKPOINT_DIR, "train_state.json")
 def train_real_gt(resume=True, extra_epochs=10, samples_per_epoch=8,
                    sample_ids=None, exclude_for_ood=("kidney_1_voi",), raw_tiff_root=None):
     """
-    sample_ids: which real-GT kidney samples to train on. Defaults to all
-        EXCEPT `exclude_for_ood` (kidney_1_voi, the 5.2um held-out specimen for
-        the planned resolution-OOD test) so that specimen stays genuinely unseen.
+    sample_ids: kidney samples to train on. Default: all except
+        `exclude_for_ood` (kidney_1_voi, 5.2um, kept for the OOD test).
     """
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"[*] Training on device: {device}", flush=True)
@@ -80,10 +75,8 @@ def train_real_gt(resume=True, extra_epochs=10, samples_per_epoch=8,
             spacings = batch["spacing"].to(device)
             sample_id = batch["sample_id"][0]
 
-            # Skip empty-target patches for the same reason evaluate_real_gt.py
-            # does: real vasculature is sparse enough that most random 64^3
-            # patches contain none, and training on an all-background target
-            # every time would just reinforce predicting nothing.
+            # most random patches have no vessel; skip them, otherwise the
+            # model just learns to predict nothing
             if targets.sum().item() == 0:
                 n_empty_skipped += 1
                 continue

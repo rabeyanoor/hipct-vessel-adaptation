@@ -1,21 +1,16 @@
 # models/spacing_lora.py
 """
-Spacing-Conditioned LoRA: extends models/lora.py's LoRALinear with a FiLM-style
-modulation of the LoRA branch, driven by real physical voxel spacing --
+Spacing-Conditioned LoRA: LoRALinear (models/lora.py) plus FiLM modulation of
+the LoRA branch from the voxel spacing:
 `h' = base(x) + scaling * (gamma(spacing) * B(A(x)) + beta(spacing))`.
 
-This is the project's main proposed method: the same low-rank injection
-points as Plain LoRA (attention qkv/proj), but the low-rank update itself is
-now conditioned on the scan's real spacing, so the model can behave
-differently for a 50um scan vs. a 5.2um scan of the same tissue.
+Same injection points as Plain LoRA (attention qkv/proj), but the update depends
+on the spacing, so a 50um and a 5.2um scan can be treated differently.
 
-Implementation note: nn.Linear has no way to receive a second forward
-argument when called as `self.qkv(x)` deep inside SAM-Med3D's unmodified
-Attention.forward() (see external/SAM-Med3D/segment_anything/modeling/
-image_encoder3D.py) -- rather than editing that external repo, spacing is
-passed via a plain (non-parameter, non-buffer) attribute set on every
-injected layer immediately before each forward pass, by the owning model
-(see SpacingConditionedLoRAModel.forward in models/spacing_lora_model.py).
+SAM-Med3D's Attention.forward() calls `self.qkv(x)` with one argument, so there
+is no way to pass spacing in. Instead of editing the external repo, the model
+sets `current_spacing` on every injected layer right before the encoder call
+(see SpacingConditionedLoRAModel.forward).
 """
 
 import math
@@ -24,9 +19,25 @@ import torch
 import torch.nn as nn
 
 
+REF_SPACING_UM = 50.0
+
+
+def encode_spacing(spacing, mode):
+    """FiLM input. "raw": spacing in um, as in the first experiments; the FiLM
+    output then scales almost linearly with the spacing value (at 5.2um the
+    modulation was ~0.10x of that at 50um). "log": log2(spacing / 50um), so the
+    training spacing maps to 0 and each halving/doubling is one unit."""
+    if mode == "raw":
+        return spacing
+    if mode == "log":
+        return torch.log2(spacing.clamp_min(1e-3) / REF_SPACING_UM)
+    raise ValueError(mode)
+
+
 class SpacingConditionedLoRALinear(nn.Module):
-    def __init__(self, base_linear: nn.Linear, r=4, alpha=1.0, spacing_hidden=16):
+    def __init__(self, base_linear: nn.Linear, r=4, alpha=1.0, spacing_hidden=16, spacing_encoding="raw"):
         super().__init__()
+        self.spacing_encoding = spacing_encoding
         self.base = base_linear
         for p in self.base.parameters():
             p.requires_grad = False
@@ -41,22 +52,16 @@ class SpacingConditionedLoRALinear(nn.Module):
         nn.init.kaiming_uniform_(self.lora_A.weight, a=math.sqrt(5))
         nn.init.zeros_(self.lora_B.weight)  # LoRA branch starts as a no-op
 
-        # Fixed hidden size independent of out_features: the input is only 3
-        # numbers (spacing), so parameter count should not scale with the
-        # attention layer's width. A width-scaled hidden layer would make this
-        # network's params grow as out_features^2, which for qkv (2304-dim)
-        # would dominate the total trainable budget and defeat the point of a
-        # parameter-efficient comparison against plain LoRA.
+        # Small fixed hidden size. The input is just 3 numbers; scaling the
+        # hidden size with out_features added ~31M params for qkv (2304-dim).
         self.spacing_film = nn.Sequential(
             nn.Linear(3, spacing_hidden), nn.GELU(), nn.Linear(spacing_hidden, out_features * 2)
         )
-        # Zero-init the last layer so gamma starts at 1 and beta at 0 -- i.e.
-        # spacing conditioning starts as an identity modulation (matching
-        # LoRALinear's own zero-init no-op start), not a random perturbation.
+        # zero init -> gamma=1, beta=0 at the start (identity)
         nn.init.zeros_(self.spacing_film[-1].weight)
         nn.init.zeros_(self.spacing_film[-1].bias)
 
-        self.current_spacing = None  # set externally each forward pass, see module docstring
+        self.current_spacing = None  # set by the model before each forward
 
     def forward(self, x):
         if self.current_spacing is None:
@@ -67,7 +72,7 @@ class SpacingConditionedLoRALinear(nn.Module):
             )
         lora_out = self.lora_B(self.lora_A(x))
 
-        film = self.spacing_film(self.current_spacing)  # (B, 2*out_features)
+        film = self.spacing_film(encode_spacing(self.current_spacing, self.spacing_encoding))  # (B, 2*out)
         gamma, beta = film.chunk(2, dim=-1)
         gamma = 1.0 + gamma
         while gamma.dim() < lora_out.dim():  # broadcast over token/spatial dims
@@ -78,7 +83,7 @@ class SpacingConditionedLoRALinear(nn.Module):
         return self.base(x) + self.scaling * modulated
 
 
-def inject_spacing_lora(module, target_names=("qkv", "proj"), r=4, alpha=1.0):
+def inject_spacing_lora(module, target_names=("qkv", "proj"), r=4, alpha=1.0, spacing_encoding="raw"):
     """
     Recursively replaces named nn.Linear children matching target_names with
     SpacingConditionedLoRALinear wrappers, in place. Returns the list of
@@ -87,9 +92,10 @@ def inject_spacing_lora(module, target_names=("qkv", "proj"), r=4, alpha=1.0):
     injected = []
     for name, child in list(module.named_children()):
         if isinstance(child, nn.Linear) and name in target_names:
-            new_layer = SpacingConditionedLoRALinear(child, r=r, alpha=alpha)
+            new_layer = SpacingConditionedLoRALinear(child, r=r, alpha=alpha, spacing_encoding=spacing_encoding)
             setattr(module, name, new_layer)
             injected.append(new_layer)
         else:
-            injected.extend(inject_spacing_lora(child, target_names=target_names, r=r, alpha=alpha))
+            injected.extend(inject_spacing_lora(child, target_names=target_names, r=r, alpha=alpha,
+                                                spacing_encoding=spacing_encoding))
     return injected

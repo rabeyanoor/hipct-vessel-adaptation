@@ -1,35 +1,28 @@
 # utils/convert_hoa_parquet_to_memmap.py
 """
-Converts the Human Organ Atlas raw kidney_right (donor LADAF-2021-17, same
-specimen as kidney_1_dense/kidney_1_voi) volumes from the eternalaudrey/
-hipct_3d HF mirror into memmap arrays MultiOrganHiPCTDataset can read --
-addresses baki.sh item 3 / README.md section 7 ("train on a wider range of
-real spacings"). See config.py's HOA_KIDNEY_MULTISPACING_CONFIG for why these
-three specific volumes were chosen.
+Converts the Human Organ Atlas kidney_right volumes (LADAF-2021-17, same
+specimen as kidney_1_dense/kidney_1_voi) from the eternalaudrey/hipct_3d HF
+mirror into memmaps for MultiOrganHiPCTDataset (baki.sh item 3, "train on a
+wider range of real spacings"). See HOA_KIDNEY_MULTISPACING_CONFIG in config.py.
 
-Data layout discovered by direct inspection (not documented in the dataset
-card): each row is one (32, 224, 224) uint16 TIFF-encoded 3D patch ("z-slab"),
-NOT a single 2D slice -- and patches for a given volume are scattered across
-shards, not grouped by shard. `image.path` encodes the source volume name and
-a 0-indexed, contiguous patch number (e.g. "..._patch37.tiff"); reconstructing
-a volume means collecting every row across every shard where `name` matches,
-sorting by that patch index, and stacking along z. All three volumes here
-have exactly 68 contiguous patches (0-67) once collected from the right
-shards (see SHARD_MAP below -- found by scanning all 66 shards' `name`
-column, expensive enough over a slow connection that it's hardcoded here
-rather than re-scanned every run).
+Data layout (not in the dataset card, found by looking at the files): each row
+is a (32, 224, 224) uint16 TIFF 3D patch, not a 2D slice, and the patches of one
+volume are spread over several shards. `image.path` has the volume name and a
+patch number starting at 0 (e.g. "..._patch37.tiff"), so a volume is rebuilt
+by collecting all rows with the right `name`, sorting by patch number and
+stacking along z. All three volumes have 68 patches (0-67). The shard numbers
+in VOLUME_MAP come from scanning the `name` column of all 66 shards once
+(slow on my connection, so they are hard-coded).
 
-Shard files must already be downloaded to data/raw/hoa_kidney_right_shards/
-(gitignored -- see README setup instructions). Download with e.g.:
+Shards need to be in data/raw/hoa_kidney_right_shards/ (gitignored). E.g.:
     from huggingface_hub import hf_hub_download
     for i in (42, 43, 44):
         hf_hub_download(repo_id="eternalaudrey/hipct_3d", repo_type="dataset",
                          filename=f"data/train-{i:05d}-of-00066.parquet",
                          local_dir="data/raw/hoa_kidney_right_shards")
-(if the connection is unreliable, curl with --retry/-C - against
+(on a bad connection, curl with --retry/-C - on
 https://huggingface.co/datasets/eternalaudrey/hipct_3d/resolve/main/data/
-train-{i:05d}-of-00066.parquet worked more reliably than the Python client
-in this environment -- see baki.sh.)
+train-{i:05d}-of-00066.parquet worked better than the Python client.)
 """
 
 import io

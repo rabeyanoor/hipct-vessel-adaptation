@@ -1,15 +1,11 @@
 """
-Kaggle kernel: trains the one ablation variant not already covered by the
-main 100-epoch run (rabeya100x/hip-vesseladapt-100ep-gpu-train) -- Spacing-
-Conditioned LoRA with the clDice loss term turned OFF (use_cldice=False on
-HiPVesselLoss), 100 epochs, same protocol as the main comparison. Combined
-with the already-trained zero-shot / Plain LoRA / Spacing-Conditioned LoRA
-(with clDice) checkpoints, this completes the zero-shot -> +LoRA -> +spacing
--> +clDice ablation chain without re-training the first three stages.
+Kaggle kernel for the one ablation run not covered by the main 100-epoch run
+(rabeya100x/hip-vesseladapt-100ep-gpu-train): Spacing-Conditioned LoRA without
+the clDice loss (use_cldice=False), 100 epochs, same settings. With the
+existing zero-shot / Plain LoRA / Spacing-Conditioned LoRA checkpoints this
+completes the zero-shot -> +LoRA -> +spacing -> +clDice ablation.
 
-Setup steps 1-4 are identical to kaggle_train_kernel.py -- see that file's
-comments for why each one is there (path detection, disk quota, external-repo
-patching).
+Setup steps 1-4 are the same as in kaggle_train_kernel.py.
 """
 
 import os

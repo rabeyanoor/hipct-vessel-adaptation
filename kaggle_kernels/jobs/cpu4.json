@@ -1,0 +1,39 @@
+{
+ "gpu0": [
+  {
+   "name": "bench_p_base_s0_cpuc",
+   "cmds": [
+    "python -m benchmark.infer --model plain_lora --checkpoint \"$TRAINED/checkpoints/p_base_s0/model_best.pth\" --patch 128 --refine  --run-name p_base_s0_native__cpuc --roi-dir $ROI_DIR --pred-root $OUT/preds --sets kidney_5 kidney_6",
+    "mkdir -p $OUT/scores && python -m benchmark.score $OUT/preds/p_base_s0_native__cpuc --roi-dir $ROI_DIR --out $OUT/scores/p_base_s0_native__cpuc.json",
+    "python -m benchmark.infer --model plain_lora --checkpoint \"$TRAINED/checkpoints/p_base_s0/model_best.pth\" --patch 128 --refine --resample-um 50 --run-name p_base_s0_fov50__cpuc --roi-dir $ROI_DIR --pred-root $OUT/preds --sets kidney_5 kidney_6",
+    "mkdir -p $OUT/scores && python -m benchmark.score $OUT/preds/p_base_s0_fov50__cpuc --roi-dir $ROI_DIR --out $OUT/scores/p_base_s0_fov50__cpuc.json"
+   ]
+  },
+  {
+   "name": "bench_s_base_s0_cpuc",
+   "cmds": [
+    "python -m benchmark.infer --model spacing_lora --checkpoint \"$TRAINED/checkpoints/s_base_s0/model_best.pth\" --patch 128 --refine --spacing-encoding log  --run-name s_base_s0_native__cpuc --roi-dir $ROI_DIR --pred-root $OUT/preds --sets kidney_5 kidney_6",
+    "mkdir -p $OUT/scores && python -m benchmark.score $OUT/preds/s_base_s0_native__cpuc --roi-dir $ROI_DIR --out $OUT/scores/s_base_s0_native__cpuc.json",
+    "python -m benchmark.infer --model spacing_lora --checkpoint \"$TRAINED/checkpoints/s_base_s0/model_best.pth\" --patch 128 --refine --spacing-encoding log --resample-um 50 --run-name s_base_s0_fov50__cpuc --roi-dir $ROI_DIR --pred-root $OUT/preds --sets kidney_5 kidney_6",
+    "mkdir -p $OUT/scores && python -m benchmark.score $OUT/preds/s_base_s0_fov50__cpuc --roi-dir $ROI_DIR --out $OUT/scores/s_base_s0_fov50__cpuc.json",
+    "python -m benchmark.infer --model spacing_lora --checkpoint \"$TRAINED/checkpoints/s_base_s0/model_best.pth\" --patch 128 --refine --spacing-encoding log --spacing-um 50 --run-name s_base_s0_tell50__cpuc --roi-dir $ROI_DIR --pred-root $OUT/preds --sets kidney_5 kidney_6",
+    "mkdir -p $OUT/scores && python -m benchmark.score $OUT/preds/s_base_s0_tell50__cpuc --roi-dir $ROI_DIR --out $OUT/scores/s_base_s0_tell50__cpuc.json"
+   ]
+  },
+  {
+   "name": "bench_p_base_s0_cpuf",
+   "cmds": [
+    "python -m benchmark.infer --model plain_lora --checkpoint \"$TRAINED/checkpoints/p_base_s0/model_best.pth\" --patch 128 --refine --resample-um 50 --run-name p_base_s0_fov50__cpuf --roi-dir $ROI_DIR --pred-root $OUT/preds --sets kidney_additional_voi_13um kidney_1_voi",
+    "mkdir -p $OUT/scores && python -m benchmark.score $OUT/preds/p_base_s0_fov50__cpuf --roi-dir $ROI_DIR --out $OUT/scores/p_base_s0_fov50__cpuf.json"
+   ]
+  },
+  {
+   "name": "bench_s_base_s0_cpuf",
+   "cmds": [
+    "python -m benchmark.infer --model spacing_lora --checkpoint \"$TRAINED/checkpoints/s_base_s0/model_best.pth\" --patch 128 --refine --spacing-encoding log --resample-um 50 --run-name s_base_s0_fov50__cpuf --roi-dir $ROI_DIR --pred-root $OUT/preds --sets kidney_additional_voi_13um kidney_1_voi",
+    "mkdir -p $OUT/scores && python -m benchmark.score $OUT/preds/s_base_s0_fov50__cpuf --roi-dir $ROI_DIR --out $OUT/scores/s_base_s0_fov50__cpuf.json"
+   ]
+  }
+ ],
+ "gpu1": []
+}

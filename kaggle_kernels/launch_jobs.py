@@ -1,0 +1,49 @@
+"""
+Pushes kaggle_jobs_kernel.py as a Kaggle kernel with a given job list.
+
+Usage:
+    python kaggle_kernels/launch_jobs.py jobs.json --slug hip-vesseladapt-jobs-a [--gpu] [--rois]
+
+jobs.json: {"gpu0": [job, ...], "gpu1": [job, ...]} with job = {"name": str, "cmds": [str, ...]}.
+Credentials come from the usual Kaggle environment variables / config.
+"""
+
+import argparse
+import json
+import os
+import subprocess
+import tempfile
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+OWNER = "rabeya100x"
+
+
+def main():
+    p = argparse.ArgumentParser()
+    p.add_argument("jobs")
+    p.add_argument("--slug", required=True)
+    p.add_argument("--no-gpu", action="store_true")
+    p.add_argument("--datasets", nargs="*", default=[f"{OWNER}/hip-vesseladapt-code"])
+    p.add_argument("--kernels", nargs="*", default=[f"{OWNER}/hip-vesseladapt-100ep-gpu-train"])
+    a = p.parse_args()
+
+    jobs = json.load(open(a.jobs))
+    src = open(os.path.join(HERE, "kaggle_jobs_kernel.py")).read()
+    src = src.replace("JOBS_GPU0 = []", f"JOBS_GPU0 = {json.dumps(jobs.get('gpu0', []), indent=1)}", 1)
+    src = src.replace("JOBS_GPU1 = []", f"JOBS_GPU1 = {json.dumps(jobs.get('gpu1', []), indent=1)}", 1)
+    meta = {
+        "id": f"{OWNER}/{a.slug}", "title": a.slug, "code_file": "kernel.py", "language": "python",
+        "kernel_type": "script", "is_private": True, "enable_gpu": not a.no_gpu,
+        "enable_internet": True, "dataset_sources": a.datasets,
+        "competition_sources": ["blood-vessel-segmentation"], "kernel_sources": a.kernels, "model_sources": [],
+    }
+    if not a.no_gpu:
+        meta["machine_shape"] = "NvidiaTeslaT4"
+    with tempfile.TemporaryDirectory() as d:
+        open(os.path.join(d, "kernel.py"), "w").write(src)
+        json.dump(meta, open(os.path.join(d, "kernel-metadata.json"), "w"), indent=1)
+        subprocess.run(["kaggle", "kernels", "push", "-p", d], check=True)
+
+
+if __name__ == "__main__":
+    main()

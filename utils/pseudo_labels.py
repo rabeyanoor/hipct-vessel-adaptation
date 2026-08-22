@@ -2,15 +2,12 @@
 """
 Frangi-vesselness pseudo-label generation.
 
-HiP-CT raw downloads from the ESRF portal ship as grayscale tomography volumes only --
-there is no expert vessel annotation included. Training/evaluating against a raw
-intensity threshold of the same image (as the pipeline previously did) is not a vessel
-label at all, so DSC/HD95 computed against it are not meaningful.
+The ESRF HiP-CT downloads are grayscale volumes only, with no vessel labels.
+The first version of the pipeline used an intensity threshold of the same image
+as the target, which is not a vessel label, so Dice/HD95 against it meant nothing.
 
-This module builds a weak/pseudo vessel-segmentation label from a multiscale Hessian
-(Frangi) vesselness filter, which responds to tubular structures rather than raw
-intensity. This is a heuristic label, not ground truth -- any paper using it must state
-that explicitly (see module docstring in evaluate.py).
+This makes a pseudo-label with a multiscale Hessian (Frangi) vesselness filter,
+which picks up tube-like structures. It is a heuristic, not ground truth.
 """
 
 import numpy as np
@@ -27,13 +24,9 @@ def generate_vessel_pseudolabel(volume, black_ridges=False, sigmas=(1, 2, 3), mi
         black_ridges: True if vessels appear darker than surrounding tissue,
             False if vessels appear brighter (see ORGAN_CONFIG["black_ridges"]).
         sigmas: Gaussian scales (in voxels) spanning the expected vessel radii.
-        min_size: connected components smaller than this (in voxels) are dropped
-            as vesselness-filter noise rather than real vessel segments.
-        denoise_sigma: raw HiP-CT slices are speckle-noisy enough that the
-            Hessian eigenvalues Frangi relies on are dominated by noise rather
-            than the underlying tubular structure; a light Gaussian
-            pre-smoothing pass lets the vesselness response track real
-            structure instead.
+        min_size: components smaller than this (voxels) are removed as noise.
+        denoise_sigma: Gaussian smoothing before Frangi; the raw slices are
+            noisy enough that the Hessian otherwise mostly responds to noise.
 
     Returns:
         float32 binary mask, same shape as `volume`.

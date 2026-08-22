@@ -1,12 +1,10 @@
 # evaluate_topology.py
 """
-Real Betti-number (topological) evaluation of the fine-tuned model's predictions
-against the Frangi pseudo-label targets, per organ.
+Betti numbers of the predictions vs. the Frangi pseudo-labels, per organ.
 
-Reports b0 (connected components) and b1 (independent loops) for both the
-predicted mask and the target, plus the absolute difference -- large differences
-indicate the model is fragmenting the vessel tree (too many components) or
-hallucinating spurious loops, which Dice alone does not capture.
+b0 = connected components, b1 = loops, for prediction and target plus the
+difference. Big differences mean the vessel tree is broken up or has extra
+loops, which Dice doesn't show.
 """
 
 import torch
