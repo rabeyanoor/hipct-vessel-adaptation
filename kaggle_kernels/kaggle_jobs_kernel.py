@@ -56,7 +56,10 @@ def find_by_marker(root, is_match, max_depth=9):
 
 t0 = time.time()
 # only the code dataset: outputs of earlier kernels attached as inputs can hold older copies of the code
-CODE_DIR = find_by_marker("/kaggle/input/datasets", lambda p: os.path.exists(os.path.join(p, "train_lora_v2.py")))
+# (mounted under /kaggle/input/datasets/... on older images, /kaggle/input/<slug> on newer ones)
+CODE_DIR = None
+for _root in ("/kaggle/input/datasets", "/kaggle/input/hip-vesseladapt-code"):
+    CODE_DIR = CODE_DIR or find_by_marker(_root, lambda p: os.path.exists(os.path.join(p, "train_lora_v2.py")))
 COMP_DIR = find_by_marker("/kaggle/input", lambda p: os.path.isdir(os.path.join(p, "train", "kidney_1_dense")))
 SAM_DIR = find_by_marker("/kaggle/input", lambda p: os.path.exists(os.path.join(p, "sam_med3d.pth")))
 FIRST_ROUND = find_by_marker("/kaggle/input", lambda p: os.path.isdir(os.path.join(p, "checkpoints_plain_lora")))
@@ -68,7 +71,7 @@ for name, d in (("code", CODE_DIR), ("competition", COMP_DIR), ("SAM-Med3D ckpt"
                 ("first-round output", FIRST_ROUND), ("test ROIs", ROI_DIR), ("val ROIs", VAL_ROI_DIR)):
     print(f"[*] {name}: {d}", flush=True)
 if CODE_DIR is None or COMP_DIR is None:
-    raise RuntimeError("code or competition data not attached")
+    raise RuntimeError(f"code or competition data not attached; /kaggle/input has {sorted(os.listdir('/kaggle/input'))}")
 
 os.makedirs(WORK_DIR, exist_ok=True)
 shutil.copytree(CODE_DIR, WORK_DIR, dirs_exist_ok=True)
