@@ -70,8 +70,9 @@ VAL_ROI_DIR = find_by_marker("/kaggle/input", lambda p: os.path.exists(os.path.j
 for name, d in (("code", CODE_DIR), ("competition", COMP_DIR), ("SAM-Med3D ckpt", SAM_DIR),
                 ("first-round output", FIRST_ROUND), ("test ROIs", ROI_DIR), ("val ROIs", VAL_ROI_DIR)):
     print(f"[*] {name}: {d}", flush=True)
-if CODE_DIR is None or COMP_DIR is None:
-    raise RuntimeError(f"code or competition data not attached; /kaggle/input has {sorted(os.listdir('/kaggle/input'))}")
+# the competition data is only needed by jobs that train or build validation ROIs
+if CODE_DIR is None:
+    raise RuntimeError(f"code dataset not attached; /kaggle/input has {sorted(os.listdir('/kaggle/input'))}")
 
 os.makedirs(WORK_DIR, exist_ok=True)
 shutil.copytree(CODE_DIR, WORK_DIR, dirs_exist_ok=True)
@@ -108,7 +109,7 @@ print(f"[*] torch {torch.__version__}, {torch.cuda.device_count()} GPU(s): "
 if torch.cuda.is_available():
     subprocess.run(["nvidia-smi"])
 
-if not VAL_ROI_DIR:
+if not VAL_ROI_DIR and COMP_DIR:
     # validation ROIs from the held-out last 20 % of kidney_1_dense (seed 0, same as the ROI kernel)
     subprocess.run([sys.executable, "-m", "benchmark.rois", "--validation", "--raw-tiff-root",
                     os.path.join(COMP_DIR, "train")], check=True)
@@ -129,7 +130,7 @@ for root, dirs, files in os.walk("/kaggle/input"):
 env_vars = {
     "ABLATION": ABLATION or "",
     "TRAINED": TRAINED,
-    "COMP_TRAIN": os.path.join(COMP_DIR, "train"),
+    "COMP_TRAIN": os.path.join(COMP_DIR, "train") if COMP_DIR else "",
     "ROI_DIR": ROI_DIR or "",
     "VAL_ROI_DIR": VAL_ROI_DIR or "",
     "FIRST_ROUND": FIRST_ROUND or "",

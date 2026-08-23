@@ -1,0 +1,15 @@
+{
+ "gpu0": [
+  {
+   "name": "nnunet",
+   "cmds": [
+    "pip install -q nnunetv2==2.8.1",
+    "export nnUNet_raw=/tmp/nn/raw nnUNet_preprocessed=/tmp/nn/pre nnUNet_results=$OUT/nnunet_results; python -m benchmark.run_nnunet prepare --raw-tiff-root $COMP_TRAIN",
+    "export nnUNet_raw=/tmp/nn/raw nnUNet_preprocessed=/tmp/nn/pre nnUNet_results=$OUT/nnunet_results; python -m benchmark.run_nnunet train",
+    "export nnUNet_raw=/tmp/nn/raw nnUNet_preprocessed=/tmp/nn/pre nnUNet_results=$OUT/nnunet_results; python -m benchmark.run_nnunet predict --tag resampled --roi-dir $ROI_DIR --pred-root $OUT/preds",
+    "export nnUNet_raw=/tmp/nn/raw nnUNet_preprocessed=/tmp/nn/pre nnUNet_results=$OUT/nnunet_results; python -m benchmark.run_nnunet predict --tag native --roi-dir $ROI_DIR --pred-root $OUT/preds"
+   ]
+  }
+ ],
+ "gpu1": []
+}

@@ -23,6 +23,8 @@ def main():
     p.add_argument("jobs")
     p.add_argument("--slug", required=True)
     p.add_argument("--no-gpu", action="store_true")
+    p.add_argument("--no-competition", action="store_true",
+                   help="do not attach the competition data (jobs that only run inference on the ROIs)")
     # sam-med3d-weights: private mirror of sam_med3d.pth (the Google Drive link gets rate-limited)
     p.add_argument("--datasets", nargs="*", default=[f"{OWNER}/hip-vesseladapt-code", f"{OWNER}/sam-med3d-weights"])
     p.add_argument("--kernels", nargs="*", default=[f"{OWNER}/hip-vesseladapt-100ep-gpu-train"])
@@ -36,7 +38,7 @@ def main():
         "id": f"{OWNER}/{a.slug}", "title": a.slug, "code_file": "kernel.py", "language": "python",
         "kernel_type": "script", "is_private": True, "enable_gpu": not a.no_gpu,
         "enable_internet": True, "dataset_sources": a.datasets,
-        "competition_sources": ["blood-vessel-segmentation"], "kernel_sources": a.kernels, "model_sources": [],
+        "competition_sources": [] if a.no_competition else ["blood-vessel-segmentation"], "kernel_sources": a.kernels, "model_sources": [],
     }
     if not a.no_gpu:
         meta["machine_shape"] = "NvidiaTeslaT4"
