@@ -23,7 +23,8 @@ def main():
     p.add_argument("jobs")
     p.add_argument("--slug", required=True)
     p.add_argument("--no-gpu", action="store_true")
-    p.add_argument("--datasets", nargs="*", default=[f"{OWNER}/hip-vesseladapt-code"])
+    # sam-med3d-weights: private mirror of sam_med3d.pth (the Google Drive link gets rate-limited)
+    p.add_argument("--datasets", nargs="*", default=[f"{OWNER}/hip-vesseladapt-code", f"{OWNER}/sam-med3d-weights"])
     p.add_argument("--kernels", nargs="*", default=[f"{OWNER}/hip-vesseladapt-100ep-gpu-train"])
     a = p.parse_args()
 
