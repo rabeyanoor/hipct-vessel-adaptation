@@ -17,8 +17,8 @@ environment's interpreter. Internet access is needed (the checkpoint is
 downloaded from Hugging Face by vesselFM's inference script).
 
 Usage:
-    python -m venv /tmp/vfm_env
-    /tmp/vfm_env/bin/pip install torch==2.5.1 numpy==1.26.4 monai==1.3.2 hydra-core==1.3.2 scikit-image==0.24.0 \
+    uv venv -p 3.11 /tmp/vfm_env   # scikit-image 0.24 has no wheels for newer Pythons
+    uv pip install --python /tmp/vfm_env/bin/python torch==2.5.1 numpy==1.26.4 monai==1.3.2 hydra-core==1.3.2 scikit-image==0.24.0 \
         scikit-learn==1.5.2 SimpleITK==2.4.0 tqdm==4.67.0 huggingface_hub==0.29.1 nibabel   # what inference.py imports
     python -m benchmark.run_vesselfm --vesselfm-dir /tmp/vesselFM --python /tmp/vfm_env/bin/python \
         --roi-dir <rois> --pred-root <out>/preds
