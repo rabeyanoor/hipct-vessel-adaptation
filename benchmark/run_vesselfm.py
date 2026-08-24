@@ -33,7 +33,7 @@ import tempfile
 VESSELFM_COMMIT = "d33b952223220fb40caa1f4daa4b627256de9508"
 
 
-def run(vesselfm_dir, roi_dir, pred_root, invert, python=sys.executable, device="cuda:0"):
+def run(vesselfm_dir, roi_dir, pred_root, invert, python=sys.executable, device="cuda:0", batch_size=2):
     from benchmark import nifti_io
     tag = "invert" if invert else "noinvert"
     with tempfile.TemporaryDirectory(dir="/tmp") as tmp:
@@ -41,9 +41,11 @@ def run(vesselfm_dir, roi_dir, pred_root, invert, python=sys.executable, device=
         nifti_io.export(src, roi_dir=roi_dir)
         # ckpt_path does not exist on purpose: the script then downloads vesselFM_all.pt from Hugging Face
         subprocess.run([python, "vesselfm/seg/inference.py", f"image_path={src}", f"output_folder={dst}",
-                        "ckpt_path=/nonexistent.pt", f"device={device}", f"tta.invert={str(invert).lower()}"],
+                        "ckpt_path=/nonexistent.pt", f"device={device}", f"tta.invert={str(invert).lower()}",
+                        f"batch_size={batch_size}"],
                        cwd=vesselfm_dir, check=True,
-                       env=dict(os.environ, PYTHONPATH=os.path.abspath(vesselfm_dir)))
+                       env=dict(os.environ, PYTHONPATH=os.path.abspath(vesselfm_dir),
+                                PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True"))
         nifti_io.import_preds(dst, f"vesselfm_{tag}", roi_dir=roi_dir, pred_root=pred_root,
                               suffix="_pred.nii.gz")
 
@@ -55,7 +57,10 @@ if __name__ == "__main__":
     p.add_argument("--pred-root", required=True)
     p.add_argument("--python", default=sys.executable, help="interpreter of the vesselFM environment")
     p.add_argument("--device", default="cuda:0")
+    # patches per sliding-window step; vesselFM's default of 8 runs out of memory on a 16 GB T4 for
+    # the 640^3 ROIs. It changes only speed and memory, not the prediction.
+    p.add_argument("--batch-size", type=int, default=2)
     p.add_argument("--invert", choices=["yes", "no", "both"], default="both")
     a = p.parse_args()
     for inv in {"yes": [True], "no": [False], "both": [False, True]}[a.invert]:
-        run(a.vesselfm_dir, a.roi_dir, a.pred_root, inv, a.python, a.device)
+        run(a.vesselfm_dir, a.roi_dir, a.pred_root, inv, a.python, a.device, a.batch_size)
