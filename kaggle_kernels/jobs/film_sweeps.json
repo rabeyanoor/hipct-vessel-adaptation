@@ -1,0 +1,14 @@
+{
+ "gpu0": [
+  {
+   "name": "film_sweeps",
+   "cmds": [
+    "mkdir -p $OUT/film",
+    "python analyze_film_sweep.py --checkpoint $TRAINED/checkpoints/s_base_s1/model_best.pth --encoding log --output-json $OUT/film/s_base_s1.json",
+    "python analyze_film_sweep.py --checkpoint $TRAINED/checkpoints/s_base_s2/model_best.pth --encoding log --output-json $OUT/film/s_base_s2.json",
+    "python analyze_film_sweep.py --checkpoint $TRAINED/checkpoints/s_aug_s2/model_best.pth --encoding log --output-json $OUT/film/s_aug_s2.json"
+   ]
+  }
+ ],
+ "gpu1": []
+}
