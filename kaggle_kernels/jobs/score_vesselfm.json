@@ -1,0 +1,11 @@
+{
+ "gpu0": [
+  {
+   "name": "score_vesselfm",
+   "cmds": [
+    "python -m benchmark.score_many --search /kaggle/input --roi-dir $ROI_DIR --out-dir $OUT/scores --parallel 2 vesselfm_noinvert vesselfm_invert"
+   ]
+  }
+ ],
+ "gpu1": []
+}
