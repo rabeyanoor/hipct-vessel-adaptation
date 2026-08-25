@@ -56,3 +56,9 @@ new/
 
 # Raw Kaggle kernel downloads (curated copies live in results/)
 kaggle_outputs/
+
+# Manuscript and drafts are kept locally, not on GitHub
+paper/
+
+# Kaggle kernel logs (local copies)
+logs/

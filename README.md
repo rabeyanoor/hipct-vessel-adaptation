@@ -2,7 +2,7 @@
 
 Code for the paper *"Does Knowing the Voxel Size Help? Spacing-Aware Low-Rank
 Adaptation of a 3D Foundation Model for Multi-Resolution HiP-CT Vessel
-Segmentation"* (manuscript in [`paper/manuscript.md`](paper/manuscript.md)).
+Segmentation"* (manuscript in preparation; not part of this repository).
 
 We adapt a frozen [SAM-Med3D](https://github.com/openmedlab/SAM-Med3D) encoder
 with LoRA, with and without FiLM modulation of the LoRA branch by the voxel
@@ -27,7 +27,6 @@ utils/                  datasets (slab sampler), SAM-Med3D loader and patch, Zen
 benchmark/              test ROIs, inference (native / tell50 / fov50), scoring, baselines, paper tables
 kaggle_kernels/         job-based Kaggle GPU/CPU pipeline used for all second-round runs
 results/                scores (one JSON per run), FiLM sweeps, training logs
-paper/                  manuscript, reading notes, archived first-round drafts
 first_round/            first set of experiments (64^3 patches, raw-spacing FiLM); kept for Section 5.6
 docs/                   dated research and results logs
 ```
