@@ -21,7 +21,7 @@ import json
 import os
 
 import numpy as np
-from skimage.morphology import remove_small_objects
+from scipy import ndimage
 
 from benchmark.rois import ROI_DIR, VAL_ROI_DIR, load_manifest
 
@@ -32,7 +32,13 @@ MIN_SIZES = [0, 20, 100, 500]
 def binarize(prob_u8, threshold, min_size):
     mask = prob_u8 >= round(threshold * 255)
     if min_size:
-        mask = remove_small_objects(mask, max_size=min_size, connectivity=3)
+        # drop 26-connected components of at most min_size voxels (written out with scipy
+        # because skimage's remove_small_objects changed its arguments in 0.26)
+        lab, n = ndimage.label(mask, structure=np.ones((3, 3, 3), dtype=bool))
+        sizes = np.bincount(lab.ravel(), minlength=n + 1)
+        keep = sizes > min_size
+        keep[0] = False
+        mask = keep[lab]
     return mask
 
 

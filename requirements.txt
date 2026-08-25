@@ -14,3 +14,4 @@ matplotlib
 # only for downloading data / running the Kaggle pipeline
 huggingface_hub
 kaggle
+pytest

@@ -45,6 +45,12 @@ python -m utils.patch_external_repos          # lets SAM-Med3D take inputs other
 # SAM-Med3D weights (sam_med3d.pth) -> external/SAM-Med3D/ckpt/sam_med3d.pth
 ```
 
+Tests of the metrics, the RLE decoder, LoRA/FiLM, the loss, post-processing and inference:
+
+```bash
+python -m pytest tests -q
+```
+
 ## Data
 
 * Training: `kidney_1_dense`, `kidney_2`, `kidney_3_dense/sparse` from the
