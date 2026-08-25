@@ -25,7 +25,9 @@ models/                 LoRA, spacing-conditioned LoRA (FiLM), full-resolution r
 losses/                 Dice + clDice + spacing-scaled gradient penalty + weighted BCE
 utils/                  datasets (slab sampler), SAM-Med3D loader and patch, Zenodo download, metrics
 benchmark/              test ROIs, inference (native / tell50 / fov50), scoring, baselines, paper tables
-kaggle_kernels/         job-based Kaggle GPU/CPU pipeline used for all second-round runs
+kaggle_kernels/         job-based Kaggle GPU/CPU pipeline used for all second-round runs;
+                        notebooks/ has every Kaggle notebook of the project, sorted by stage
+tests/                  tests of metrics, RLE decoding, LoRA/FiLM, loss, post-processing, inference
 results/                scores (one JSON per run), FiLM sweeps, training logs
 first_round/            first set of experiments (64^3 patches, raw-spacing FiLM); kept for Section 5.6
 docs/                   dated research and results logs
