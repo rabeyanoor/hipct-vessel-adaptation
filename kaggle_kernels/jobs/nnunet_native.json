@@ -1,0 +1,12 @@
+{
+ "gpu0": [
+  {
+   "name": "nnunet_native",
+   "cmds": [
+    "pip install -q nnunetv2==2.8.1",
+    "export nnUNet_raw=/tmp/nn/raw nnUNet_preprocessed=/tmp/nn/pre nnUNet_results=$(find /kaggle/input -maxdepth 6 -type d -name nnunet_results | head -1); echo nnUNet_results=$nnUNet_results; python -m benchmark.run_nnunet predict --tag native --workers 1 --roi-dir $ROI_DIR --pred-root $OUT/preds"
+   ]
+  }
+ ],
+ "gpu1": []
+}

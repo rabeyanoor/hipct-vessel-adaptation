@@ -89,14 +89,14 @@ def train():
     subprocess.run(["nnUNetv2_train", "1", "3d_fullres", "all", "-tr", TRAINER], check=True)
 
 
-def predict(tag, roi_dir, pred_root):
+def predict(tag, roi_dir, pred_root, workers=1):
     from benchmark import nifti_io
     fake = {"resampled": None, "native": 50.0}[tag]
     with tempfile.TemporaryDirectory(dir="/tmp") as tmp:
         src, dst = os.path.join(tmp, "in"), os.path.join(tmp, "out")
         nifti_io.export(src, roi_dir=roi_dir, fake_spacing_um=fake)
         subprocess.run(["nnUNetv2_predict", "-i", src, "-o", dst, "-d", "1", "-c", "3d_fullres", "-f", "all",
-                        "-tr", TRAINER, "--disable_tta", "-npp", "2", "-nps", "2"], check=True)
+                        "-tr", TRAINER, "--disable_tta", "-npp", str(workers), "-nps", str(workers)], check=True)
         nifti_io.import_preds(dst, f"nnunet_{tag}", roi_dir=roi_dir, pred_root=pred_root)
 
 
@@ -107,10 +107,12 @@ if __name__ == "__main__":
     p.add_argument("--tag", choices=["resampled", "native"])
     p.add_argument("--roi-dir")
     p.add_argument("--pred-root")
+    p.add_argument("--workers", type=int, default=1,
+                   help="nnU-Net preprocessing / export workers (2 ran out of RAM on the native 640^3 ROIs)")
     a = p.parse_args()
     if a.step == "prepare":
         prepare(a.raw_tiff_root)
     elif a.step == "train":
         train()
     else:
-        predict(a.tag, a.roi_dir, a.pred_root)
+        predict(a.tag, a.roi_dir, a.pred_root, a.workers)

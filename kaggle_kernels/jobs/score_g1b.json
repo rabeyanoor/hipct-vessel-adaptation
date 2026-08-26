@@ -1,0 +1,10 @@
+{
+ "gpu0": [
+  {
+   "name": "score_g1b",
+   "cmds": [
+    "python -m benchmark.score_many --search /kaggle/input --roi-dir $ROI_DIR --out-dir $OUT/scores --parallel 2 s_aug_s1_tell50__gpu p_base_s0_native__gpu p_base_s0_fov50__gpu p_aug_s1_native__gpu p_aug_s1_fov50__gpu sam_zeroshot_native__gpu sam_zeroshot_fov50__gpu"
+   ]
+  }
+ ]
+}

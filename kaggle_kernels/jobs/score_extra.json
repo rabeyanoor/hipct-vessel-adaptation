@@ -1,0 +1,10 @@
+{
+ "gpu0": [
+  {
+   "name": "score_extra",
+   "cmds": [
+    "python -m benchmark.score_many --search /kaggle/input --roi-dir $ROI_DIR --out-dir $OUT/scores --parallel 2 s_aug_s2_native__gpu nnunet_resampled sam_zeroshot_native__gpu sam_zeroshot_fov50__gpu"
+   ]
+  }
+ ]
+}
