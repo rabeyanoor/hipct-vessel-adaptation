@@ -31,6 +31,7 @@ import zipfile
 
 JOBS_GPU0 = []  # filled in by the launcher (kaggle_kernels/launch_jobs.py)
 JOBS_GPU1 = []
+KEEP_STATE = False  # launcher --keep-state: keep state.pth so a later session can resume the training
 JOBS_TPU = []  # TPU sessions: one queue per TPU chip (up to 8 on a v5e-8), each job pinned to its chip
 ON_TPU = os.environ.get("PJRT_DEVICE") == "TPU" or os.environ.get("ISTPUVM") == "1"
 
@@ -182,7 +183,7 @@ for th in threads:
 for th in threads:
     th.join()
 # checkpoint folders can be large; keep the model weights and logs, drop the resume state
-for root, _, files in os.walk(os.path.join(OUT, "checkpoints")):
+for root, _, files in ([] if KEEP_STATE else os.walk(os.path.join(OUT, "checkpoints"))):
     for f in files:
         if f in ("state.pth",):
             os.remove(os.path.join(root, f))
