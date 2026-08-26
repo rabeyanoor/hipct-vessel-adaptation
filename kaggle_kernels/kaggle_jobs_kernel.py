@@ -31,6 +31,8 @@ import zipfile
 
 JOBS_GPU0 = []  # filled in by the launcher (kaggle_kernels/launch_jobs.py)
 JOBS_GPU1 = []
+JOBS_TPU = []  # TPU sessions: one queue per TPU chip (up to 8 on a v5e-8), each job pinned to its chip
+ON_TPU = os.environ.get("PJRT_DEVICE") == "TPU" or os.environ.get("ISTPUVM") == "1"
 
 SAM_MED3D_COMMIT = "bd7d1620df0f85fade74aa9e44262de953b559f1"
 CLDICE_COMMIT = "47d31a6cc4a8101b1ffe8052994821961e57af9f"
@@ -141,8 +143,14 @@ print(f"[*] setup took {time.time() - t0:.0f}s", flush=True)
 
 
 def run_queue(gpu, jobs):
-    env = dict(os.environ, CUDA_VISIBLE_DEVICES=str(gpu), PYTHONUNBUFFERED="1",
-               PYTORCH_ALLOC_CONF="expandable_segments:True", **env_vars)
+    env = dict(os.environ, PYTHONUNBUFFERED="1", PYTORCH_ALLOC_CONF="expandable_segments:True", **env_vars)
+    if ON_TPU:
+        # one process per chip: each sees a single chip and has its own runtime port
+        env.update(TPU_VISIBLE_CHIPS=str(gpu), TPU_CHIPS_PER_PROCESS_BOUNDS="1,1,1", TPU_PROCESS_BOUNDS="1,1,1",
+                   TPU_PROCESS_PORT=str(8476 + gpu), TPU_PROCESS_ADDRESSES=f"localhost:{8476 + gpu}",
+                   CLOUD_TPU_TASK_ID="0", PJRT_DEVICE="TPU")
+    else:
+        env["CUDA_VISIBLE_DEVICES"] = str(gpu)
     for job in jobs:
         name = job["name"]
         log_path = os.path.join(OUT, f"{name}.log")
@@ -164,7 +172,9 @@ def run_queue(gpu, jobs):
 
 n_gpu = torch.cuda.device_count()
 queues = [JOBS_GPU0, JOBS_GPU1]
-if n_gpu < 2:
+if ON_TPU:
+    queues = JOBS_TPU or [JOBS_GPU0 + JOBS_GPU1]
+elif n_gpu < 2:
     queues = [JOBS_GPU0 + JOBS_GPU1]
 threads = [threading.Thread(target=run_queue, args=(g, q)) for g, q in enumerate(queues) if q]
 for th in threads:

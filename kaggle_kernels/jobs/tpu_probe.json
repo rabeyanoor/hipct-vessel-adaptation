@@ -1,0 +1,19 @@
+{
+ "tpu0": [
+  {
+   "name": "probe_s_aug",
+   "cmds": [
+    "python -c \"import torch_xla, torch; print('xla device', torch_xla.device(), torch.__version__)\"",
+    "python train_lora_v2.py --device xla --model spacing --spacing-encoding log --fov-scale 0.25 2.0 --patch 128 --fg-prob 0.5 --refine --epochs 2 --iters 20 --val-every 1 --workers 3 --raw-tiff-root $COMP_TRAIN --val-roi-dir $VAL_ROI_DIR --seed 0 --out $OUT/checkpoints/probe_s_aug"
+   ]
+  }
+ ],
+ "tpu1": [
+  {
+   "name": "probe_p_base",
+   "cmds": [
+    "python train_lora_v2.py --device xla --model plain  --patch 128 --fg-prob 0.5 --refine --epochs 2 --iters 20 --val-every 1 --workers 3 --raw-tiff-root $COMP_TRAIN --val-roi-dir $VAL_ROI_DIR --seed 0 --out $OUT/checkpoints/probe_p_base"
+   ]
+  }
+ ]
+}

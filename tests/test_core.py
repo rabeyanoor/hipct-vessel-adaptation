@@ -331,3 +331,45 @@ def test_saved_score_files():
             for row in v["per_roi"]:
                 for m in ("dice", "cldice", "nsd_t0", "nsd_t1"):
                     assert 0.0 <= row[m] <= 1.0, (f, sid, row["roi"], m)
+
+
+# ---------------------------------------------------------------- training loop
+def test_training_loop_runs_saves_and_resumes(tmp_path, monkeypatch):
+    import json
+    import train_lora_v2 as T
+
+    class FakeData(torch.utils.data.IterableDataset):
+        def __init__(self, *a, **k):
+            super().__init__()
+
+        def __iter__(self):
+            g = torch.Generator().manual_seed(0)
+            while True:
+                m = (torch.rand(1, 16, 16, 16, generator=g) > 0.9).float()
+                yield {"image": m + 0.1 * torch.randn(1, 16, 16, 16, generator=g), "mask": m,
+                       "spacing": torch.tensor([50.0, 50.0, 50.0])}
+
+    class Tiny(nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.conv = nn.Conv3d(1, 1, 3, padding=1)
+
+        def forward(self, x, spacing):
+            logits = self.conv(x)
+            return torch.sigmoid(logits), logits
+
+    monkeypatch.setattr(T, "SlabPatchDataset", FakeData)
+    monkeypatch.setattr(T, "build", lambda args: Tiny())
+    out = str(tmp_path / "run")
+    args = T.get_parser().parse_args(["--model", "plain", "--out", out, "--epochs", "2", "--iters", "5",
+                                      "--workers", "0", "--patch", "16", "--warmup", "1"])
+    T.train(args)
+    log = json.load(open(f"{out}/train_log.json"))
+    assert [e["epoch"] for e in log] == [1, 2]
+    assert all(np.isfinite(e["loss"]) and 0 < e["fg_fraction"] < 1 for e in log)
+    st = torch.load(f"{out}/state.pth", map_location="cpu")
+    assert st["epoch"] == 2 and all(v.device.type == "cpu" for v in st["model"].values())
+    # resume to 3 epochs: only the third epoch runs
+    args.epochs = 3
+    T.train(args)
+    assert [e["epoch"] for e in json.load(open(f"{out}/train_log.json"))] == [1, 2, 3]

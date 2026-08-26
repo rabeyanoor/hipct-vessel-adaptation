@@ -12,7 +12,8 @@ the related work and checking the first results:
     with it the FiLM input actually varies during training
   - 128^3 patches (--patch 128), SAM-Med3D's native input size
   - optional full-resolution refinement head (--refine)
-  - mixed precision on GPU, gradient clipping, cosine LR schedule
+  - mixed precision on GPU (fp16) and TPU (bf16, --device xla), gradient
+    clipping, cosine LR schedule
   - checkpoint every epoch; resumable
   - validation on held-out slices of kidney_1_dense (last 20 %, never used for
     training); the best model by validation Dice is kept as model_best.pth
@@ -66,6 +67,17 @@ def _worker_init(worker_id):
     np.random.seed((s + worker_id) % 2 ** 32)
 
 
+def _to_cpu(obj):
+    # checkpoints are written from CPU tensors so they load the same way from GPU and TPU runs
+    if isinstance(obj, torch.Tensor):
+        return obj.detach().cpu()
+    if isinstance(obj, dict):
+        return {k: _to_cpu(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [_to_cpu(v) for v in obj]
+    return obj
+
+
 def build(args):
     if args.model == "plain":
         from models.plain_lora_model import PlainLoRAModel
@@ -100,7 +112,7 @@ def validate(model, val_manifest, patch, device):
     for sid, entries in val_manifest.items():
         for e in entries:
             d = np.load(e["path"])
-            pred = predict_roi(model, d["image"], e["spacing_um"], patch, device.type)
+            pred = predict_roi(model, d["image"], e["spacing_um"], patch, str(device))
             gt = d["label"] > 0
             inter = np.logical_and(pred > 0, gt).sum()
             dices.append(2 * inter / max(1, pred.sum() + gt.sum()))
@@ -110,7 +122,14 @@ def validate(model, val_manifest, patch, device):
 
 def train(args):
     seed_everything(args.seed)
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    if args.device == "xla":
+        import torch_xla
+        device = torch_xla.device()
+        sync = torch_xla.sync  # runs the traced graph of one optimiser step
+    else:
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        sync = lambda: None
+    amp = {"cuda": torch.float16, "xla": torch.bfloat16}.get(device.type)
     os.makedirs(args.out, exist_ok=True)
     with open(os.path.join(args.out, "config.json"), "w") as f:
         json.dump(vars(args), f, indent=1)
@@ -152,7 +171,7 @@ def train(args):
     state_path = os.path.join(args.out, "state.pth")
     start_epoch, log = 0, []
     if os.path.exists(state_path):
-        st = torch.load(state_path, map_location=device)
+        st = torch.load(state_path, map_location="cpu")
         model.load_state_dict(st["model"])
         optimizer.load_state_dict(st["optimizer"])
         sched.load_state_dict(st["sched"])
@@ -180,7 +199,7 @@ def train(args):
                 it = iter(loader)
                 batch = next(it)
             optimizer.zero_grad(set_to_none=True)
-            step_loss, step_fg = 0.0, 0.0
+            step_loss, step_fg = 0.0, 0.0  # tensors; read once per epoch so TPU steps are not split
             for micro in range(args.accum):
                 if micro:
                     try:
@@ -191,36 +210,38 @@ def train(args):
                 images = batch["image"].to(device, non_blocking=True)
                 targets = batch["mask"].to(device, non_blocking=True)
                 spacings = batch["spacing"].to(device)
-                with torch.autocast(device_type="cuda", dtype=torch.float16, enabled=device.type == "cuda"):
+                with torch.autocast(device_type=device.type, dtype=amp or torch.float32, enabled=amp is not None):
                     mask_pred, logits = model(images, spacings)
                 # the loss has a clDice term and a spacing penalty; keep it in fp32
                 loss = criterion(mask_pred.float(), targets, spacings.mean(0), logits=logits.float())
                 scaler.scale(loss / args.accum).backward()
-                step_loss += loss.item() / args.accum
-                step_fg += targets.mean().item() / args.accum
+                step_loss = step_loss + loss.detach() / args.accum
+                step_fg = step_fg + targets.mean() / args.accum
             scaler.unscale_(optimizer)
             torch.nn.utils.clip_grad_norm_(params, 1.0)
             scaler.step(optimizer)
             scaler.update()
             sched.step()
+            sync()
             losses.append(step_loss)
             fg.append(step_fg)
-        entry = {"epoch": epoch + 1, "loss": float(np.mean(losses)), "fg_fraction": float(np.mean(fg)),
+        entry = {"epoch": epoch + 1, "loss": float(torch.stack(losses).mean()),
+                 "fg_fraction": float(torch.stack(fg).mean()),
                  "lr": sched.get_last_lr()[0], "seconds": round(time.time() - t0, 1)}
         if val_manifest and ((epoch + 1) % args.val_every == 0 or epoch + 1 == args.epochs):
             entry["val_dice"] = validate(model, val_manifest, args.patch, device)
             if entry["val_dice"] > best_val:
                 best_val = entry["val_dice"]
-                torch.save(model.state_dict(), os.path.join(args.out, "model_best.pth"))
+                torch.save(_to_cpu(model.state_dict()), os.path.join(args.out, "model_best.pth"))
         log.append(entry)
         val_txt = f" val_dice={entry['val_dice']:.4f}" if "val_dice" in entry else ""
         print(f"[✓] epoch {epoch + 1}/{args.epochs} loss={entry['loss']:.4f} "
               f"fg={100 * entry['fg_fraction']:.2f}%{val_txt} ({entry['seconds']}s)", flush=True)
-        torch.save({"model": model.state_dict(), "optimizer": optimizer.state_dict(),
-                    "sched": sched.state_dict(), "scaler": scaler.state_dict(),
-                    "epoch": epoch + 1, "log": log, "best_val": best_val}, state_path + ".tmp")
+        torch.save(_to_cpu({"model": model.state_dict(), "optimizer": optimizer.state_dict(),
+                            "sched": sched.state_dict(), "scaler": scaler.state_dict(),
+                            "epoch": epoch + 1, "log": log, "best_val": best_val}), state_path + ".tmp")
         os.replace(state_path + ".tmp", state_path)
-        torch.save(model.state_dict(), os.path.join(args.out, "model.pth"))
+        torch.save(_to_cpu(model.state_dict()), os.path.join(args.out, "model.pth"))
     with open(os.path.join(args.out, "train_log.json"), "w") as f:
         json.dump(log, f, indent=1)
     best = os.path.join(args.out, "model_best.pth")
@@ -257,6 +278,8 @@ def get_parser():
     p.add_argument("--patches-per-slab", type=int, default=32)
     p.add_argument("--spacing-encoding", choices=["raw", "log"], default="raw",
                    help="FiLM input: spacing in um (first experiments) or log2(spacing / 50um)")
+    p.add_argument("--device", choices=["auto", "xla"], default="auto",
+                   help="auto: CUDA if available, else CPU; xla: one TPU chip (torch_xla)")
     p.add_argument("--time-limit-min", type=float, default=None,
                    help="stop after the epoch in which this many minutes have passed")
     return p

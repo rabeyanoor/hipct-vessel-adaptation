@@ -1,0 +1,13 @@
+{
+ "gpu0": [
+  {
+   "name": "nnunet_prepare",
+   "cmds": [
+    "pip install -q SimpleITK",
+    "export nnUNet_raw=$OUT/nnUNet_raw; python -m benchmark.run_nnunet prepare --raw-tiff-root $COMP_TRAIN",
+    "du -sh $OUT/nnUNet_raw; ls $OUT/nnUNet_raw/Dataset001_KidneyVessel/imagesTr | wc -l"
+   ]
+  }
+ ],
+ "gpu1": []
+}

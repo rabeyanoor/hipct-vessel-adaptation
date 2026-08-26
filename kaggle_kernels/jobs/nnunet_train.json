@@ -1,0 +1,14 @@
+{
+ "gpu0": [
+  {
+   "name": "nnunet",
+   "cmds": [
+    "pip install -q nnunetv2==2.8.1",
+    "export nnUNet_raw=$(dirname $(find /kaggle/input -maxdepth 9 -type d -name Dataset001_KidneyVessel | head -1)) nnUNet_preprocessed=/tmp/nn/pre nnUNet_results=$OUT/nnunet_results; echo nnUNet_raw=$nnUNet_raw; python -m benchmark.run_nnunet train",
+    "export nnUNet_raw=$(dirname $(find /kaggle/input -maxdepth 9 -type d -name Dataset001_KidneyVessel | head -1)) nnUNet_preprocessed=/tmp/nn/pre nnUNet_results=$OUT/nnunet_results; echo nnUNet_raw=$nnUNet_raw; python -m benchmark.run_nnunet predict --tag resampled --roi-dir $ROI_DIR --pred-root $OUT/preds",
+    "export nnUNet_raw=$(dirname $(find /kaggle/input -maxdepth 9 -type d -name Dataset001_KidneyVessel | head -1)) nnUNet_preprocessed=/tmp/nn/pre nnUNet_results=$OUT/nnunet_results; echo nnUNet_raw=$nnUNet_raw; python -m benchmark.run_nnunet predict --tag native --roi-dir $ROI_DIR --pred-root $OUT/preds"
+   ]
+  }
+ ],
+ "gpu1": []
+}
