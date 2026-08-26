@@ -2,7 +2,8 @@
 """
 Scores several prediction folders in parallel (one process per run).
 
-Each run is found by name below --search (a folder .../preds/<run>), so the
+Each run is found by name below --search (a folder .../preds/<run>, or any
+folder <run> that holds a run.json, e.g. in a dataset made from predictions), so the
 predictions can come from the outputs of other Kaggle kernels attached as
 inputs. Writes <out-dir>/<run>.json and <out-dir>/<run>.log.
 
@@ -20,7 +21,8 @@ from concurrent.futures import ThreadPoolExecutor
 
 def find_run(search, run):
     for root, dirs, _ in os.walk(search, followlinks=True):
-        if os.path.basename(root) == "preds" and run in dirs:
+        if run in dirs and (os.path.basename(root) == "preds"
+                            or os.path.isfile(os.path.join(root, run, "run.json"))):
             return os.path.join(root, run)
     return None
 

@@ -373,3 +373,14 @@ def test_training_loop_runs_saves_and_resumes(tmp_path, monkeypatch):
     args.epochs = 3
     T.train(args)
     assert [e["epoch"] for e in json.load(open(f"{out}/train_log.json"))] == [1, 2, 3]
+
+
+def test_score_many_finds_runs(tmp_path):
+    from benchmark.score_many import find_run
+    (tmp_path / "a" / "preds" / "r1").mkdir(parents=True)
+    (tmp_path / "b" / "r2").mkdir(parents=True)
+    (tmp_path / "b" / "r2" / "run.json").write_text("{}")
+    (tmp_path / "c" / "r3").mkdir(parents=True)
+    assert find_run(str(tmp_path), "r1").endswith("preds/r1")
+    assert find_run(str(tmp_path), "r2").endswith("b/r2")
+    assert find_run(str(tmp_path), "r3") is None
