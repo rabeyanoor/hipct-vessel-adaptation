@@ -23,6 +23,7 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("jobs")
     p.add_argument("--slug", required=True)
+    p.add_argument("--write", metavar="PATH", help="only write the filled-in kernel script to PATH (e.g. for Colab)")
     p.add_argument("--no-gpu", action="store_true")
     p.add_argument("--tpu", action="store_true", help="TPU v5e-8 session (96 CPU cores, 8 TPU chips)")
     p.add_argument("--keep-state", action="store_true", help="keep state.pth of training runs (to resume them later)")
@@ -40,6 +41,9 @@ def main():
     src = src.replace("KEEP_STATE = False", f"KEEP_STATE = {a.keep_state}", 1)
     tpu = [jobs[k] for k in sorted(jobs, key=lambda k: int(k[3:])) if k.startswith("tpu")]
     src = src.replace("JOBS_TPU = []", f"JOBS_TPU = {json.dumps(tpu, indent=1)}", 1)
+    if a.write:
+        open(a.write, "w").write(src)
+        return
     meta = {
         "id": f"{OWNER}/{a.slug}", "title": a.slug, "code_file": "kernel.py", "language": "python",
         "kernel_type": "script", "is_private": True, "enable_gpu": not (a.no_gpu or a.tpu), "enable_tpu": a.tpu,

@@ -1,0 +1,10 @@
+{
+ "tpu0": [
+  {
+   "name": "train_s_aug_long_s2",
+   "cmds": [
+    "python train_lora_v2.py --device xla --model spacing --spacing-encoding log --fov-scale 0.25 2.0 --patch 128 --fg-prob 0.5 --refine --epochs 150 --iters 250 --val-every 5 --workers 6 --raw-tiff-root $COMP_TRAIN --val-roi-dir $VAL_ROI_DIR --time-limit-min 600 --seed 2 --out $OUT/checkpoints/s_aug_long_s2"
+   ]
+  }
+ ]
+}
