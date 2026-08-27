@@ -9,10 +9,10 @@ evaluation. Their checkpoints are re-scored on the benchmark ROIs as the
 "first round" rows of Table 1.
 
 * `train_plain_lora.py`, `train_spacing_lora.py`, `train_real_gt.py`, `train.py` — training
-* `evaluate_*.py`, `significance_test_fov.py`, `diagnose_*.py` — patch-based evaluation and checks
+* `evaluate_*.py`, `significance_test_fov.py` — patch-based evaluation and checks
 * `analyze_film_layers.py` — per-layer FiLM analysis (`results/film_layer_analysis.json`)
 * `generate_summary_tables.py`, `generate_figures.py` — tables and figures from `results/`
-* `kaggle/` — the Kaggle kernels used for these runs; `kaggle_logs/` — their logs
+* `kaggle/` — the Kaggle kernels used for these runs
 * `results/` — sweeps, multi-seed and vascular-graph results; `figures/` — figures 4-6 of the first draft
 
 The scripts import the shared code (`config.py`, `models/`, `utils/`, `losses/`)

@@ -14,16 +14,6 @@ in by [`../launch_jobs.py`](../launch_jobs.py); the job lists are also in
 
 Status is the status of the last version on Kaggle.
 
-## 00_exploration — first attempts (before this repository's method)
-
-| Notebook | What it did | Status |
-|---|---|---|
-| `hi-rabeya` (Kaggle name `hi-rabeya`) | vesselFM zero-shot on the K292 kidney (16.3–52 µm), collapse score and a physics-aware adapter on vesselFM, first SenNet kidney_1_dense dataset class | exploration |
-| `notebookfad00c0539` (Kaggle name as is) | Kaggle port of the original Colab notebook "HiP-VesselAdapt": vesselFM on K292, adapter training for 5 epochs | exploration |
-
-The physics-aware adapter of this stage survives as `models/physics_adapter.py` /
-`models/hip_vessel_model.py`; it is not part of the paper.
-
 ## 01_first_round — 64³ patches, FiLM on the raw spacing (paper Section 5.6)
 
 | Notebook | What it did | Status | Results |
