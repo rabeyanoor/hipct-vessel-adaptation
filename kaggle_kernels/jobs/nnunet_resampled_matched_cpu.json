@@ -1,0 +1,13 @@
+{
+ "gpu0": [
+  {
+   "name": "nnunet_resampled_matched_cpu",
+   "cmds": [
+    "pip install -q nnunetv2==2.8.1",
+    "export nnUNet_raw=$(dirname $(find /kaggle/input -maxdepth 9 -type d -name Dataset001_KidneyVessel | grep -v nnunet_results | head -1)) nnUNet_preprocessed=/tmp/nn/pre nnUNet_results=$(find /kaggle/input -maxdepth 6 -type d -name nnunet_results | head -1); echo raw=$nnUNet_raw results=$nnUNet_results; python -m benchmark.run_nnunet predict --tag resampled --match-intensity --workers 2 --device cpu --roi-dir $ROI_DIR --pred-root $OUT/preds",
+    "python -m benchmark.score_many --search $OUT --roi-dir $ROI_DIR --out-dir $OUT/scores --parallel 1 nnunet_resampled_matched"
+   ]
+  }
+ ],
+ "gpu1": []
+}

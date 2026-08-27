@@ -384,3 +384,12 @@ def test_score_many_finds_runs(tmp_path):
     assert find_run(str(tmp_path), "r1").endswith("preds/r1")
     assert find_run(str(tmp_path), "r2").endswith("b/r2")
     assert find_run(str(tmp_path), "r3") is None
+
+
+def test_nnunet_intensity_matching():
+    from benchmark.run_nnunet import match_intensity, percentiles
+    rng = np.random.default_rng(0)
+    x = rng.normal(41000, 1500, (40, 40, 40))
+    y = match_intensity(x, np.array([20000.0, 38000.0]))
+    assert np.allclose(percentiles(y), [20000.0, 38000.0], rtol=1e-3)
+    assert np.corrcoef(x.ravel(), y.ravel())[0, 1] > 0.999  # monotone, contrast kept

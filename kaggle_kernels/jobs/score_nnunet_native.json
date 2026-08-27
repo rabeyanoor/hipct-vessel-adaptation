@@ -1,0 +1,10 @@
+{
+ "gpu0": [
+  {
+   "name": "score_nnunet_native",
+   "cmds": [
+    "python -m benchmark.score_many --search /kaggle/input --roi-dir $ROI_DIR --out-dir $OUT/scores --parallel 1 nnunet_native"
+   ]
+  }
+ ]
+}
