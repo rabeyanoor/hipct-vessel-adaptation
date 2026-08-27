@@ -1,0 +1,17 @@
+{
+ "gpu0": [
+  {
+   "name": "nnunet_native_matched",
+   "cmds": [
+    "if [ ! -f $OUT/scores/nnunet_native_matched.json ]; then pip install -q nnunetv2==2.8.1 && export nnUNet_raw=$(dirname $(find /kaggle/input -maxdepth 9 -type d -name Dataset001_KidneyVessel | grep -v nnunet_results | head -1)) nnUNet_preprocessed=/tmp/nn/pre nnUNet_results=$(find /kaggle/input -maxdepth 6 -type d -name nnunet_results | head -1); echo raw=$nnUNet_raw results=$nnUNet_results; python -m benchmark.run_nnunet predict --tag native --match-intensity --workers 1 --roi-dir $ROI_DIR --pred-root $OUT/preds && python -m benchmark.score_many --search $OUT --roi-dir $ROI_DIR --out-dir $OUT/scores --parallel 1 nnunet_native_matched; fi"
+   ]
+  },
+  {
+   "name": "train_s_aug_long_s2",
+   "cmds": [
+    "python train_lora_v2.py --model spacing --spacing-encoding log --fov-scale 0.25 2.0 --patch 128 --fg-prob 0.5 --refine --epochs 150 --iters 250 --val-every 5 --workers 2 --raw-tiff-root $COMP_TRAIN --val-roi-dir $VAL_ROI_DIR --time-limit-min 690 --seed 2 --out $OUT/checkpoints/s_aug_long_s2"
+   ]
+  }
+ ],
+ "gpu1": []
+}
