@@ -63,7 +63,5 @@ paper/
 # Kaggle kernel logs (local copies)
 logs/
 
-# Debug scripts, raw logs and scratch notebooks (local only)
+# Debug scripts (local only)
 first_round/diagnose_*.py
-first_round/kaggle_logs/
-kaggle_kernels/notebooks/00_exploration/

@@ -1,0 +1,1851 @@
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.6/1.6 MB 56.5 MB/s eta 0:00:00
+[*] image_encoder3D.py pos_embed interpolation: patched
+[*] mask_decoder3D.py dense/image PE interpolation: patched
+Downloading...
+From (original): https://drive.google.com/uc?id=1PFeUjlFMAppllS9x1kAWyCYUJM9re2Ub
+From (redirected): https://drive.google.com/uc?id=1PFeUjlFMAppllS9x1kAWyCYUJM9re2Ub&confirm=t&uuid=7c006b60-5474-460e-8cbc-df28fc091ad3
+To: /kaggle/working/hip-vesseladapt/external/SAM-Med3D/ckpt/sam_med3d.pth
+  0%|          | 0.00/1.21G [00:00<?, ?B/s]  0%|          | 5.24M/1.21G [00:00<00:27, 43.4MB/s]  2%|▏         | 21.0M/1.21G [00:00<00:11, 103MB/s]   3%|▎         | 39.3M/1.21G [00:00<00:08, 138MB/s]  5%|▍         | 56.1M/1.21G [00:00<00:07, 148MB/s]  6%|▌         | 73.9M/1.21G [00:00<00:07, 157MB/s]  7%|▋         | 90.2M/1.21G [00:00<00:07, 158MB/s]  9%|▉         | 111M/1.21G [00:00<00:06, 173MB/s]  11%|█         | 128M/1.21G [00:01<00:10, 98.2MB/s] 12%|█▏        | 149M/1.21G [00:01<00:08, 119MB/s]  14%|█▎        | 165M/1.21G [00:01<00:08, 124MB/s] 15%|█▌        | 185M/1.21G [00:01<00:07, 141MB/s] 17%|█▋        | 205M/1.21G [00:01<00:06, 157MB/s] 18%|█▊        | 223M/1.21G [00:01<00:06, 157MB/s] 20%|█▉        | 240M/1.21G [00:01<00:05, 161MB/s] 22%|██▏       | 260M/1.21G [00:01<00:05, 169MB/s] 23%|██▎       | 277M/1.21G [00:01<00:05, 167MB/s] 24%|██▍       | 295M/1.21G [00:02<00:05, 167MB/s] 26%|██▌       | 315M/1.21G [00:02<00:05, 177MB/s] 28%|██▊       | 333M/1.21G [00:02<00:04, 177MB/s] 29%|██▉       | 352M/1.21G [00:02<00:04, 180MB/s] 31%|███       | 372M/1.21G [00:02<00:04, 185MB/s] 32%|███▏      | 391M/1.21G [00:02<00:04, 186MB/s] 34%|███▍      | 411M/1.21G [00:02<00:04, 190MB/s] 36%|███▌      | 431M/1.21G [00:02<00:04, 184MB/s] 37%|███▋      | 450M/1.21G [00:02<00:04, 185MB/s] 39%|███▉      | 469M/1.21G [00:02<00:04, 180MB/s] 41%|████      | 489M/1.21G [00:03<00:03, 183MB/s] 42%|████▏     | 507M/1.21G [00:03<00:04, 174MB/s] 44%|████▎     | 526M/1.21G [00:03<00:03, 178MB/s] 45%|████▌     | 545M/1.21G [00:03<00:03, 172MB/s] 47%|████▋     | 565M/1.21G [00:03<00:03, 178MB/s] 48%|████▊     | 583M/1.21G [00:03<00:03, 175MB/s] 50%|████▉     | 601M/1.21G [00:03<00:03, 175MB/s] 51%|█████▏    | 619M/1.21G [00:03<00:03, 173MB/s] 53%|█████▎    | 637M/1.21G [00:03<00:03, 173MB/s] 54%|█████▍    | 655M/1.21G [00:04<00:03, 176MB/s] 56%|█████▌    | 673M/1.21G [00:04<00:03, 172MB/s] 57%|█████▋    | 691M/1.21G [00:04<00:02, 173MB/s] 59%|█████▉    | 710M/1.21G [00:04<00:02, 179MB/s] 61%|██████    | 729M/1.21G [00:04<00:02, 182MB/s] 62%|██████▏   | 748M/1.21G [00:04<00:02, 167MB/s] 64%|██████▎   | 765M/1.21G [00:04<00:02, 170MB/s] 65%|██████▌   | 785M/1.21G [00:04<00:02, 177MB/s] 67%|██████▋   | 805M/1.21G [00:04<00:02, 180MB/s] 68%|██████▊   | 823M/1.21G [00:04<00:02, 179MB/s] 70%|██████▉   | 841M/1.21G [00:05<00:02, 175MB/s] 71%|███████▏  | 861M/1.21G [00:05<00:01, 180MB/s] 73%|███████▎  | 880M/1.21G [00:05<00:01, 180MB/s] 75%|███████▍  | 898M/1.21G [00:05<00:01, 178MB/s] 76%|███████▌  | 918M/1.21G [00:05<00:01, 183MB/s] 78%|███████▊  | 936M/1.21G [00:05<00:01, 182MB/s] 79%|███████▉  | 957M/1.21G [00:05<00:01, 190MB/s] 81%|████████  | 977M/1.21G [00:05<00:01, 189MB/s] 83%|████████▎ | 997M/1.21G [00:05<00:01, 185MB/s] 84%|████████▍ | 1.02G/1.21G [00:06<00:01, 185MB/s] 86%|████████▌ | 1.03G/1.21G [00:06<00:00, 177MB/s] 87%|████████▋ | 1.05G/1.21G [00:06<00:00, 172MB/s] 89%|████████▉ | 1.07G/1.21G [00:06<00:00, 181MB/s] 91%|█████████ | 1.09G/1.21G [00:06<00:00, 170MB/s] 92%|█████████▏| 1.11G/1.21G [00:07<00:01, 78.1MB/s] 93%|█████████▎| 1.12G/1.21G [00:07<00:01, 77.1MB/s] 94%|█████████▍| 1.13G/1.21G [00:07<00:01, 50.8MB/s] 95%|█████████▍| 1.14G/1.21G [00:07<00:01, 54.1MB/s] 96%|█████████▌| 1.16G/1.21G [00:07<00:00, 66.6MB/s] 97%|█████████▋| 1.17G/1.21G [00:08<00:00, 45.6MB/s] 98%|█████████▊| 1.19G/1.21G [00:08<00:00, 62.3MB/s] 99%|█████████▉| 1.20G/1.21G [00:08<00:00, 43.8MB/s]100%|██████████| 1.21G/1.21G [00:08<00:00, 134MB/s] 
+[✓] Checkpoint ready: 1.21 GB
+
+################################################################################
+# SWEEP: plain_lora_lr3e-05_alpha0.25 (5 epochs)
+################################################################################
+[*] Training on device: cuda
+[*] Training samples: ['kidney_1_dense', 'kidney_2', 'kidney_3_dense', 'kidney_3_sparse'] (held out for OOD test: ('kidney_1_voi',))
+[*] Loaded pretrained SAM-Med3D weights from /kaggle/working/hip-vesseladapt/external/SAM-Med3D/ckpt/sam_med3d.pth (0 missing, 0 unexpected keys)
+[*] Injected LoRA (r=4, alpha=1.0) into 24 attention layers
+[*] Starting fresh
+[*] Trainable parameters: 7,805,488
+[*] Training epochs 1 to 5...
+  Batch [3/80] - Sample: kidney_1_dense - Step Loss: 1.8114
+  Batch [4/80] - Sample: kidney_3_sparse - Step Loss: 2.6892
+  Batch [5/80] - Sample: kidney_2 - Step Loss: 2.4936
+  Batch [8/80] - Sample: kidney_2 - Step Loss: 2.4177
+  Batch [11/80] - Sample: kidney_1_dense - Step Loss: 2.5074
+  Batch [12/80] - Sample: kidney_3_dense - Step Loss: 2.5325
+  Batch [13/80] - Sample: kidney_1_dense - Step Loss: 2.5178
+  Batch [18/80] - Sample: kidney_3_dense - Step Loss: 2.0377
+  Batch [20/80] - Sample: kidney_1_dense - Step Loss: 1.7936
+  Batch [28/80] - Sample: kidney_3_sparse - Step Loss: 2.3218
+  Batch [30/80] - Sample: kidney_1_dense - Step Loss: 2.6446
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 1.8665
+  Batch [42/80] - Sample: kidney_3_sparse - Step Loss: 1.7876
+  Batch [54/80] - Sample: kidney_1_dense - Step Loss: 1.6788
+  Batch [59/80] - Sample: kidney_3_sparse - Step Loss: 1.6153
+  Batch [63/80] - Sample: kidney_3_dense - Step Loss: 1.5506
+  Batch [65/80] - Sample: kidney_3_sparse - Step Loss: 2.5827
+  Batch [69/80] - Sample: kidney_3_sparse - Step Loss: 1.4890
+  Batch [77/80] - Sample: kidney_1_dense - Step Loss: 2.8437
+[✓] Epoch [1/5] Complete - Avg Loss: 2.1675 (61 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 1 -> checkpoints_sweep/plain_lora_lr3e-05_alpha0.25/best_model_plain_lora.pth
+  Batch [11/80] - Sample: kidney_2 - Step Loss: 1.4719
+  Batch [12/80] - Sample: kidney_3_dense - Step Loss: 1.4915
+  Batch [14/80] - Sample: kidney_3_dense - Step Loss: 1.5052
+  Batch [22/80] - Sample: kidney_3_dense - Step Loss: 1.4368
+  Batch [23/80] - Sample: kidney_1_dense - Step Loss: 3.3177
+  Batch [33/80] - Sample: kidney_3_sparse - Step Loss: 1.7225
+  Batch [37/80] - Sample: kidney_3_sparse - Step Loss: 1.4773
+  Batch [39/80] - Sample: kidney_1_dense - Step Loss: 1.5272
+  Batch [42/80] - Sample: kidney_2 - Step Loss: 1.6375
+  Batch [44/80] - Sample: kidney_2 - Step Loss: 1.5544
+  Batch [48/80] - Sample: kidney_1_dense - Step Loss: 1.5094
+  Batch [50/80] - Sample: kidney_3_dense - Step Loss: 1.6056
+  Batch [61/80] - Sample: kidney_1_dense - Step Loss: 3.1482
+  Batch [65/80] - Sample: kidney_3_sparse - Step Loss: 1.8907
+  Batch [69/80] - Sample: kidney_2 - Step Loss: 1.4548
+  Batch [72/80] - Sample: kidney_2 - Step Loss: 1.8114
+  Batch [79/80] - Sample: kidney_3_dense - Step Loss: 2.2254
+[✓] Epoch [2/5] Complete - Avg Loss: 1.8110 (63 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 2 -> checkpoints_sweep/plain_lora_lr3e-05_alpha0.25/best_model_plain_lora.pth
+  Batch [1/80] - Sample: kidney_1_dense - Step Loss: 1.5504
+  Batch [13/80] - Sample: kidney_2 - Step Loss: 1.5833
+  Batch [15/80] - Sample: kidney_3_sparse - Step Loss: 1.9210
+  Batch [17/80] - Sample: kidney_3_sparse - Step Loss: 1.4714
+  Batch [20/80] - Sample: kidney_2 - Step Loss: 1.8184
+  Batch [24/80] - Sample: kidney_1_dense - Step Loss: 2.0909
+  Batch [30/80] - Sample: kidney_3_sparse - Step Loss: 2.4297
+  Batch [34/80] - Sample: kidney_2 - Step Loss: 1.5714
+  Batch [35/80] - Sample: kidney_2 - Step Loss: 1.7325
+  Batch [39/80] - Sample: kidney_1_dense - Step Loss: 1.6140
+  Batch [46/80] - Sample: kidney_1_dense - Step Loss: 2.1601
+  Batch [49/80] - Sample: kidney_2 - Step Loss: 1.5216
+  Batch [59/80] - Sample: kidney_1_dense - Step Loss: 1.4752
+  Batch [74/80] - Sample: kidney_3_dense - Step Loss: 1.5123
+  Batch [80/80] - Sample: kidney_2 - Step Loss: 2.5498
+[✓] Epoch [3/5] Complete - Avg Loss: 1.8001 (65 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 3 -> checkpoints_sweep/plain_lora_lr3e-05_alpha0.25/best_model_plain_lora.pth
+  Batch [1/80] - Sample: kidney_1_dense - Step Loss: 1.7103
+  Batch [7/80] - Sample: kidney_3_sparse - Step Loss: 1.5421
+  Batch [8/80] - Sample: kidney_3_dense - Step Loss: 2.3627
+  Batch [14/80] - Sample: kidney_3_dense - Step Loss: 1.4973
+  Batch [15/80] - Sample: kidney_3_sparse - Step Loss: 1.5932
+  Batch [19/80] - Sample: kidney_3_dense - Step Loss: 2.2523
+  Batch [28/80] - Sample: kidney_3_dense - Step Loss: 2.6017
+  Batch [29/80] - Sample: kidney_3_dense - Step Loss: 1.8146
+  Batch [32/80] - Sample: kidney_2 - Step Loss: 1.8426
+  Batch [38/80] - Sample: kidney_1_dense - Step Loss: 1.8693
+  Batch [39/80] - Sample: kidney_3_dense - Step Loss: 2.1867
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 1.8516
+  Batch [42/80] - Sample: kidney_3_sparse - Step Loss: 1.6261
+  Batch [59/80] - Sample: kidney_3_dense - Step Loss: 1.6459
+  Batch [61/80] - Sample: kidney_3_sparse - Step Loss: 1.5240
+  Batch [62/80] - Sample: kidney_1_dense - Step Loss: 2.8729
+  Batch [64/80] - Sample: kidney_3_sparse - Step Loss: 2.4205
+  Batch [68/80] - Sample: kidney_2 - Step Loss: 1.6862
+  Batch [70/80] - Sample: kidney_1_dense - Step Loss: 1.5200
+  Batch [72/80] - Sample: kidney_1_dense - Step Loss: 1.4993
+  Batch [75/80] - Sample: kidney_1_dense - Step Loss: 1.5378
+  Batch [77/80] - Sample: kidney_1_dense - Step Loss: 2.6550
+  Batch [78/80] - Sample: kidney_1_dense - Step Loss: 2.7589
+  Batch [79/80] - Sample: kidney_2 - Step Loss: 1.8450
+[✓] Epoch [4/5] Complete - Avg Loss: 1.9465 (56 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 4 -> checkpoints_sweep/plain_lora_lr3e-05_alpha0.25/best_model_plain_lora.pth
+  Batch [5/80] - Sample: kidney_3_dense - Step Loss: 1.7280
+  Batch [6/80] - Sample: kidney_1_dense - Step Loss: 2.0124
+  Batch [7/80] - Sample: kidney_3_sparse - Step Loss: 1.8311
+  Batch [8/80] - Sample: kidney_2 - Step Loss: 1.7239
+  Batch [10/80] - Sample: kidney_3_dense - Step Loss: 1.6269
+  Batch [12/80] - Sample: kidney_1_dense - Step Loss: 1.8818
+  Batch [14/80] - Sample: kidney_2 - Step Loss: 1.5697
+  Batch [16/80] - Sample: kidney_3_sparse - Step Loss: 2.1796
+  Batch [22/80] - Sample: kidney_2 - Step Loss: 1.5005
+  Batch [23/80] - Sample: kidney_3_dense - Step Loss: 1.7903
+  Batch [27/80] - Sample: kidney_2 - Step Loss: 1.8842
+  Batch [28/80] - Sample: kidney_3_dense - Step Loss: 1.8434
+  Batch [29/80] - Sample: kidney_3_dense - Step Loss: 1.4413
+  Batch [34/80] - Sample: kidney_2 - Step Loss: 1.4300
+  Batch [37/80] - Sample: kidney_3_sparse - Step Loss: 1.8714
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 2.3412
+  Batch [41/80] - Sample: kidney_3_sparse - Step Loss: 1.4167
+  Batch [44/80] - Sample: kidney_1_dense - Step Loss: 2.3507
+  Batch [46/80] - Sample: kidney_3_sparse - Step Loss: 1.7194
+  Batch [54/80] - Sample: kidney_3_sparse - Step Loss: 2.2403
+  Batch [66/80] - Sample: kidney_2 - Step Loss: 1.7397
+  Batch [67/80] - Sample: kidney_1_dense - Step Loss: 1.9701
+  Batch [68/80] - Sample: kidney_1_dense - Step Loss: 2.1277
+  Batch [74/80] - Sample: kidney_1_dense - Step Loss: 1.9095
+  Batch [78/80] - Sample: kidney_2 - Step Loss: 1.8165
+[✓] Epoch [5/5] Complete - Avg Loss: 1.8379 (55 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 5 -> checkpoints_sweep/plain_lora_lr3e-05_alpha0.25/best_model_plain_lora.pth
+[✓] Training complete: 5 total epochs.
+[*] Running SWEEP EVAL: plain_lora_lr3e-05_alpha0.25 on device: cuda
+[*] Loaded pretrained SAM-Med3D weights from /kaggle/working/hip-vesseladapt/external/SAM-Med3D/ckpt/sam_med3d.pth (0 missing, 0 unexpected keys)
+[*] Injected LoRA (r=4, alpha=1.0) into 24 attention layers
+[✓] Loaded fine-tuned model weights from checkpoints_sweep/plain_lora_lr3e-05_alpha0.25/best_model_plain_lora.pth
+/usr/local/lib/python3.12/dist-packages/monai/utils/deprecate_utils.py:220: FutureWarning: monai.metrics.utils get_mask_edges:always_return_as_numpy: Argument `always_return_as_numpy` has been deprecated since version 1.5.0. It will be removed in version 1.7.0. The option is removed and the return type will always be equal to the input type.
+  warn_deprecated(argname, msg, warning_category)
+/usr/local/lib/python3.12/dist-packages/monai/utils/deprecate_utils.py:220: FutureWarning: monai.metrics.utils get_mask_edges:always_return_as_numpy: Argument `always_return_as_numpy` has been deprecated since version 1.5.0. It will be removed in version 1.7.0. The option is removed and the return type will always be equal to the input type.
+  warn_deprecated(argname, msg, warning_category)
+
+================================================================================
+SWEEP EVAL: plain_lora_lr3e-05_alpha0.25
+================================================================================
+  Samples evaluated       : 100
+  Empty-target patches    : 84/100 (excluded from Dice/IoU/clDice/HD95/ASSD below -- undefined/misleading on empty GT)
+  Mean target FG fraction : 0.1129% (over ALL patches, incl. empty)
+  Dice                    : 0.0306  (n=16)
+  IoU                     : 0.0160  (n=16)
+  clDice                  : 0.0115  (n=16)
+  HD95 (voxels)           : 51.0152  (n=16)
+  ASSD (voxels)           : 28.8159  (n=16)
+  Total parameters        : 100,730,416
+  Trainable parameters    : 7,805,488 (7.75%)
+  Mean inference time     : 247.2 ms/patch (cuda)
+================================================================================
+
+################################################################################
+# SWEEP: plain_lora_lr3e-05_alpha0.6 (5 epochs)
+################################################################################
+[*] Training on device: cuda
+[*] Training samples: ['kidney_1_dense', 'kidney_2', 'kidney_3_dense', 'kidney_3_sparse'] (held out for OOD test: ('kidney_1_voi',))
+[*] Loaded pretrained SAM-Med3D weights from /kaggle/working/hip-vesseladapt/external/SAM-Med3D/ckpt/sam_med3d.pth (0 missing, 0 unexpected keys)
+[*] Injected LoRA (r=4, alpha=1.0) into 24 attention layers
+[*] Starting fresh
+[*] Trainable parameters: 7,805,488
+[*] Training epochs 1 to 5...
+  Batch [3/80] - Sample: kidney_1_dense - Step Loss: 2.0375
+  Batch [4/80] - Sample: kidney_3_sparse - Step Loss: 3.0266
+  Batch [5/80] - Sample: kidney_2 - Step Loss: 2.8047
+  Batch [8/80] - Sample: kidney_2 - Step Loss: 2.7687
+  Batch [11/80] - Sample: kidney_1_dense - Step Loss: 2.8537
+  Batch [12/80] - Sample: kidney_3_dense - Step Loss: 2.8868
+  Batch [13/80] - Sample: kidney_1_dense - Step Loss: 2.8222
+  Batch [18/80] - Sample: kidney_3_dense - Step Loss: 2.3934
+  Batch [20/80] - Sample: kidney_1_dense - Step Loss: 2.1263
+  Batch [28/80] - Sample: kidney_3_sparse - Step Loss: 2.6232
+  Batch [30/80] - Sample: kidney_1_dense - Step Loss: 2.9455
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 2.2040
+  Batch [42/80] - Sample: kidney_3_sparse - Step Loss: 2.1296
+  Batch [54/80] - Sample: kidney_1_dense - Step Loss: 2.0225
+  Batch [59/80] - Sample: kidney_3_sparse - Step Loss: 1.9636
+  Batch [63/80] - Sample: kidney_3_dense - Step Loss: 1.8997
+  Batch [65/80] - Sample: kidney_3_sparse - Step Loss: 2.8801
+  Batch [69/80] - Sample: kidney_3_sparse - Step Loss: 1.8403
+  Batch [77/80] - Sample: kidney_1_dense - Step Loss: 3.1611
+[✓] Epoch [1/5] Complete - Avg Loss: 2.4942 (61 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 1 -> checkpoints_sweep/plain_lora_lr3e-05_alpha0.6/best_model_plain_lora.pth
+  Batch [11/80] - Sample: kidney_2 - Step Loss: 1.8234
+  Batch [12/80] - Sample: kidney_3_dense - Step Loss: 1.8395
+  Batch [14/80] - Sample: kidney_3_dense - Step Loss: 1.8487
+  Batch [22/80] - Sample: kidney_3_dense - Step Loss: 1.7842
+  Batch [23/80] - Sample: kidney_1_dense - Step Loss: 3.6470
+  Batch [33/80] - Sample: kidney_3_sparse - Step Loss: 2.0658
+  Batch [37/80] - Sample: kidney_3_sparse - Step Loss: 1.8214
+  Batch [39/80] - Sample: kidney_1_dense - Step Loss: 1.8690
+  Batch [42/80] - Sample: kidney_2 - Step Loss: 1.9824
+  Batch [44/80] - Sample: kidney_2 - Step Loss: 1.8955
+  Batch [48/80] - Sample: kidney_1_dense - Step Loss: 1.8521
+  Batch [50/80] - Sample: kidney_3_dense - Step Loss: 1.9481
+  Batch [61/80] - Sample: kidney_1_dense - Step Loss: 3.4900
+  Batch [65/80] - Sample: kidney_3_sparse - Step Loss: 2.2302
+  Batch [69/80] - Sample: kidney_2 - Step Loss: 1.8057
+  Batch [72/80] - Sample: kidney_2 - Step Loss: 2.1502
+  Batch [79/80] - Sample: kidney_3_dense - Step Loss: 2.5425
+[✓] Epoch [2/5] Complete - Avg Loss: 2.1527 (63 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 2 -> checkpoints_sweep/plain_lora_lr3e-05_alpha0.6/best_model_plain_lora.pth
+  Batch [1/80] - Sample: kidney_1_dense - Step Loss: 1.9083
+  Batch [13/80] - Sample: kidney_2 - Step Loss: 1.9408
+  Batch [15/80] - Sample: kidney_3_sparse - Step Loss: 2.2402
+  Batch [17/80] - Sample: kidney_3_sparse - Step Loss: 1.8247
+  Batch [20/80] - Sample: kidney_2 - Step Loss: 2.1608
+  Batch [24/80] - Sample: kidney_1_dense - Step Loss: 2.4277
+  Batch [30/80] - Sample: kidney_3_sparse - Step Loss: 2.7427
+  Batch [34/80] - Sample: kidney_2 - Step Loss: 1.9201
+  Batch [35/80] - Sample: kidney_2 - Step Loss: 2.0680
+  Batch [39/80] - Sample: kidney_1_dense - Step Loss: 1.9590
+  Batch [46/80] - Sample: kidney_1_dense - Step Loss: 2.5043
+  Batch [49/80] - Sample: kidney_2 - Step Loss: 1.8622
+  Batch [59/80] - Sample: kidney_1_dense - Step Loss: 1.8088
+  Batch [74/80] - Sample: kidney_3_dense - Step Loss: 1.8431
+  Batch [80/80] - Sample: kidney_2 - Step Loss: 2.9083
+[✓] Epoch [3/5] Complete - Avg Loss: 2.1413 (65 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 3 -> checkpoints_sweep/plain_lora_lr3e-05_alpha0.6/best_model_plain_lora.pth
+  Batch [1/80] - Sample: kidney_1_dense - Step Loss: 2.0539
+  Batch [7/80] - Sample: kidney_3_sparse - Step Loss: 1.8663
+  Batch [8/80] - Sample: kidney_3_dense - Step Loss: 2.6936
+  Batch [14/80] - Sample: kidney_3_dense - Step Loss: 1.8435
+  Batch [15/80] - Sample: kidney_3_sparse - Step Loss: 1.9349
+  Batch [19/80] - Sample: kidney_3_dense - Step Loss: 2.5419
+  Batch [28/80] - Sample: kidney_3_dense - Step Loss: 2.8945
+  Batch [29/80] - Sample: kidney_3_dense - Step Loss: 2.1776
+  Batch [32/80] - Sample: kidney_2 - Step Loss: 2.2173
+  Batch [38/80] - Sample: kidney_1_dense - Step Loss: 2.2528
+  Batch [39/80] - Sample: kidney_3_dense - Step Loss: 2.5258
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 2.1987
+  Batch [42/80] - Sample: kidney_3_sparse - Step Loss: 1.9508
+  Batch [59/80] - Sample: kidney_3_dense - Step Loss: 1.9737
+  Batch [61/80] - Sample: kidney_3_sparse - Step Loss: 1.8531
+  Batch [62/80] - Sample: kidney_1_dense - Step Loss: 3.2528
+  Batch [64/80] - Sample: kidney_3_sparse - Step Loss: 2.7708
+  Batch [68/80] - Sample: kidney_2 - Step Loss: 2.0218
+  Batch [70/80] - Sample: kidney_1_dense - Step Loss: 1.8582
+  Batch [72/80] - Sample: kidney_1_dense - Step Loss: 1.8436
+  Batch [75/80] - Sample: kidney_1_dense - Step Loss: 1.8815
+  Batch [77/80] - Sample: kidney_1_dense - Step Loss: 2.9494
+  Batch [78/80] - Sample: kidney_1_dense - Step Loss: 3.0398
+  Batch [79/80] - Sample: kidney_2 - Step Loss: 2.1931
+[✓] Epoch [4/5] Complete - Avg Loss: 2.2829 (56 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 4 -> checkpoints_sweep/plain_lora_lr3e-05_alpha0.6/best_model_plain_lora.pth
+  Batch [5/80] - Sample: kidney_3_dense - Step Loss: 2.0830
+  Batch [6/80] - Sample: kidney_1_dense - Step Loss: 2.3499
+  Batch [7/80] - Sample: kidney_3_sparse - Step Loss: 2.1832
+  Batch [8/80] - Sample: kidney_2 - Step Loss: 2.0804
+  Batch [10/80] - Sample: kidney_3_dense - Step Loss: 1.9868
+  Batch [12/80] - Sample: kidney_1_dense - Step Loss: 2.2280
+  Batch [14/80] - Sample: kidney_2 - Step Loss: 1.9172
+  Batch [16/80] - Sample: kidney_3_sparse - Step Loss: 2.4968
+  Batch [22/80] - Sample: kidney_2 - Step Loss: 1.8545
+  Batch [23/80] - Sample: kidney_3_dense - Step Loss: 2.1419
+  Batch [27/80] - Sample: kidney_2 - Step Loss: 2.2275
+  Batch [28/80] - Sample: kidney_3_dense - Step Loss: 2.1905
+  Batch [29/80] - Sample: kidney_3_dense - Step Loss: 1.7936
+  Batch [34/80] - Sample: kidney_2 - Step Loss: 1.7825
+  Batch [37/80] - Sample: kidney_3_sparse - Step Loss: 2.2060
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 2.6224
+  Batch [41/80] - Sample: kidney_3_sparse - Step Loss: 1.7684
+  Batch [44/80] - Sample: kidney_1_dense - Step Loss: 2.6583
+  Batch [46/80] - Sample: kidney_3_sparse - Step Loss: 2.0525
+  Batch [54/80] - Sample: kidney_3_sparse - Step Loss: 2.5277
+  Batch [66/80] - Sample: kidney_2 - Step Loss: 2.0776
+  Batch [67/80] - Sample: kidney_1_dense - Step Loss: 2.2475
+  Batch [68/80] - Sample: kidney_1_dense - Step Loss: 2.4383
+  Batch [74/80] - Sample: kidney_1_dense - Step Loss: 2.2399
+  Batch [78/80] - Sample: kidney_2 - Step Loss: 2.1478
+[✓] Epoch [5/5] Complete - Avg Loss: 2.1721 (55 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 5 -> checkpoints_sweep/plain_lora_lr3e-05_alpha0.6/best_model_plain_lora.pth
+[✓] Training complete: 5 total epochs.
+[*] Running SWEEP EVAL: plain_lora_lr3e-05_alpha0.6 on device: cuda
+[*] Loaded pretrained SAM-Med3D weights from /kaggle/working/hip-vesseladapt/external/SAM-Med3D/ckpt/sam_med3d.pth (0 missing, 0 unexpected keys)
+[*] Injected LoRA (r=4, alpha=1.0) into 24 attention layers
+[✓] Loaded fine-tuned model weights from checkpoints_sweep/plain_lora_lr3e-05_alpha0.6/best_model_plain_lora.pth
+
+================================================================================
+SWEEP EVAL: plain_lora_lr3e-05_alpha0.6
+================================================================================
+  Samples evaluated       : 100
+  Empty-target patches    : 84/100 (excluded from Dice/IoU/clDice/HD95/ASSD below -- undefined/misleading on empty GT)
+  Mean target FG fraction : 0.1129% (over ALL patches, incl. empty)
+  Dice                    : 0.0320  (n=16)
+  IoU                     : 0.0167  (n=16)
+  clDice                  : 0.0136  (n=16)
+  HD95 (voxels)           : 50.5730  (n=16)
+  ASSD (voxels)           : 28.5069  (n=16)
+  Total parameters        : 100,730,416
+  Trainable parameters    : 7,805,488 (7.75%)
+  Mean inference time     : 244.5 ms/patch (cuda)
+================================================================================
+
+################################################################################
+# SWEEP: plain_lora_lr0.0001_alpha0.25 (5 epochs)
+################################################################################
+[*] Training on device: cuda
+[*] Training samples: ['kidney_1_dense', 'kidney_2', 'kidney_3_dense', 'kidney_3_sparse'] (held out for OOD test: ('kidney_1_voi',))
+[*] Loaded pretrained SAM-Med3D weights from /kaggle/working/hip-vesseladapt/external/SAM-Med3D/ckpt/sam_med3d.pth (0 missing, 0 unexpected keys)
+[*] Injected LoRA (r=4, alpha=1.0) into 24 attention layers
+[*] Starting fresh
+[*] Trainable parameters: 7,805,488
+[*] Training epochs 1 to 5...
+  Batch [3/80] - Sample: kidney_1_dense - Step Loss: 1.8114
+  Batch [4/80] - Sample: kidney_3_sparse - Step Loss: 3.3867
+  Batch [5/80] - Sample: kidney_2 - Step Loss: 2.3815
+  Batch [8/80] - Sample: kidney_2 - Step Loss: 2.5224
+  Batch [11/80] - Sample: kidney_1_dense - Step Loss: 2.8873
+  Batch [12/80] - Sample: kidney_3_dense - Step Loss: 2.6555
+  Batch [13/80] - Sample: kidney_1_dense - Step Loss: 2.4130
+  Batch [18/80] - Sample: kidney_3_dense - Step Loss: 2.3147
+  Batch [20/80] - Sample: kidney_1_dense - Step Loss: 1.8082
+  Batch [28/80] - Sample: kidney_3_sparse - Step Loss: 3.1229
+  Batch [30/80] - Sample: kidney_1_dense - Step Loss: 2.9096
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 1.9033
+  Batch [42/80] - Sample: kidney_3_sparse - Step Loss: 2.1055
+  Batch [54/80] - Sample: kidney_1_dense - Step Loss: 2.1388
+  Batch [59/80] - Sample: kidney_3_sparse - Step Loss: 2.0573
+  Batch [63/80] - Sample: kidney_3_dense - Step Loss: 1.8663
+  Batch [65/80] - Sample: kidney_3_sparse - Step Loss: 2.4539
+  Batch [69/80] - Sample: kidney_3_sparse - Step Loss: 1.6142
+  Batch [77/80] - Sample: kidney_1_dense - Step Loss: 2.9550
+[✓] Epoch [1/5] Complete - Avg Loss: 2.3846 (61 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 1 -> checkpoints_sweep/plain_lora_lr0.0001_alpha0.25/best_model_plain_lora.pth
+  Batch [11/80] - Sample: kidney_2 - Step Loss: 1.5083
+  Batch [12/80] - Sample: kidney_3_dense - Step Loss: 1.5051
+  Batch [14/80] - Sample: kidney_3_dense - Step Loss: 1.4742
+  Batch [22/80] - Sample: kidney_3_dense - Step Loss: 1.4260
+  Batch [23/80] - Sample: kidney_1_dense - Step Loss: 3.4710
+  Batch [33/80] - Sample: kidney_3_sparse - Step Loss: 1.7466
+  Batch [37/80] - Sample: kidney_3_sparse - Step Loss: 1.4621
+  Batch [39/80] - Sample: kidney_1_dense - Step Loss: 1.5150
+  Batch [42/80] - Sample: kidney_2 - Step Loss: 1.6630
+  Batch [44/80] - Sample: kidney_2 - Step Loss: 1.5514
+  Batch [48/80] - Sample: kidney_1_dense - Step Loss: 1.4743
+  Batch [50/80] - Sample: kidney_3_dense - Step Loss: 1.5988
+  Batch [61/80] - Sample: kidney_1_dense - Step Loss: 3.3150
+  Batch [65/80] - Sample: kidney_3_sparse - Step Loss: 1.9880
+  Batch [69/80] - Sample: kidney_2 - Step Loss: 1.4804
+  Batch [72/80] - Sample: kidney_2 - Step Loss: 1.8610
+  Batch [79/80] - Sample: kidney_3_dense - Step Loss: 2.3697
+[✓] Epoch [2/5] Complete - Avg Loss: 1.8476 (63 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 2 -> checkpoints_sweep/plain_lora_lr0.0001_alpha0.25/best_model_plain_lora.pth
+  Batch [1/80] - Sample: kidney_1_dense - Step Loss: 1.6004
+  Batch [13/80] - Sample: kidney_2 - Step Loss: 1.6359
+  Batch [15/80] - Sample: kidney_3_sparse - Step Loss: 2.0433
+  Batch [17/80] - Sample: kidney_3_sparse - Step Loss: 1.5614
+  Batch [20/80] - Sample: kidney_2 - Step Loss: 1.8927
+  Batch [24/80] - Sample: kidney_1_dense - Step Loss: 2.1563
+  Batch [30/80] - Sample: kidney_3_sparse - Step Loss: 2.6427
+  Batch [34/80] - Sample: kidney_2 - Step Loss: 1.6191
+  Batch [35/80] - Sample: kidney_2 - Step Loss: 1.8361
+  Batch [39/80] - Sample: kidney_1_dense - Step Loss: 1.6674
+  Batch [46/80] - Sample: kidney_1_dense - Step Loss: 2.1864
+  Batch [49/80] - Sample: kidney_2 - Step Loss: 1.5246
+  Batch [59/80] - Sample: kidney_1_dense - Step Loss: 1.5033
+  Batch [74/80] - Sample: kidney_3_dense - Step Loss: 1.5194
+  Batch [80/80] - Sample: kidney_2 - Step Loss: 2.8081
+[✓] Epoch [3/5] Complete - Avg Loss: 1.8798 (65 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 3 -> checkpoints_sweep/plain_lora_lr0.0001_alpha0.25/best_model_plain_lora.pth
+  Batch [1/80] - Sample: kidney_1_dense - Step Loss: 1.6922
+  Batch [7/80] - Sample: kidney_3_sparse - Step Loss: 1.6629
+  Batch [8/80] - Sample: kidney_3_dense - Step Loss: 2.7540
+  Batch [14/80] - Sample: kidney_3_dense - Step Loss: 1.5138
+  Batch [15/80] - Sample: kidney_3_sparse - Step Loss: 1.6628
+  Batch [19/80] - Sample: kidney_3_dense - Step Loss: 2.4874
+  Batch [28/80] - Sample: kidney_3_dense - Step Loss: 2.3876
+  Batch [29/80] - Sample: kidney_3_dense - Step Loss: 1.9331
+  Batch [32/80] - Sample: kidney_2 - Step Loss: 1.9334
+  Batch [38/80] - Sample: kidney_1_dense - Step Loss: 1.8548
+  Batch [39/80] - Sample: kidney_3_dense - Step Loss: 2.2368
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 1.8910
+  Batch [42/80] - Sample: kidney_3_sparse - Step Loss: 1.7558
+  Batch [59/80] - Sample: kidney_3_dense - Step Loss: 1.7457
+  Batch [61/80] - Sample: kidney_3_sparse - Step Loss: 1.5991
+  Batch [62/80] - Sample: kidney_1_dense - Step Loss: 2.8430
+  Batch [64/80] - Sample: kidney_3_sparse - Step Loss: 2.6836
+  Batch [68/80] - Sample: kidney_2 - Step Loss: 1.7280
+  Batch [70/80] - Sample: kidney_1_dense - Step Loss: 1.5380
+  Batch [72/80] - Sample: kidney_1_dense - Step Loss: 1.5416
+  Batch [75/80] - Sample: kidney_1_dense - Step Loss: 1.5632
+  Batch [77/80] - Sample: kidney_1_dense - Step Loss: 2.6742
+  Batch [78/80] - Sample: kidney_1_dense - Step Loss: 2.5446
+  Batch [79/80] - Sample: kidney_2 - Step Loss: 1.9101
+[✓] Epoch [4/5] Complete - Avg Loss: 2.0057 (56 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 4 -> checkpoints_sweep/plain_lora_lr0.0001_alpha0.25/best_model_plain_lora.pth
+  Batch [5/80] - Sample: kidney_3_dense - Step Loss: 1.7770
+  Batch [6/80] - Sample: kidney_1_dense - Step Loss: 2.0568
+  Batch [7/80] - Sample: kidney_3_sparse - Step Loss: 1.9440
+  Batch [8/80] - Sample: kidney_2 - Step Loss: 1.7920
+  Batch [10/80] - Sample: kidney_3_dense - Step Loss: 1.7028
+  Batch [12/80] - Sample: kidney_1_dense - Step Loss: 1.9281
+  Batch [14/80] - Sample: kidney_2 - Step Loss: 1.6026
+  Batch [16/80] - Sample: kidney_3_sparse - Step Loss: 2.4901
+  Batch [22/80] - Sample: kidney_2 - Step Loss: 1.5235
+  Batch [23/80] - Sample: kidney_3_dense - Step Loss: 1.7248
+  Batch [27/80] - Sample: kidney_2 - Step Loss: 1.8827
+  Batch [28/80] - Sample: kidney_3_dense - Step Loss: 1.9009
+  Batch [29/80] - Sample: kidney_3_dense - Step Loss: 1.4166
+  Batch [34/80] - Sample: kidney_2 - Step Loss: 1.4097
+  Batch [37/80] - Sample: kidney_3_sparse - Step Loss: 1.9666
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 2.7235
+  Batch [41/80] - Sample: kidney_3_sparse - Step Loss: 1.4123
+  Batch [44/80] - Sample: kidney_1_dense - Step Loss: 2.4384
+  Batch [46/80] - Sample: kidney_3_sparse - Step Loss: 1.7922
+  Batch [54/80] - Sample: kidney_3_sparse - Step Loss: 2.3702
+  Batch [66/80] - Sample: kidney_2 - Step Loss: 1.8389
+  Batch [67/80] - Sample: kidney_1_dense - Step Loss: 1.7583
+  Batch [68/80] - Sample: kidney_1_dense - Step Loss: 2.2407
+  Batch [74/80] - Sample: kidney_1_dense - Step Loss: 2.1215
+  Batch [78/80] - Sample: kidney_2 - Step Loss: 2.0607
+[✓] Epoch [5/5] Complete - Avg Loss: 1.9150 (55 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 5 -> checkpoints_sweep/plain_lora_lr0.0001_alpha0.25/best_model_plain_lora.pth
+[✓] Training complete: 5 total epochs.
+[*] Running SWEEP EVAL: plain_lora_lr0.0001_alpha0.25 on device: cuda
+[*] Loaded pretrained SAM-Med3D weights from /kaggle/working/hip-vesseladapt/external/SAM-Med3D/ckpt/sam_med3d.pth (0 missing, 0 unexpected keys)
+[*] Injected LoRA (r=4, alpha=1.0) into 24 attention layers
+[✓] Loaded fine-tuned model weights from checkpoints_sweep/plain_lora_lr0.0001_alpha0.25/best_model_plain_lora.pth
+
+================================================================================
+SWEEP EVAL: plain_lora_lr0.0001_alpha0.25
+================================================================================
+  Samples evaluated       : 100
+  Empty-target patches    : 84/100 (excluded from Dice/IoU/clDice/HD95/ASSD below -- undefined/misleading on empty GT)
+  Mean target FG fraction : 0.1129% (over ALL patches, incl. empty)
+  Dice                    : 0.0203  (n=16)
+  IoU                     : 0.0105  (n=16)
+  clDice                  : 0.0054  (n=16)
+  HD95 (voxels)           : 52.6044  (n=16)
+  ASSD (voxels)           : 30.7976  (n=16)
+  Total parameters        : 100,730,416
+  Trainable parameters    : 7,805,488 (7.75%)
+  Mean inference time     : 246.4 ms/patch (cuda)
+================================================================================
+
+################################################################################
+# SWEEP: plain_lora_lr0.0001_alpha0.6 (5 epochs)
+################################################################################
+[*] Training on device: cuda
+[*] Training samples: ['kidney_1_dense', 'kidney_2', 'kidney_3_dense', 'kidney_3_sparse'] (held out for OOD test: ('kidney_1_voi',))
+[*] Loaded pretrained SAM-Med3D weights from /kaggle/working/hip-vesseladapt/external/SAM-Med3D/ckpt/sam_med3d.pth (0 missing, 0 unexpected keys)
+[*] Injected LoRA (r=4, alpha=1.0) into 24 attention layers
+[*] Starting fresh
+[*] Trainable parameters: 7,805,488
+[*] Training epochs 1 to 5...
+  Batch [3/80] - Sample: kidney_1_dense - Step Loss: 2.0375
+  Batch [4/80] - Sample: kidney_3_sparse - Step Loss: 3.7218
+  Batch [5/80] - Sample: kidney_2 - Step Loss: 2.6924
+  Batch [8/80] - Sample: kidney_2 - Step Loss: 2.8459
+  Batch [11/80] - Sample: kidney_1_dense - Step Loss: 3.3160
+  Batch [12/80] - Sample: kidney_3_dense - Step Loss: 3.0591
+  Batch [13/80] - Sample: kidney_1_dense - Step Loss: 2.7182
+  Batch [18/80] - Sample: kidney_3_dense - Step Loss: 2.6011
+  Batch [20/80] - Sample: kidney_1_dense - Step Loss: 2.1468
+  Batch [28/80] - Sample: kidney_3_sparse - Step Loss: 3.3728
+  Batch [30/80] - Sample: kidney_1_dense - Step Loss: 3.2548
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 2.2590
+  Batch [42/80] - Sample: kidney_3_sparse - Step Loss: 2.4633
+  Batch [54/80] - Sample: kidney_1_dense - Step Loss: 2.5181
+  Batch [59/80] - Sample: kidney_3_sparse - Step Loss: 2.4408
+  Batch [63/80] - Sample: kidney_3_dense - Step Loss: 2.2560
+  Batch [65/80] - Sample: kidney_3_sparse - Step Loss: 2.7308
+  Batch [69/80] - Sample: kidney_3_sparse - Step Loss: 2.0018
+  Batch [77/80] - Sample: kidney_1_dense - Step Loss: 3.2102
+[✓] Epoch [1/5] Complete - Avg Loss: 2.7182 (61 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 1 -> checkpoints_sweep/plain_lora_lr0.0001_alpha0.6/best_model_plain_lora.pth
+  Batch [11/80] - Sample: kidney_2 - Step Loss: 1.8692
+  Batch [12/80] - Sample: kidney_3_dense - Step Loss: 1.8590
+  Batch [14/80] - Sample: kidney_3_dense - Step Loss: 1.8091
+  Batch [22/80] - Sample: kidney_3_dense - Step Loss: 1.7610
+  Batch [23/80] - Sample: kidney_1_dense - Step Loss: 3.9516
+  Batch [33/80] - Sample: kidney_3_sparse - Step Loss: 2.0971
+  Batch [37/80] - Sample: kidney_3_sparse - Step Loss: 1.7892
+  Batch [39/80] - Sample: kidney_1_dense - Step Loss: 1.8518
+  Batch [42/80] - Sample: kidney_2 - Step Loss: 1.9990
+  Batch [44/80] - Sample: kidney_2 - Step Loss: 1.8876
+  Batch [48/80] - Sample: kidney_1_dense - Step Loss: 1.8216
+  Batch [50/80] - Sample: kidney_3_dense - Step Loss: 1.9419
+  Batch [61/80] - Sample: kidney_1_dense - Step Loss: 3.6583
+  Batch [65/80] - Sample: kidney_3_sparse - Step Loss: 2.3132
+  Batch [69/80] - Sample: kidney_2 - Step Loss: 1.8418
+  Batch [72/80] - Sample: kidney_2 - Step Loss: 2.1881
+  Batch [79/80] - Sample: kidney_3_dense - Step Loss: 2.6605
+[✓] Epoch [2/5] Complete - Avg Loss: 2.1941 (63 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 2 -> checkpoints_sweep/plain_lora_lr0.0001_alpha0.6/best_model_plain_lora.pth
+  Batch [1/80] - Sample: kidney_1_dense - Step Loss: 1.9620
+  Batch [13/80] - Sample: kidney_2 - Step Loss: 1.9948
+  Batch [15/80] - Sample: kidney_3_sparse - Step Loss: 2.3698
+  Batch [17/80] - Sample: kidney_3_sparse - Step Loss: 1.9156
+  Batch [20/80] - Sample: kidney_2 - Step Loss: 2.2257
+  Batch [24/80] - Sample: kidney_1_dense - Step Loss: 2.4871
+  Batch [30/80] - Sample: kidney_3_sparse - Step Loss: 2.9795
+  Batch [34/80] - Sample: kidney_2 - Step Loss: 1.9520
+  Batch [35/80] - Sample: kidney_2 - Step Loss: 2.1501
+  Batch [39/80] - Sample: kidney_1_dense - Step Loss: 1.9925
+  Batch [46/80] - Sample: kidney_1_dense - Step Loss: 2.5160
+  Batch [49/80] - Sample: kidney_2 - Step Loss: 1.8541
+  Batch [59/80] - Sample: kidney_1_dense - Step Loss: 1.8289
+  Batch [74/80] - Sample: kidney_3_dense - Step Loss: 1.8483
+  Batch [80/80] - Sample: kidney_2 - Step Loss: 3.1273
+[✓] Epoch [3/5] Complete - Avg Loss: 2.2136 (65 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 3 -> checkpoints_sweep/plain_lora_lr0.0001_alpha0.6/best_model_plain_lora.pth
+  Batch [1/80] - Sample: kidney_1_dense - Step Loss: 2.0360
+  Batch [7/80] - Sample: kidney_3_sparse - Step Loss: 1.9792
+  Batch [8/80] - Sample: kidney_3_dense - Step Loss: 2.9977
+  Batch [14/80] - Sample: kidney_3_dense - Step Loss: 1.8630
+  Batch [15/80] - Sample: kidney_3_sparse - Step Loss: 1.9982
+  Batch [19/80] - Sample: kidney_3_dense - Step Loss: 2.6915
+  Batch [28/80] - Sample: kidney_3_dense - Step Loss: 2.6375
+  Batch [29/80] - Sample: kidney_3_dense - Step Loss: 2.2751
+  Batch [32/80] - Sample: kidney_2 - Step Loss: 2.2956
+  Batch [38/80] - Sample: kidney_1_dense - Step Loss: 2.2356
+  Batch [39/80] - Sample: kidney_3_dense - Step Loss: 2.5394
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 2.1948
+  Batch [42/80] - Sample: kidney_3_sparse - Step Loss: 2.0374
+  Batch [59/80] - Sample: kidney_3_dense - Step Loss: 2.0302
+  Batch [61/80] - Sample: kidney_3_sparse - Step Loss: 1.8785
+  Batch [62/80] - Sample: kidney_1_dense - Step Loss: 3.3575
+  Batch [64/80] - Sample: kidney_3_sparse - Step Loss: 3.1078
+  Batch [68/80] - Sample: kidney_2 - Step Loss: 2.0371
+  Batch [70/80] - Sample: kidney_1_dense - Step Loss: 1.8684
+  Batch [72/80] - Sample: kidney_1_dense - Step Loss: 1.8946
+  Batch [75/80] - Sample: kidney_1_dense - Step Loss: 1.9295
+  Batch [77/80] - Sample: kidney_1_dense - Step Loss: 2.8650
+  Batch [78/80] - Sample: kidney_1_dense - Step Loss: 2.7105
+  Batch [79/80] - Sample: kidney_2 - Step Loss: 2.2491
+[✓] Epoch [4/5] Complete - Avg Loss: 2.3212 (56 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 4 -> checkpoints_sweep/plain_lora_lr0.0001_alpha0.6/best_model_plain_lora.pth
+  Batch [5/80] - Sample: kidney_3_dense - Step Loss: 2.1594
+  Batch [6/80] - Sample: kidney_1_dense - Step Loss: 2.3882
+  Batch [7/80] - Sample: kidney_3_sparse - Step Loss: 2.3064
+  Batch [8/80] - Sample: kidney_2 - Step Loss: 2.1523
+  Batch [10/80] - Sample: kidney_3_dense - Step Loss: 2.0628
+  Batch [12/80] - Sample: kidney_1_dense - Step Loss: 2.2664
+  Batch [14/80] - Sample: kidney_2 - Step Loss: 1.9579
+  Batch [16/80] - Sample: kidney_3_sparse - Step Loss: 2.7899
+  Batch [22/80] - Sample: kidney_2 - Step Loss: 1.8668
+  Batch [23/80] - Sample: kidney_3_dense - Step Loss: 2.0661
+  Batch [27/80] - Sample: kidney_2 - Step Loss: 2.2319
+  Batch [28/80] - Sample: kidney_3_dense - Step Loss: 2.2118
+  Batch [29/80] - Sample: kidney_3_dense - Step Loss: 1.7597
+  Batch [34/80] - Sample: kidney_2 - Step Loss: 1.7465
+  Batch [37/80] - Sample: kidney_3_sparse - Step Loss: 2.2851
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 3.0438
+  Batch [41/80] - Sample: kidney_3_sparse - Step Loss: 1.7536
+  Batch [44/80] - Sample: kidney_1_dense - Step Loss: 2.7177
+  Batch [46/80] - Sample: kidney_3_sparse - Step Loss: 2.1082
+  Batch [54/80] - Sample: kidney_3_sparse - Step Loss: 2.7124
+  Batch [66/80] - Sample: kidney_2 - Step Loss: 2.1628
+  Batch [67/80] - Sample: kidney_1_dense - Step Loss: 1.9556
+  Batch [68/80] - Sample: kidney_1_dense - Step Loss: 2.5204
+  Batch [74/80] - Sample: kidney_1_dense - Step Loss: 2.4827
+  Batch [78/80] - Sample: kidney_2 - Step Loss: 2.4297
+[✓] Epoch [5/5] Complete - Avg Loss: 2.2455 (55 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 5 -> checkpoints_sweep/plain_lora_lr0.0001_alpha0.6/best_model_plain_lora.pth
+[✓] Training complete: 5 total epochs.
+[*] Running SWEEP EVAL: plain_lora_lr0.0001_alpha0.6 on device: cuda
+[*] Loaded pretrained SAM-Med3D weights from /kaggle/working/hip-vesseladapt/external/SAM-Med3D/ckpt/sam_med3d.pth (0 missing, 0 unexpected keys)
+[*] Injected LoRA (r=4, alpha=1.0) into 24 attention layers
+[✓] Loaded fine-tuned model weights from checkpoints_sweep/plain_lora_lr0.0001_alpha0.6/best_model_plain_lora.pth
+
+================================================================================
+SWEEP EVAL: plain_lora_lr0.0001_alpha0.6
+================================================================================
+  Samples evaluated       : 100
+  Empty-target patches    : 84/100 (excluded from Dice/IoU/clDice/HD95/ASSD below -- undefined/misleading on empty GT)
+  Mean target FG fraction : 0.1129% (over ALL patches, incl. empty)
+  Dice                    : 0.0192  (n=16)
+  IoU                     : 0.0099  (n=16)
+  clDice                  : 0.0047  (n=16)
+  HD95 (voxels)           : 52.6137  (n=16)
+  ASSD (voxels)           : 30.7888  (n=16)
+  Total parameters        : 100,730,416
+  Trainable parameters    : 7,805,488 (7.75%)
+  Mean inference time     : 244.2 ms/patch (cuda)
+================================================================================
+
+################################################################################
+# SWEEP: plain_lora_lr0.0002_alpha0.25 (5 epochs)
+################################################################################
+[*] Training on device: cuda
+[*] Training samples: ['kidney_1_dense', 'kidney_2', 'kidney_3_dense', 'kidney_3_sparse'] (held out for OOD test: ('kidney_1_voi',))
+[*] Loaded pretrained SAM-Med3D weights from /kaggle/working/hip-vesseladapt/external/SAM-Med3D/ckpt/sam_med3d.pth (0 missing, 0 unexpected keys)
+[*] Injected LoRA (r=4, alpha=1.0) into 24 attention layers
+[*] Starting fresh
+[*] Trainable parameters: 7,805,488
+[*] Training epochs 1 to 5...
+  Batch [3/80] - Sample: kidney_1_dense - Step Loss: 1.8114
+  Batch [4/80] - Sample: kidney_3_sparse - Step Loss: 4.0367
+  Batch [5/80] - Sample: kidney_2 - Step Loss: 3.4871
+  Batch [8/80] - Sample: kidney_2 - Step Loss: 2.3640
+  Batch [11/80] - Sample: kidney_1_dense - Step Loss: 2.6202
+  Batch [12/80] - Sample: kidney_3_dense - Step Loss: 2.7039
+  Batch [13/80] - Sample: kidney_1_dense - Step Loss: 2.5060
+  Batch [18/80] - Sample: kidney_3_dense - Step Loss: 2.3812
+  Batch [20/80] - Sample: kidney_1_dense - Step Loss: 1.9005
+  Batch [28/80] - Sample: kidney_3_sparse - Step Loss: 2.4746
+  Batch [30/80] - Sample: kidney_1_dense - Step Loss: 2.5938
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 1.8031
+  Batch [42/80] - Sample: kidney_3_sparse - Step Loss: 1.7988
+  Batch [54/80] - Sample: kidney_1_dense - Step Loss: 1.6372
+  Batch [59/80] - Sample: kidney_3_sparse - Step Loss: 1.6266
+  Batch [63/80] - Sample: kidney_3_dense - Step Loss: 1.5032
+  Batch [65/80] - Sample: kidney_3_sparse - Step Loss: 3.1787
+  Batch [69/80] - Sample: kidney_3_sparse - Step Loss: 1.5047
+  Batch [77/80] - Sample: kidney_1_dense - Step Loss: 3.0893
+[✓] Epoch [1/5] Complete - Avg Loss: 2.3695 (61 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 1 -> checkpoints_sweep/plain_lora_lr0.0002_alpha0.25/best_model_plain_lora.pth
+  Batch [11/80] - Sample: kidney_2 - Step Loss: 1.5086
+  Batch [12/80] - Sample: kidney_3_dense - Step Loss: 1.5506
+  Batch [14/80] - Sample: kidney_3_dense - Step Loss: 1.5599
+  Batch [22/80] - Sample: kidney_3_dense - Step Loss: 1.5459
+  Batch [23/80] - Sample: kidney_1_dense - Step Loss: 2.8116
+  Batch [33/80] - Sample: kidney_3_sparse - Step Loss: 1.7782
+  Batch [37/80] - Sample: kidney_3_sparse - Step Loss: 1.5824
+  Batch [39/80] - Sample: kidney_1_dense - Step Loss: 1.6011
+  Batch [42/80] - Sample: kidney_2 - Step Loss: 1.7248
+  Batch [44/80] - Sample: kidney_2 - Step Loss: 1.5923
+  Batch [48/80] - Sample: kidney_1_dense - Step Loss: 1.4898
+  Batch [50/80] - Sample: kidney_3_dense - Step Loss: 1.6188
+  Batch [61/80] - Sample: kidney_1_dense - Step Loss: 3.2208
+  Batch [65/80] - Sample: kidney_3_sparse - Step Loss: 2.1133
+  Batch [69/80] - Sample: kidney_2 - Step Loss: 1.4368
+  Batch [72/80] - Sample: kidney_2 - Step Loss: 1.8956
+  Batch [79/80] - Sample: kidney_3_dense - Step Loss: 2.5575
+[✓] Epoch [2/5] Complete - Avg Loss: 1.8581 (63 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 2 -> checkpoints_sweep/plain_lora_lr0.0002_alpha0.25/best_model_plain_lora.pth
+  Batch [1/80] - Sample: kidney_1_dense - Step Loss: 1.5578
+  Batch [13/80] - Sample: kidney_2 - Step Loss: 1.6003
+  Batch [15/80] - Sample: kidney_3_sparse - Step Loss: 2.1332
+  Batch [17/80] - Sample: kidney_3_sparse - Step Loss: 1.5533
+  Batch [20/80] - Sample: kidney_2 - Step Loss: 1.9197
+  Batch [24/80] - Sample: kidney_1_dense - Step Loss: 2.1652
+  Batch [30/80] - Sample: kidney_3_sparse - Step Loss: 2.7026
+  Batch [34/80] - Sample: kidney_2 - Step Loss: 1.6376
+  Batch [35/80] - Sample: kidney_2 - Step Loss: 1.8757
+  Batch [39/80] - Sample: kidney_1_dense - Step Loss: 1.7036
+  Batch [46/80] - Sample: kidney_1_dense - Step Loss: 2.1938
+  Batch [49/80] - Sample: kidney_2 - Step Loss: 1.5809
+  Batch [59/80] - Sample: kidney_1_dense - Step Loss: 1.5512
+  Batch [74/80] - Sample: kidney_3_dense - Step Loss: 1.5517
+  Batch [80/80] - Sample: kidney_2 - Step Loss: 2.7293
+[✓] Epoch [3/5] Complete - Avg Loss: 1.8971 (65 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 3 -> checkpoints_sweep/plain_lora_lr0.0002_alpha0.25/best_model_plain_lora.pth
+  Batch [1/80] - Sample: kidney_1_dense - Step Loss: 1.6990
+  Batch [7/80] - Sample: kidney_3_sparse - Step Loss: 1.6844
+  Batch [8/80] - Sample: kidney_3_dense - Step Loss: 2.7014
+  Batch [14/80] - Sample: kidney_3_dense - Step Loss: 1.5240
+  Batch [15/80] - Sample: kidney_3_sparse - Step Loss: 1.6992
+  Batch [19/80] - Sample: kidney_3_dense - Step Loss: 2.5642
+  Batch [28/80] - Sample: kidney_3_dense - Step Loss: 2.3058
+  Batch [29/80] - Sample: kidney_3_dense - Step Loss: 1.9615
+  Batch [32/80] - Sample: kidney_2 - Step Loss: 2.0122
+  Batch [38/80] - Sample: kidney_1_dense - Step Loss: 1.9374
+  Batch [39/80] - Sample: kidney_3_dense - Step Loss: 2.2298
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 1.8020
+  Batch [42/80] - Sample: kidney_3_sparse - Step Loss: 1.6533
+  Batch [59/80] - Sample: kidney_3_dense - Step Loss: 1.6986
+  Batch [61/80] - Sample: kidney_3_sparse - Step Loss: 1.5248
+  Batch [62/80] - Sample: kidney_1_dense - Step Loss: 3.0608
+  Batch [64/80] - Sample: kidney_3_sparse - Step Loss: 2.9450
+  Batch [68/80] - Sample: kidney_2 - Step Loss: 1.7575
+  Batch [70/80] - Sample: kidney_1_dense - Step Loss: 1.5410
+  Batch [72/80] - Sample: kidney_1_dense - Step Loss: 1.5885
+  Batch [75/80] - Sample: kidney_1_dense - Step Loss: 1.6283
+  Batch [77/80] - Sample: kidney_1_dense - Step Loss: 2.4502
+  Batch [78/80] - Sample: kidney_1_dense - Step Loss: 2.1847
+  Batch [79/80] - Sample: kidney_2 - Step Loss: 1.9788
+[✓] Epoch [4/5] Complete - Avg Loss: 2.0055 (56 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 4 -> checkpoints_sweep/plain_lora_lr0.0002_alpha0.25/best_model_plain_lora.pth
+  Batch [5/80] - Sample: kidney_3_dense - Step Loss: 1.8276
+  Batch [6/80] - Sample: kidney_1_dense - Step Loss: 2.1008
+  Batch [7/80] - Sample: kidney_3_sparse - Step Loss: 2.0133
+  Batch [8/80] - Sample: kidney_2 - Step Loss: 1.7838
+  Batch [10/80] - Sample: kidney_3_dense - Step Loss: 1.7111
+  Batch [12/80] - Sample: kidney_1_dense - Step Loss: 1.9612
+  Batch [14/80] - Sample: kidney_2 - Step Loss: 1.6255
+  Batch [16/80] - Sample: kidney_3_sparse - Step Loss: 2.5367
+  Batch [22/80] - Sample: kidney_2 - Step Loss: 1.5702
+  Batch [23/80] - Sample: kidney_3_dense - Step Loss: 1.8214
+  Batch [27/80] - Sample: kidney_2 - Step Loss: 1.9238
+  Batch [28/80] - Sample: kidney_3_dense - Step Loss: 1.9370
+  Batch [29/80] - Sample: kidney_3_dense - Step Loss: 1.4477
+  Batch [34/80] - Sample: kidney_2 - Step Loss: 1.4254
+  Batch [37/80] - Sample: kidney_3_sparse - Step Loss: 1.9839
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 2.7422
+  Batch [41/80] - Sample: kidney_3_sparse - Step Loss: 1.4227
+  Batch [44/80] - Sample: kidney_1_dense - Step Loss: 2.3557
+  Batch [46/80] - Sample: kidney_3_sparse - Step Loss: 1.8534
+  Batch [54/80] - Sample: kidney_3_sparse - Step Loss: 2.4303
+  Batch [66/80] - Sample: kidney_2 - Step Loss: 1.8850
+  Batch [67/80] - Sample: kidney_1_dense - Step Loss: 1.6098
+  Batch [68/80] - Sample: kidney_1_dense - Step Loss: 2.2524
+  Batch [74/80] - Sample: kidney_1_dense - Step Loss: 2.2139
+  Batch [78/80] - Sample: kidney_2 - Step Loss: 2.0774
+[✓] Epoch [5/5] Complete - Avg Loss: 1.9405 (55 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 5 -> checkpoints_sweep/plain_lora_lr0.0002_alpha0.25/best_model_plain_lora.pth
+[✓] Training complete: 5 total epochs.
+[*] Running SWEEP EVAL: plain_lora_lr0.0002_alpha0.25 on device: cuda
+[*] Loaded pretrained SAM-Med3D weights from /kaggle/working/hip-vesseladapt/external/SAM-Med3D/ckpt/sam_med3d.pth (0 missing, 0 unexpected keys)
+[*] Injected LoRA (r=4, alpha=1.0) into 24 attention layers
+[✓] Loaded fine-tuned model weights from checkpoints_sweep/plain_lora_lr0.0002_alpha0.25/best_model_plain_lora.pth
+
+================================================================================
+SWEEP EVAL: plain_lora_lr0.0002_alpha0.25
+================================================================================
+  Samples evaluated       : 100
+  Empty-target patches    : 84/100 (excluded from Dice/IoU/clDice/HD95/ASSD below -- undefined/misleading on empty GT)
+  Mean target FG fraction : 0.1129% (over ALL patches, incl. empty)
+  Dice                    : 0.0319  (n=16)
+  IoU                     : 0.0167  (n=16)
+  clDice                  : 0.0258  (n=16)
+  HD95 (voxels)           : 51.4932  (n=16)
+  ASSD (voxels)           : 28.9971  (n=16)
+  Total parameters        : 100,730,416
+  Trainable parameters    : 7,805,488 (7.75%)
+  Mean inference time     : 244.3 ms/patch (cuda)
+================================================================================
+
+################################################################################
+# SWEEP: plain_lora_lr0.0002_alpha0.6 (5 epochs)
+################################################################################
+[*] Training on device: cuda
+[*] Training samples: ['kidney_1_dense', 'kidney_2', 'kidney_3_dense', 'kidney_3_sparse'] (held out for OOD test: ('kidney_1_voi',))
+[*] Loaded pretrained SAM-Med3D weights from /kaggle/working/hip-vesseladapt/external/SAM-Med3D/ckpt/sam_med3d.pth (0 missing, 0 unexpected keys)
+[*] Injected LoRA (r=4, alpha=1.0) into 24 attention layers
+[*] Starting fresh
+[*] Trainable parameters: 7,805,488
+[*] Training epochs 1 to 5...
+  Batch [3/80] - Sample: kidney_1_dense - Step Loss: 2.0375
+  Batch [4/80] - Sample: kidney_3_sparse - Step Loss: 4.3776
+  Batch [5/80] - Sample: kidney_2 - Step Loss: 3.7927
+  Batch [8/80] - Sample: kidney_2 - Step Loss: 2.7157
+  Batch [11/80] - Sample: kidney_1_dense - Step Loss: 2.9461
+  Batch [12/80] - Sample: kidney_3_dense - Step Loss: 3.0239
+  Batch [13/80] - Sample: kidney_1_dense - Step Loss: 2.7712
+  Batch [18/80] - Sample: kidney_3_dense - Step Loss: 2.6361
+  Batch [20/80] - Sample: kidney_1_dense - Step Loss: 1.9911
+  Batch [28/80] - Sample: kidney_3_sparse - Step Loss: 3.8614
+  Batch [30/80] - Sample: kidney_1_dense - Step Loss: 3.2686
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 2.2420
+  Batch [42/80] - Sample: kidney_3_sparse - Step Loss: 2.3732
+  Batch [54/80] - Sample: kidney_1_dense - Step Loss: 2.2917
+  Batch [59/80] - Sample: kidney_3_sparse - Step Loss: 2.2344
+  Batch [63/80] - Sample: kidney_3_dense - Step Loss: 2.1157
+  Batch [65/80] - Sample: kidney_3_sparse - Step Loss: 3.0352
+  Batch [69/80] - Sample: kidney_3_sparse - Step Loss: 1.9926
+  Batch [77/80] - Sample: kidney_1_dense - Step Loss: 3.0860
+[✓] Epoch [1/5] Complete - Avg Loss: 2.7786 (61 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 1 -> checkpoints_sweep/plain_lora_lr0.0002_alpha0.6/best_model_plain_lora.pth
+  Batch [11/80] - Sample: kidney_2 - Step Loss: 1.9132
+  Batch [12/80] - Sample: kidney_3_dense - Step Loss: 1.8947
+  Batch [14/80] - Sample: kidney_3_dense - Step Loss: 1.8503
+  Batch [22/80] - Sample: kidney_3_dense - Step Loss: 1.7885
+  Batch [23/80] - Sample: kidney_1_dense - Step Loss: 3.8247
+  Batch [33/80] - Sample: kidney_3_sparse - Step Loss: 2.1250
+  Batch [37/80] - Sample: kidney_3_sparse - Step Loss: 1.8592
+  Batch [39/80] - Sample: kidney_1_dense - Step Loss: 1.8861
+  Batch [42/80] - Sample: kidney_2 - Step Loss: 2.0684
+  Batch [44/80] - Sample: kidney_2 - Step Loss: 1.9354
+  Batch [48/80] - Sample: kidney_1_dense - Step Loss: 1.8461
+  Batch [50/80] - Sample: kidney_3_dense - Step Loss: 1.9868
+  Batch [61/80] - Sample: kidney_1_dense - Step Loss: 3.3816
+  Batch [65/80] - Sample: kidney_3_sparse - Step Loss: 2.4256
+  Batch [69/80] - Sample: kidney_2 - Step Loss: 1.8500
+  Batch [72/80] - Sample: kidney_2 - Step Loss: 2.2442
+  Batch [79/80] - Sample: kidney_3_dense - Step Loss: 2.8232
+[✓] Epoch [2/5] Complete - Avg Loss: 2.2178 (63 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 2 -> checkpoints_sweep/plain_lora_lr0.0002_alpha0.6/best_model_plain_lora.pth
+  Batch [1/80] - Sample: kidney_1_dense - Step Loss: 1.9746
+  Batch [13/80] - Sample: kidney_2 - Step Loss: 2.0001
+  Batch [15/80] - Sample: kidney_3_sparse - Step Loss: 2.4543
+  Batch [17/80] - Sample: kidney_3_sparse - Step Loss: 1.9264
+  Batch [20/80] - Sample: kidney_2 - Step Loss: 2.2654
+  Batch [24/80] - Sample: kidney_1_dense - Step Loss: 2.5081
+  Batch [30/80] - Sample: kidney_3_sparse - Step Loss: 3.0826
+  Batch [34/80] - Sample: kidney_2 - Step Loss: 1.9524
+  Batch [35/80] - Sample: kidney_2 - Step Loss: 2.2097
+  Batch [39/80] - Sample: kidney_1_dense - Step Loss: 2.0014
+  Batch [46/80] - Sample: kidney_1_dense - Step Loss: 2.5718
+  Batch [49/80] - Sample: kidney_2 - Step Loss: 1.8810
+  Batch [59/80] - Sample: kidney_1_dense - Step Loss: 1.8675
+  Batch [74/80] - Sample: kidney_3_dense - Step Loss: 1.8763
+  Batch [80/80] - Sample: kidney_2 - Step Loss: 3.1150
+[✓] Epoch [3/5] Complete - Avg Loss: 2.2458 (65 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 3 -> checkpoints_sweep/plain_lora_lr0.0002_alpha0.6/best_model_plain_lora.pth
+  Batch [1/80] - Sample: kidney_1_dense - Step Loss: 2.0438
+  Batch [7/80] - Sample: kidney_3_sparse - Step Loss: 2.0213
+  Batch [8/80] - Sample: kidney_3_dense - Step Loss: 2.9730
+  Batch [14/80] - Sample: kidney_3_dense - Step Loss: 1.8818
+  Batch [15/80] - Sample: kidney_3_sparse - Step Loss: 2.0577
+  Batch [19/80] - Sample: kidney_3_dense - Step Loss: 2.8912
+  Batch [28/80] - Sample: kidney_3_dense - Step Loss: 2.5749
+  Batch [29/80] - Sample: kidney_3_dense - Step Loss: 2.2999
+  Batch [32/80] - Sample: kidney_2 - Step Loss: 2.3241
+  Batch [38/80] - Sample: kidney_1_dense - Step Loss: 2.2450
+  Batch [39/80] - Sample: kidney_3_dense - Step Loss: 2.5921
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 2.2214
+  Batch [42/80] - Sample: kidney_3_sparse - Step Loss: 2.0912
+  Batch [59/80] - Sample: kidney_3_dense - Step Loss: 2.0931
+  Batch [61/80] - Sample: kidney_3_sparse - Step Loss: 1.9135
+  Batch [62/80] - Sample: kidney_1_dense - Step Loss: 3.1534
+  Batch [64/80] - Sample: kidney_3_sparse - Step Loss: 3.1276
+  Batch [68/80] - Sample: kidney_2 - Step Loss: 2.0987
+  Batch [70/80] - Sample: kidney_1_dense - Step Loss: 1.8729
+  Batch [72/80] - Sample: kidney_1_dense - Step Loss: 1.9042
+  Batch [75/80] - Sample: kidney_1_dense - Step Loss: 1.9321
+  Batch [77/80] - Sample: kidney_1_dense - Step Loss: 2.8663
+  Batch [78/80] - Sample: kidney_1_dense - Step Loss: 2.5675
+  Batch [79/80] - Sample: kidney_2 - Step Loss: 2.2907
+[✓] Epoch [4/5] Complete - Avg Loss: 2.3349 (56 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 4 -> checkpoints_sweep/plain_lora_lr0.0002_alpha0.6/best_model_plain_lora.pth
+  Batch [5/80] - Sample: kidney_3_dense - Step Loss: 2.1523
+  Batch [6/80] - Sample: kidney_1_dense - Step Loss: 2.4199
+  Batch [7/80] - Sample: kidney_3_sparse - Step Loss: 2.3548
+  Batch [8/80] - Sample: kidney_2 - Step Loss: 2.1528
+  Batch [10/80] - Sample: kidney_3_dense - Step Loss: 2.0867
+  Batch [12/80] - Sample: kidney_1_dense - Step Loss: 2.3048
+  Batch [14/80] - Sample: kidney_2 - Step Loss: 1.9889
+  Batch [16/80] - Sample: kidney_3_sparse - Step Loss: 2.7563
+  Batch [22/80] - Sample: kidney_2 - Step Loss: 1.9242
+  Batch [23/80] - Sample: kidney_3_dense - Step Loss: 2.1654
+  Batch [27/80] - Sample: kidney_2 - Step Loss: 2.2585
+  Batch [28/80] - Sample: kidney_3_dense - Step Loss: 2.2712
+  Batch [29/80] - Sample: kidney_3_dense - Step Loss: 1.7922
+  Batch [34/80] - Sample: kidney_2 - Step Loss: 1.7648
+  Batch [37/80] - Sample: kidney_3_sparse - Step Loss: 2.3219
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 3.0195
+  Batch [41/80] - Sample: kidney_3_sparse - Step Loss: 1.7604
+  Batch [44/80] - Sample: kidney_1_dense - Step Loss: 2.7400
+  Batch [46/80] - Sample: kidney_3_sparse - Step Loss: 2.2061
+  Batch [54/80] - Sample: kidney_3_sparse - Step Loss: 2.7179
+  Batch [66/80] - Sample: kidney_2 - Step Loss: 2.1830
+  Batch [67/80] - Sample: kidney_1_dense - Step Loss: 1.8452
+  Batch [68/80] - Sample: kidney_1_dense - Step Loss: 2.5499
+  Batch [74/80] - Sample: kidney_1_dense - Step Loss: 2.5375
+  Batch [78/80] - Sample: kidney_2 - Step Loss: 2.5019
+[✓] Epoch [5/5] Complete - Avg Loss: 2.2710 (55 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 5 -> checkpoints_sweep/plain_lora_lr0.0002_alpha0.6/best_model_plain_lora.pth
+[✓] Training complete: 5 total epochs.
+[*] Running SWEEP EVAL: plain_lora_lr0.0002_alpha0.6 on device: cuda
+[*] Loaded pretrained SAM-Med3D weights from /kaggle/working/hip-vesseladapt/external/SAM-Med3D/ckpt/sam_med3d.pth (0 missing, 0 unexpected keys)
+[*] Injected LoRA (r=4, alpha=1.0) into 24 attention layers
+[✓] Loaded fine-tuned model weights from checkpoints_sweep/plain_lora_lr0.0002_alpha0.6/best_model_plain_lora.pth
+
+================================================================================
+SWEEP EVAL: plain_lora_lr0.0002_alpha0.6
+================================================================================
+  Samples evaluated       : 100
+  Empty-target patches    : 84/100 (excluded from Dice/IoU/clDice/HD95/ASSD below -- undefined/misleading on empty GT)
+  Mean target FG fraction : 0.1129% (over ALL patches, incl. empty)
+  Dice                    : 0.0184  (n=16)
+  IoU                     : 0.0095  (n=16)
+  clDice                  : 0.0090  (n=16)
+  HD95 (voxels)           : 52.5862  (n=16)
+  ASSD (voxels)           : 30.6319  (n=16)
+  Total parameters        : 100,730,416
+  Trainable parameters    : 7,805,488 (7.75%)
+  Mean inference time     : 247.2 ms/patch (cuda)
+================================================================================
+
+################################################################################
+# SWEEP: spacing_lora_lr3e-05_alpha0.25 (5 epochs)
+################################################################################
+[*] Training on device: cuda
+[*] Training samples: ['kidney_1_dense', 'kidney_2', 'kidney_3_dense', 'kidney_3_sparse'] (held out for OOD test: ('kidney_1_voi',))
+[*] Loaded pretrained SAM-Med3D weights from /kaggle/working/hip-vesseladapt/external/SAM-Med3D/ckpt/sam_med3d.pth (0 missing, 0 unexpected keys)
+[*] Injected Spacing-Conditioned LoRA (r=4, alpha=1.0) into 24 attention layers
+[*] Starting fresh
+[*] Trainable parameters: 9,060,400
+[*] Training epochs 1 to 5...
+  Batch [3/80] - Sample: kidney_1_dense - Step Loss: 1.8114
+  Batch [9/80] - Sample: kidney_3_dense - Step Loss: 2.3763
+  Batch [12/80] - Sample: kidney_2 - Step Loss: 2.0135
+  Batch [14/80] - Sample: kidney_2 - Step Loss: 1.6997
+  Batch [22/80] - Sample: kidney_1_dense - Step Loss: 1.5942
+  Batch [25/80] - Sample: kidney_1_dense - Step Loss: 1.4324
+  Batch [26/80] - Sample: kidney_2 - Step Loss: 2.1404
+  Batch [28/80] - Sample: kidney_2 - Step Loss: 3.3090
+  Batch [29/80] - Sample: kidney_1_dense - Step Loss: 1.5081
+  Batch [32/80] - Sample: kidney_1_dense - Step Loss: 1.4088
+  Batch [39/80] - Sample: kidney_1_dense - Step Loss: 1.9212
+  Batch [45/80] - Sample: kidney_2 - Step Loss: 2.5026
+  Batch [57/80] - Sample: kidney_3_sparse - Step Loss: 1.4917
+  Batch [58/80] - Sample: kidney_3_dense - Step Loss: 1.7174
+  Batch [60/80] - Sample: kidney_1_dense - Step Loss: 2.8997
+  Batch [64/80] - Sample: kidney_3_dense - Step Loss: 1.5365
+  Batch [68/80] - Sample: kidney_3_dense - Step Loss: 2.4124
+  Batch [71/80] - Sample: kidney_3_sparse - Step Loss: 2.2127
+  Batch [80/80] - Sample: kidney_1_dense - Step Loss: 2.2299
+[✓] Epoch [1/5] Complete - Avg Loss: 2.0115 (61 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 1 -> checkpoints_sweep/spacing_lora_lr3e-05_alpha0.25/best_model_spacing_lora.pth
+  Batch [3/80] - Sample: kidney_2 - Step Loss: 1.9048
+  Batch [4/80] - Sample: kidney_1_dense - Step Loss: 1.8621
+  Batch [9/80] - Sample: kidney_1_dense - Step Loss: 1.7194
+  Batch [13/80] - Sample: kidney_3_dense - Step Loss: 1.7555
+  Batch [17/80] - Sample: kidney_1_dense - Step Loss: 2.6645
+  Batch [23/80] - Sample: kidney_3_dense - Step Loss: 2.0318
+  Batch [25/80] - Sample: kidney_3_sparse - Step Loss: 1.6626
+  Batch [27/80] - Sample: kidney_2 - Step Loss: 1.5954
+  Batch [33/80] - Sample: kidney_3_sparse - Step Loss: 1.5494
+  Batch [36/80] - Sample: kidney_1_dense - Step Loss: 2.4058
+  Batch [38/80] - Sample: kidney_1_dense - Step Loss: 2.4682
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 2.6109
+  Batch [44/80] - Sample: kidney_2 - Step Loss: 1.5904
+  Batch [45/80] - Sample: kidney_2 - Step Loss: 1.5652
+  Batch [46/80] - Sample: kidney_1_dense - Step Loss: 1.5532
+  Batch [49/80] - Sample: kidney_3_sparse - Step Loss: 1.6493
+  Batch [50/80] - Sample: kidney_2 - Step Loss: 1.5323
+  Batch [52/80] - Sample: kidney_3_dense - Step Loss: 1.4439
+  Batch [56/80] - Sample: kidney_2 - Step Loss: 1.7216
+  Batch [61/80] - Sample: kidney_3_dense - Step Loss: 1.4633
+  Batch [62/80] - Sample: kidney_1_dense - Step Loss: 2.7440
+  Batch [64/80] - Sample: kidney_2 - Step Loss: 1.4853
+  Batch [65/80] - Sample: kidney_3_sparse - Step Loss: 1.9270
+  Batch [68/80] - Sample: kidney_1_dense - Step Loss: 1.4463
+  Batch [69/80] - Sample: kidney_1_dense - Step Loss: 2.4961
+  Batch [71/80] - Sample: kidney_1_dense - Step Loss: 2.8021
+  Batch [73/80] - Sample: kidney_1_dense - Step Loss: 1.5120
+  Batch [76/80] - Sample: kidney_1_dense - Step Loss: 2.1096
+  Batch [78/80] - Sample: kidney_3_sparse - Step Loss: 2.2249
+[✓] Epoch [2/5] Complete - Avg Loss: 1.9137 (51 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 2 -> checkpoints_sweep/spacing_lora_lr3e-05_alpha0.25/best_model_spacing_lora.pth
+  Batch [2/80] - Sample: kidney_1_dense - Step Loss: 2.5973
+  Batch [13/80] - Sample: kidney_1_dense - Step Loss: 2.0297
+  Batch [14/80] - Sample: kidney_1_dense - Step Loss: 1.6875
+  Batch [16/80] - Sample: kidney_1_dense - Step Loss: 1.6577
+  Batch [24/80] - Sample: kidney_3_dense - Step Loss: 1.8489
+  Batch [27/80] - Sample: kidney_1_dense - Step Loss: 1.8797
+  Batch [30/80] - Sample: kidney_1_dense - Step Loss: 1.8083
+  Batch [34/80] - Sample: kidney_1_dense - Step Loss: 1.6638
+  Batch [36/80] - Sample: kidney_2 - Step Loss: 1.8213
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 1.6925
+  Batch [53/80] - Sample: kidney_3_dense - Step Loss: 2.1321
+  Batch [55/80] - Sample: kidney_2 - Step Loss: 1.5543
+  Batch [58/80] - Sample: kidney_3_dense - Step Loss: 2.5787
+  Batch [65/80] - Sample: kidney_3_dense - Step Loss: 1.5680
+  Batch [69/80] - Sample: kidney_1_dense - Step Loss: 2.0415
+  Batch [71/80] - Sample: kidney_1_dense - Step Loss: 2.2148
+  Batch [74/80] - Sample: kidney_3_sparse - Step Loss: 2.5314
+  Batch [77/80] - Sample: kidney_1_dense - Step Loss: 1.6273
+  Batch [79/80] - Sample: kidney_1_dense - Step Loss: 2.2817
+[✓] Epoch [3/5] Complete - Avg Loss: 1.9588 (61 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 3 -> checkpoints_sweep/spacing_lora_lr3e-05_alpha0.25/best_model_spacing_lora.pth
+  Batch [1/80] - Sample: kidney_3_sparse - Step Loss: 1.7170
+  Batch [5/80] - Sample: kidney_1_dense - Step Loss: 1.5748
+  Batch [6/80] - Sample: kidney_3_sparse - Step Loss: 1.7198
+  Batch [7/80] - Sample: kidney_3_sparse - Step Loss: 1.7167
+  Batch [10/80] - Sample: kidney_3_sparse - Step Loss: 1.6584
+  Batch [11/80] - Sample: kidney_3_dense - Step Loss: 1.8986
+  Batch [12/80] - Sample: kidney_1_dense - Step Loss: 2.2144
+  Batch [13/80] - Sample: kidney_1_dense - Step Loss: 1.5807
+  Batch [15/80] - Sample: kidney_2 - Step Loss: 1.4218
+  Batch [17/80] - Sample: kidney_3_sparse - Step Loss: 1.5909
+  Batch [18/80] - Sample: kidney_1_dense - Step Loss: 2.6594
+  Batch [19/80] - Sample: kidney_3_sparse - Step Loss: 1.5527
+  Batch [20/80] - Sample: kidney_3_dense - Step Loss: 1.5481
+  Batch [22/80] - Sample: kidney_1_dense - Step Loss: 1.4011
+  Batch [25/80] - Sample: kidney_3_dense - Step Loss: 2.3449
+  Batch [31/80] - Sample: kidney_1_dense - Step Loss: 1.6311
+  Batch [35/80] - Sample: kidney_3_sparse - Step Loss: 1.5518
+  Batch [36/80] - Sample: kidney_3_sparse - Step Loss: 2.3252
+  Batch [39/80] - Sample: kidney_1_dense - Step Loss: 1.5800
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 1.5535
+  Batch [42/80] - Sample: kidney_1_dense - Step Loss: 2.0157
+  Batch [51/80] - Sample: kidney_2 - Step Loss: 1.5658
+  Batch [69/80] - Sample: kidney_2 - Step Loss: 1.6787
+  Batch [72/80] - Sample: kidney_1_dense - Step Loss: 2.2080
+  Batch [74/80] - Sample: kidney_3_dense - Step Loss: 1.6073
+  Batch [75/80] - Sample: kidney_3_dense - Step Loss: 1.7993
+  Batch [78/80] - Sample: kidney_2 - Step Loss: 1.5639
+  Batch [79/80] - Sample: kidney_1_dense - Step Loss: 1.5223
+[✓] Epoch [4/5] Complete - Avg Loss: 1.7572 (52 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 4 -> checkpoints_sweep/spacing_lora_lr3e-05_alpha0.25/best_model_spacing_lora.pth
+  Batch [7/80] - Sample: kidney_3_sparse - Step Loss: 1.3923
+  Batch [11/80] - Sample: kidney_1_dense - Step Loss: 2.0862
+  Batch [13/80] - Sample: kidney_3_sparse - Step Loss: 1.5034
+  Batch [20/80] - Sample: kidney_3_sparse - Step Loss: 1.3818
+  Batch [22/80] - Sample: kidney_3_sparse - Step Loss: 2.0703
+  Batch [25/80] - Sample: kidney_3_sparse - Step Loss: 1.3904
+  Batch [30/80] - Sample: kidney_2 - Step Loss: 1.3841
+  Batch [31/80] - Sample: kidney_1_dense - Step Loss: 2.1283
+  Batch [32/80] - Sample: kidney_1_dense - Step Loss: 1.4126
+  Batch [35/80] - Sample: kidney_1_dense - Step Loss: 1.7367
+  Batch [37/80] - Sample: kidney_2 - Step Loss: 1.3571
+  Batch [38/80] - Sample: kidney_1_dense - Step Loss: 1.4570
+  Batch [39/80] - Sample: kidney_2 - Step Loss: 1.5018
+  Batch [42/80] - Sample: kidney_2 - Step Loss: 1.4512
+  Batch [43/80] - Sample: kidney_3_sparse - Step Loss: 1.4614
+  Batch [48/80] - Sample: kidney_1_dense - Step Loss: 1.7450
+  Batch [51/80] - Sample: kidney_2 - Step Loss: 1.3494
+  Batch [52/80] - Sample: kidney_3_sparse - Step Loss: 2.0623
+  Batch [56/80] - Sample: kidney_3_dense - Step Loss: 1.8667
+  Batch [58/80] - Sample: kidney_1_dense - Step Loss: 1.4538
+  Batch [68/80] - Sample: kidney_1_dense - Step Loss: 1.4814
+  Batch [71/80] - Sample: kidney_1_dense - Step Loss: 1.8367
+  Batch [75/80] - Sample: kidney_3_dense - Step Loss: 1.3827
+  Batch [76/80] - Sample: kidney_1_dense - Step Loss: 1.7873
+  Batch [79/80] - Sample: kidney_3_dense - Step Loss: 1.5079
+[✓] Epoch [5/5] Complete - Avg Loss: 1.6075 (55 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 5 -> checkpoints_sweep/spacing_lora_lr3e-05_alpha0.25/best_model_spacing_lora.pth
+[✓] Training complete: 5 total epochs.
+[*] Running SWEEP EVAL: spacing_lora_lr3e-05_alpha0.25 on device: cuda
+[*] Loaded pretrained SAM-Med3D weights from /kaggle/working/hip-vesseladapt/external/SAM-Med3D/ckpt/sam_med3d.pth (0 missing, 0 unexpected keys)
+[*] Injected Spacing-Conditioned LoRA (r=4, alpha=1.0) into 24 attention layers
+[✓] Loaded fine-tuned model weights from checkpoints_sweep/spacing_lora_lr3e-05_alpha0.25/best_model_spacing_lora.pth
+
+================================================================================
+SWEEP EVAL: spacing_lora_lr3e-05_alpha0.25
+================================================================================
+  Samples evaluated       : 100
+  Empty-target patches    : 83/100 (excluded from Dice/IoU/clDice/HD95/ASSD below -- undefined/misleading on empty GT)
+  Mean target FG fraction : 0.2541% (over ALL patches, incl. empty)
+  Dice                    : 0.0709  (n=17)
+  IoU                     : 0.0376  (n=17)
+  clDice                  : 0.0736  (n=17)
+  HD95 (voxels)           : 47.9377  (n=17)
+  ASSD (voxels)           : 21.9259  (n=17)
+  Total parameters        : 101,985,328
+  Trainable parameters    : 9,060,400 (8.88%)
+  Mean inference time     : 257.7 ms/patch (cuda)
+================================================================================
+
+################################################################################
+# SWEEP: spacing_lora_lr3e-05_alpha0.6 (5 epochs)
+################################################################################
+[*] Training on device: cuda
+[*] Training samples: ['kidney_1_dense', 'kidney_2', 'kidney_3_dense', 'kidney_3_sparse'] (held out for OOD test: ('kidney_1_voi',))
+[*] Loaded pretrained SAM-Med3D weights from /kaggle/working/hip-vesseladapt/external/SAM-Med3D/ckpt/sam_med3d.pth (0 missing, 0 unexpected keys)
+[*] Injected Spacing-Conditioned LoRA (r=4, alpha=1.0) into 24 attention layers
+[*] Starting fresh
+[*] Trainable parameters: 9,060,400
+[*] Training epochs 1 to 5...
+  Batch [3/80] - Sample: kidney_1_dense - Step Loss: 2.0375
+  Batch [9/80] - Sample: kidney_3_dense - Step Loss: 2.7316
+  Batch [12/80] - Sample: kidney_2 - Step Loss: 2.3839
+  Batch [14/80] - Sample: kidney_2 - Step Loss: 2.0685
+  Batch [22/80] - Sample: kidney_1_dense - Step Loss: 1.9630
+  Batch [25/80] - Sample: kidney_1_dense - Step Loss: 1.7952
+  Batch [26/80] - Sample: kidney_2 - Step Loss: 2.4703
+  Batch [28/80] - Sample: kidney_2 - Step Loss: 3.4922
+  Batch [29/80] - Sample: kidney_1_dense - Step Loss: 1.8576
+  Batch [32/80] - Sample: kidney_1_dense - Step Loss: 1.7617
+  Batch [39/80] - Sample: kidney_1_dense - Step Loss: 2.2635
+  Batch [45/80] - Sample: kidney_2 - Step Loss: 2.8627
+  Batch [57/80] - Sample: kidney_3_sparse - Step Loss: 1.8413
+  Batch [58/80] - Sample: kidney_3_dense - Step Loss: 2.0607
+  Batch [60/80] - Sample: kidney_1_dense - Step Loss: 3.2546
+  Batch [64/80] - Sample: kidney_3_dense - Step Loss: 1.8539
+  Batch [68/80] - Sample: kidney_3_dense - Step Loss: 2.7695
+  Batch [71/80] - Sample: kidney_3_sparse - Step Loss: 2.5543
+  Batch [80/80] - Sample: kidney_1_dense - Step Loss: 2.5681
+[✓] Epoch [1/5] Complete - Avg Loss: 2.3468 (61 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 1 -> checkpoints_sweep/spacing_lora_lr3e-05_alpha0.6/best_model_spacing_lora.pth
+  Batch [3/80] - Sample: kidney_2 - Step Loss: 2.2409
+  Batch [4/80] - Sample: kidney_1_dense - Step Loss: 2.2051
+  Batch [9/80] - Sample: kidney_1_dense - Step Loss: 2.0707
+  Batch [13/80] - Sample: kidney_3_dense - Step Loss: 2.1136
+  Batch [17/80] - Sample: kidney_1_dense - Step Loss: 2.9936
+  Batch [23/80] - Sample: kidney_3_dense - Step Loss: 2.3618
+  Batch [25/80] - Sample: kidney_3_sparse - Step Loss: 2.0194
+  Batch [27/80] - Sample: kidney_2 - Step Loss: 1.9575
+  Batch [33/80] - Sample: kidney_3_sparse - Step Loss: 1.9068
+  Batch [36/80] - Sample: kidney_1_dense - Step Loss: 2.7193
+  Batch [38/80] - Sample: kidney_1_dense - Step Loss: 2.6915
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 2.9127
+  Batch [44/80] - Sample: kidney_2 - Step Loss: 1.9435
+  Batch [45/80] - Sample: kidney_2 - Step Loss: 1.9145
+  Batch [46/80] - Sample: kidney_1_dense - Step Loss: 1.9024
+  Batch [49/80] - Sample: kidney_3_sparse - Step Loss: 1.9999
+  Batch [50/80] - Sample: kidney_2 - Step Loss: 1.8796
+  Batch [52/80] - Sample: kidney_3_dense - Step Loss: 1.8018
+  Batch [56/80] - Sample: kidney_2 - Step Loss: 2.0666
+  Batch [61/80] - Sample: kidney_3_dense - Step Loss: 1.8091
+  Batch [62/80] - Sample: kidney_1_dense - Step Loss: 3.0388
+  Batch [64/80] - Sample: kidney_2 - Step Loss: 1.8284
+  Batch [65/80] - Sample: kidney_3_sparse - Step Loss: 2.2688
+  Batch [68/80] - Sample: kidney_1_dense - Step Loss: 1.7932
+  Batch [69/80] - Sample: kidney_1_dense - Step Loss: 2.7482
+  Batch [71/80] - Sample: kidney_1_dense - Step Loss: 3.1300
+  Batch [73/80] - Sample: kidney_1_dense - Step Loss: 1.8621
+  Batch [76/80] - Sample: kidney_1_dense - Step Loss: 2.4532
+  Batch [78/80] - Sample: kidney_3_sparse - Step Loss: 2.5605
+[✓] Epoch [2/5] Complete - Avg Loss: 2.2481 (51 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 2 -> checkpoints_sweep/spacing_lora_lr3e-05_alpha0.6/best_model_spacing_lora.pth
+  Batch [2/80] - Sample: kidney_1_dense - Step Loss: 2.9161
+  Batch [13/80] - Sample: kidney_1_dense - Step Loss: 2.3759
+  Batch [14/80] - Sample: kidney_1_dense - Step Loss: 2.0714
+  Batch [16/80] - Sample: kidney_1_dense - Step Loss: 2.0242
+  Batch [24/80] - Sample: kidney_3_dense - Step Loss: 2.2119
+  Batch [27/80] - Sample: kidney_1_dense - Step Loss: 2.2388
+  Batch [30/80] - Sample: kidney_1_dense - Step Loss: 2.1671
+  Batch [34/80] - Sample: kidney_1_dense - Step Loss: 2.0268
+  Batch [36/80] - Sample: kidney_2 - Step Loss: 2.1709
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 2.0533
+  Batch [53/80] - Sample: kidney_3_dense - Step Loss: 2.4876
+  Batch [55/80] - Sample: kidney_2 - Step Loss: 1.9103
+  Batch [58/80] - Sample: kidney_3_dense - Step Loss: 2.9146
+  Batch [65/80] - Sample: kidney_3_dense - Step Loss: 1.9169
+  Batch [69/80] - Sample: kidney_1_dense - Step Loss: 2.3916
+  Batch [71/80] - Sample: kidney_1_dense - Step Loss: 2.4895
+  Batch [74/80] - Sample: kidney_3_sparse - Step Loss: 2.8350
+  Batch [77/80] - Sample: kidney_1_dense - Step Loss: 1.9681
+  Batch [79/80] - Sample: kidney_1_dense - Step Loss: 2.5321
+[✓] Epoch [3/5] Complete - Avg Loss: 2.3001 (61 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 3 -> checkpoints_sweep/spacing_lora_lr3e-05_alpha0.6/best_model_spacing_lora.pth
+  Batch [1/80] - Sample: kidney_3_sparse - Step Loss: 2.0594
+  Batch [5/80] - Sample: kidney_1_dense - Step Loss: 1.9105
+  Batch [6/80] - Sample: kidney_3_sparse - Step Loss: 2.0677
+  Batch [7/80] - Sample: kidney_3_sparse - Step Loss: 2.0690
+  Batch [10/80] - Sample: kidney_3_sparse - Step Loss: 2.0040
+  Batch [11/80] - Sample: kidney_3_dense - Step Loss: 2.2551
+  Batch [12/80] - Sample: kidney_1_dense - Step Loss: 2.5527
+  Batch [13/80] - Sample: kidney_1_dense - Step Loss: 1.9363
+  Batch [15/80] - Sample: kidney_2 - Step Loss: 1.7688
+  Batch [17/80] - Sample: kidney_3_sparse - Step Loss: 1.9421
+  Batch [18/80] - Sample: kidney_1_dense - Step Loss: 2.9783
+  Batch [19/80] - Sample: kidney_3_sparse - Step Loss: 1.9083
+  Batch [20/80] - Sample: kidney_3_dense - Step Loss: 1.8986
+  Batch [22/80] - Sample: kidney_1_dense - Step Loss: 1.7508
+  Batch [25/80] - Sample: kidney_3_dense - Step Loss: 2.6876
+  Batch [31/80] - Sample: kidney_1_dense - Step Loss: 1.9770
+  Batch [35/80] - Sample: kidney_3_sparse - Step Loss: 1.8979
+  Batch [36/80] - Sample: kidney_3_sparse - Step Loss: 2.6351
+  Batch [39/80] - Sample: kidney_1_dense - Step Loss: 1.9327
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 1.8987
+  Batch [42/80] - Sample: kidney_1_dense - Step Loss: 2.3599
+  Batch [51/80] - Sample: kidney_2 - Step Loss: 1.9154
+  Batch [69/80] - Sample: kidney_2 - Step Loss: 2.0161
+  Batch [72/80] - Sample: kidney_1_dense - Step Loss: 2.5389
+  Batch [74/80] - Sample: kidney_3_dense - Step Loss: 1.9389
+  Batch [75/80] - Sample: kidney_3_dense - Step Loss: 2.1456
+  Batch [78/80] - Sample: kidney_2 - Step Loss: 1.8977
+  Batch [79/80] - Sample: kidney_1_dense - Step Loss: 1.8665
+[✓] Epoch [4/5] Complete - Avg Loss: 2.1003 (52 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 4 -> checkpoints_sweep/spacing_lora_lr3e-05_alpha0.6/best_model_spacing_lora.pth
+  Batch [7/80] - Sample: kidney_3_sparse - Step Loss: 1.7323
+  Batch [11/80] - Sample: kidney_1_dense - Step Loss: 2.4446
+  Batch [13/80] - Sample: kidney_3_sparse - Step Loss: 1.8413
+  Batch [20/80] - Sample: kidney_3_sparse - Step Loss: 1.7100
+  Batch [22/80] - Sample: kidney_3_sparse - Step Loss: 2.3954
+  Batch [25/80] - Sample: kidney_3_sparse - Step Loss: 1.7191
+  Batch [30/80] - Sample: kidney_2 - Step Loss: 1.7335
+  Batch [31/80] - Sample: kidney_1_dense - Step Loss: 2.4625
+  Batch [32/80] - Sample: kidney_1_dense - Step Loss: 1.7621
+  Batch [35/80] - Sample: kidney_1_dense - Step Loss: 2.0592
+  Batch [37/80] - Sample: kidney_2 - Step Loss: 1.7144
+  Batch [38/80] - Sample: kidney_1_dense - Step Loss: 1.8105
+  Batch [39/80] - Sample: kidney_2 - Step Loss: 1.8192
+  Batch [42/80] - Sample: kidney_2 - Step Loss: 1.7993
+  Batch [43/80] - Sample: kidney_3_sparse - Step Loss: 1.7899
+  Batch [48/80] - Sample: kidney_1_dense - Step Loss: 2.1330
+  Batch [51/80] - Sample: kidney_2 - Step Loss: 1.6980
+  Batch [52/80] - Sample: kidney_3_sparse - Step Loss: 2.4525
+  Batch [56/80] - Sample: kidney_3_dense - Step Loss: 2.2011
+  Batch [58/80] - Sample: kidney_1_dense - Step Loss: 1.7837
+  Batch [68/80] - Sample: kidney_1_dense - Step Loss: 1.8358
+  Batch [71/80] - Sample: kidney_1_dense - Step Loss: 2.1674
+  Batch [75/80] - Sample: kidney_3_dense - Step Loss: 1.7419
+  Batch [76/80] - Sample: kidney_1_dense - Step Loss: 2.1345
+  Batch [79/80] - Sample: kidney_3_dense - Step Loss: 1.8613
+[✓] Epoch [5/5] Complete - Avg Loss: 1.9521 (55 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 5 -> checkpoints_sweep/spacing_lora_lr3e-05_alpha0.6/best_model_spacing_lora.pth
+[✓] Training complete: 5 total epochs.
+[*] Running SWEEP EVAL: spacing_lora_lr3e-05_alpha0.6 on device: cuda
+[*] Loaded pretrained SAM-Med3D weights from /kaggle/working/hip-vesseladapt/external/SAM-Med3D/ckpt/sam_med3d.pth (0 missing, 0 unexpected keys)
+[*] Injected Spacing-Conditioned LoRA (r=4, alpha=1.0) into 24 attention layers
+[✓] Loaded fine-tuned model weights from checkpoints_sweep/spacing_lora_lr3e-05_alpha0.6/best_model_spacing_lora.pth
+
+================================================================================
+SWEEP EVAL: spacing_lora_lr3e-05_alpha0.6
+================================================================================
+  Samples evaluated       : 100
+  Empty-target patches    : 83/100 (excluded from Dice/IoU/clDice/HD95/ASSD below -- undefined/misleading on empty GT)
+  Mean target FG fraction : 0.2541% (over ALL patches, incl. empty)
+  Dice                    : 0.0683  (n=17)
+  IoU                     : 0.0361  (n=17)
+  clDice                  : 0.0666  (n=17)
+  HD95 (voxels)           : 48.3533  (n=17)
+  ASSD (voxels)           : 22.2843  (n=17)
+  Total parameters        : 101,985,328
+  Trainable parameters    : 9,060,400 (8.88%)
+  Mean inference time     : 256.6 ms/patch (cuda)
+================================================================================
+
+################################################################################
+# SWEEP: spacing_lora_lr0.0001_alpha0.25 (5 epochs)
+################################################################################
+[*] Training on device: cuda
+[*] Training samples: ['kidney_1_dense', 'kidney_2', 'kidney_3_dense', 'kidney_3_sparse'] (held out for OOD test: ('kidney_1_voi',))
+[*] Loaded pretrained SAM-Med3D weights from /kaggle/working/hip-vesseladapt/external/SAM-Med3D/ckpt/sam_med3d.pth (0 missing, 0 unexpected keys)
+[*] Injected Spacing-Conditioned LoRA (r=4, alpha=1.0) into 24 attention layers
+[*] Starting fresh
+[*] Trainable parameters: 9,060,400
+[*] Training epochs 1 to 5...
+  Batch [3/80] - Sample: kidney_1_dense - Step Loss: 1.8114
+  Batch [9/80] - Sample: kidney_3_dense - Step Loss: 3.0630
+  Batch [12/80] - Sample: kidney_2 - Step Loss: 1.7616
+  Batch [14/80] - Sample: kidney_2 - Step Loss: 1.3498
+  Batch [22/80] - Sample: kidney_1_dense - Step Loss: 1.4211
+  Batch [25/80] - Sample: kidney_1_dense - Step Loss: 1.2867
+  Batch [26/80] - Sample: kidney_2 - Step Loss: 3.8296
+  Batch [28/80] - Sample: kidney_2 - Step Loss: 6.0879
+  Batch [29/80] - Sample: kidney_1_dense - Step Loss: 1.5535
+  Batch [32/80] - Sample: kidney_1_dense - Step Loss: 1.4369
+  Batch [39/80] - Sample: kidney_1_dense - Step Loss: 1.8702
+  Batch [45/80] - Sample: kidney_2 - Step Loss: 2.2252
+  Batch [57/80] - Sample: kidney_3_sparse - Step Loss: 1.7071
+  Batch [58/80] - Sample: kidney_3_dense - Step Loss: 1.7969
+  Batch [60/80] - Sample: kidney_1_dense - Step Loss: 3.0492
+  Batch [64/80] - Sample: kidney_3_dense - Step Loss: 1.5113
+  Batch [68/80] - Sample: kidney_3_dense - Step Loss: 2.4743
+  Batch [71/80] - Sample: kidney_3_sparse - Step Loss: 2.2837
+  Batch [80/80] - Sample: kidney_1_dense - Step Loss: 2.4795
+[✓] Epoch [1/5] Complete - Avg Loss: 2.2631 (61 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 1 -> checkpoints_sweep/spacing_lora_lr0.0001_alpha0.25/best_model_spacing_lora.pth
+  Batch [3/80] - Sample: kidney_2 - Step Loss: 2.0361
+  Batch [4/80] - Sample: kidney_1_dense - Step Loss: 1.9901
+  Batch [9/80] - Sample: kidney_1_dense - Step Loss: 1.9075
+  Batch [13/80] - Sample: kidney_3_dense - Step Loss: 1.7700
+  Batch [17/80] - Sample: kidney_1_dense - Step Loss: 2.8539
+  Batch [23/80] - Sample: kidney_3_dense - Step Loss: 2.1356
+  Batch [25/80] - Sample: kidney_3_sparse - Step Loss: 1.6263
+  Batch [27/80] - Sample: kidney_2 - Step Loss: 1.5299
+  Batch [33/80] - Sample: kidney_3_sparse - Step Loss: 1.5238
+  Batch [36/80] - Sample: kidney_1_dense - Step Loss: 2.5764
+  Batch [38/80] - Sample: kidney_1_dense - Step Loss: 2.6258
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 2.7814
+  Batch [44/80] - Sample: kidney_2 - Step Loss: 1.6111
+  Batch [45/80] - Sample: kidney_2 - Step Loss: 1.6215
+  Batch [46/80] - Sample: kidney_1_dense - Step Loss: 1.6225
+  Batch [49/80] - Sample: kidney_3_sparse - Step Loss: 1.7186
+  Batch [50/80] - Sample: kidney_2 - Step Loss: 1.6521
+  Batch [52/80] - Sample: kidney_3_dense - Step Loss: 1.5837
+  Batch [56/80] - Sample: kidney_2 - Step Loss: 1.8134
+  Batch [61/80] - Sample: kidney_3_dense - Step Loss: 1.5646
+  Batch [62/80] - Sample: kidney_1_dense - Step Loss: 2.5297
+  Batch [64/80] - Sample: kidney_2 - Step Loss: 1.5551
+  Batch [65/80] - Sample: kidney_3_sparse - Step Loss: 2.0224
+  Batch [68/80] - Sample: kidney_1_dense - Step Loss: 1.4932
+  Batch [69/80] - Sample: kidney_1_dense - Step Loss: 2.4224
+  Batch [71/80] - Sample: kidney_1_dense - Step Loss: 2.7836
+  Batch [73/80] - Sample: kidney_1_dense - Step Loss: 1.5346
+  Batch [76/80] - Sample: kidney_1_dense - Step Loss: 2.1018
+  Batch [78/80] - Sample: kidney_3_sparse - Step Loss: 2.2908
+[✓] Epoch [2/5] Complete - Avg Loss: 1.9751 (51 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 2 -> checkpoints_sweep/spacing_lora_lr0.0001_alpha0.25/best_model_spacing_lora.pth
+  Batch [2/80] - Sample: kidney_1_dense - Step Loss: 2.6613
+  Batch [13/80] - Sample: kidney_1_dense - Step Loss: 2.0808
+  Batch [14/80] - Sample: kidney_1_dense - Step Loss: 1.7016
+  Batch [16/80] - Sample: kidney_1_dense - Step Loss: 1.6885
+  Batch [24/80] - Sample: kidney_3_dense - Step Loss: 1.8753
+  Batch [27/80] - Sample: kidney_1_dense - Step Loss: 1.8846
+  Batch [30/80] - Sample: kidney_1_dense - Step Loss: 1.8162
+  Batch [34/80] - Sample: kidney_1_dense - Step Loss: 1.6833
+  Batch [36/80] - Sample: kidney_2 - Step Loss: 1.8268
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 1.6722
+  Batch [53/80] - Sample: kidney_3_dense - Step Loss: 2.1613
+  Batch [55/80] - Sample: kidney_2 - Step Loss: 1.5511
+  Batch [58/80] - Sample: kidney_3_dense - Step Loss: 2.7139
+  Batch [65/80] - Sample: kidney_3_dense - Step Loss: 1.5375
+  Batch [69/80] - Sample: kidney_1_dense - Step Loss: 2.1075
+  Batch [71/80] - Sample: kidney_1_dense - Step Loss: 2.3911
+  Batch [74/80] - Sample: kidney_3_sparse - Step Loss: 2.6319
+  Batch [77/80] - Sample: kidney_1_dense - Step Loss: 1.5734
+  Batch [79/80] - Sample: kidney_1_dense - Step Loss: 2.2376
+[✓] Epoch [3/5] Complete - Avg Loss: 1.9893 (61 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 3 -> checkpoints_sweep/spacing_lora_lr0.0001_alpha0.25/best_model_spacing_lora.pth
+  Batch [1/80] - Sample: kidney_3_sparse - Step Loss: 1.7795
+  Batch [5/80] - Sample: kidney_1_dense - Step Loss: 1.5840
+  Batch [6/80] - Sample: kidney_3_sparse - Step Loss: 1.8347
+  Batch [7/80] - Sample: kidney_3_sparse - Step Loss: 1.8153
+  Batch [10/80] - Sample: kidney_3_sparse - Step Loss: 1.7462
+  Batch [11/80] - Sample: kidney_3_dense - Step Loss: 1.9775
+  Batch [12/80] - Sample: kidney_1_dense - Step Loss: 2.1683
+  Batch [13/80] - Sample: kidney_1_dense - Step Loss: 1.6959
+  Batch [15/80] - Sample: kidney_2 - Step Loss: 1.5289
+  Batch [17/80] - Sample: kidney_3_sparse - Step Loss: 1.6826
+  Batch [18/80] - Sample: kidney_1_dense - Step Loss: 2.5634
+  Batch [19/80] - Sample: kidney_3_sparse - Step Loss: 1.6466
+  Batch [20/80] - Sample: kidney_3_dense - Step Loss: 1.6224
+  Batch [22/80] - Sample: kidney_1_dense - Step Loss: 1.4417
+  Batch [25/80] - Sample: kidney_3_dense - Step Loss: 2.5503
+  Batch [31/80] - Sample: kidney_1_dense - Step Loss: 1.6373
+  Batch [35/80] - Sample: kidney_3_sparse - Step Loss: 1.6252
+  Batch [36/80] - Sample: kidney_3_sparse - Step Loss: 2.4714
+  Batch [39/80] - Sample: kidney_1_dense - Step Loss: 1.5132
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 1.5386
+  Batch [42/80] - Sample: kidney_1_dense - Step Loss: 2.0203
+  Batch [51/80] - Sample: kidney_2 - Step Loss: 1.5296
+  Batch [69/80] - Sample: kidney_2 - Step Loss: 1.8343
+  Batch [72/80] - Sample: kidney_1_dense - Step Loss: 2.3082
+  Batch [74/80] - Sample: kidney_3_dense - Step Loss: 1.6883
+  Batch [75/80] - Sample: kidney_3_dense - Step Loss: 1.8536
+  Batch [78/80] - Sample: kidney_2 - Step Loss: 1.6347
+  Batch [79/80] - Sample: kidney_1_dense - Step Loss: 1.5290
+[✓] Epoch [4/5] Complete - Avg Loss: 1.8150 (52 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 4 -> checkpoints_sweep/spacing_lora_lr0.0001_alpha0.25/best_model_spacing_lora.pth
+  Batch [7/80] - Sample: kidney_3_sparse - Step Loss: 1.4071
+  Batch [11/80] - Sample: kidney_1_dense - Step Loss: 2.2084
+  Batch [13/80] - Sample: kidney_3_sparse - Step Loss: 1.5695
+  Batch [20/80] - Sample: kidney_3_sparse - Step Loss: 1.3849
+  Batch [22/80] - Sample: kidney_3_sparse - Step Loss: 2.1221
+  Batch [25/80] - Sample: kidney_3_sparse - Step Loss: 1.4375
+  Batch [30/80] - Sample: kidney_2 - Step Loss: 1.4831
+  Batch [31/80] - Sample: kidney_1_dense - Step Loss: 1.9060
+  Batch [32/80] - Sample: kidney_1_dense - Step Loss: 1.5615
+  Batch [35/80] - Sample: kidney_1_dense - Step Loss: 1.7248
+  Batch [37/80] - Sample: kidney_2 - Step Loss: 1.3511
+  Batch [38/80] - Sample: kidney_1_dense - Step Loss: 1.3317
+  Batch [39/80] - Sample: kidney_2 - Step Loss: 1.5162
+  Batch [42/80] - Sample: kidney_2 - Step Loss: 1.3105
+  Batch [43/80] - Sample: kidney_3_sparse - Step Loss: 1.3143
+  Batch [48/80] - Sample: kidney_1_dense - Step Loss: 2.1387
+  Batch [51/80] - Sample: kidney_2 - Step Loss: 1.3962
+  Batch [52/80] - Sample: kidney_3_sparse - Step Loss: 2.7496
+  Batch [56/80] - Sample: kidney_3_dense - Step Loss: 1.5721
+  Batch [58/80] - Sample: kidney_1_dense - Step Loss: 1.5881
+  Batch [68/80] - Sample: kidney_1_dense - Step Loss: 2.0301
+  Batch [71/80] - Sample: kidney_1_dense - Step Loss: 2.1047
+  Batch [75/80] - Sample: kidney_3_dense - Step Loss: 1.6111
+  Batch [76/80] - Sample: kidney_1_dense - Step Loss: 1.7089
+  Batch [79/80] - Sample: kidney_3_dense - Step Loss: 1.4392
+[✓] Epoch [5/5] Complete - Avg Loss: 1.6787 (55 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 5 -> checkpoints_sweep/spacing_lora_lr0.0001_alpha0.25/best_model_spacing_lora.pth
+[✓] Training complete: 5 total epochs.
+[*] Running SWEEP EVAL: spacing_lora_lr0.0001_alpha0.25 on device: cuda
+[*] Loaded pretrained SAM-Med3D weights from /kaggle/working/hip-vesseladapt/external/SAM-Med3D/ckpt/sam_med3d.pth (0 missing, 0 unexpected keys)
+[*] Injected Spacing-Conditioned LoRA (r=4, alpha=1.0) into 24 attention layers
+[✓] Loaded fine-tuned model weights from checkpoints_sweep/spacing_lora_lr0.0001_alpha0.25/best_model_spacing_lora.pth
+
+================================================================================
+SWEEP EVAL: spacing_lora_lr0.0001_alpha0.25
+================================================================================
+  Samples evaluated       : 100
+  Empty-target patches    : 83/100 (excluded from Dice/IoU/clDice/HD95/ASSD below -- undefined/misleading on empty GT)
+  Mean target FG fraction : 0.2541% (over ALL patches, incl. empty)
+  Dice                    : 0.1364  (n=17)
+  IoU                     : 0.0775  (n=17)
+  clDice                  : 0.1561  (n=17)
+  HD95 (voxels)           : 37.8144  (n=17)
+  ASSD (voxels)           : 13.6111  (n=17)
+  Total parameters        : 101,985,328
+  Trainable parameters    : 9,060,400 (8.88%)
+  Mean inference time     : 258.9 ms/patch (cuda)
+================================================================================
+
+################################################################################
+# SWEEP: spacing_lora_lr0.0001_alpha0.6 (5 epochs)
+################################################################################
+[*] Training on device: cuda
+[*] Training samples: ['kidney_1_dense', 'kidney_2', 'kidney_3_dense', 'kidney_3_sparse'] (held out for OOD test: ('kidney_1_voi',))
+[*] Loaded pretrained SAM-Med3D weights from /kaggle/working/hip-vesseladapt/external/SAM-Med3D/ckpt/sam_med3d.pth (0 missing, 0 unexpected keys)
+[*] Injected Spacing-Conditioned LoRA (r=4, alpha=1.0) into 24 attention layers
+[*] Starting fresh
+[*] Trainable parameters: 9,060,400
+[*] Training epochs 1 to 5...
+  Batch [3/80] - Sample: kidney_1_dense - Step Loss: 2.0375
+  Batch [9/80] - Sample: kidney_3_dense - Step Loss: 3.4475
+  Batch [12/80] - Sample: kidney_2 - Step Loss: 2.1581
+  Batch [14/80] - Sample: kidney_2 - Step Loss: 1.7056
+  Batch [22/80] - Sample: kidney_1_dense - Step Loss: 1.7651
+  Batch [25/80] - Sample: kidney_1_dense - Step Loss: 1.6308
+  Batch [26/80] - Sample: kidney_2 - Step Loss: 4.2398
+  Batch [28/80] - Sample: kidney_2 - Step Loss: 6.6034
+  Batch [29/80] - Sample: kidney_1_dense - Step Loss: 1.9221
+  Batch [32/80] - Sample: kidney_1_dense - Step Loss: 1.7564
+  Batch [39/80] - Sample: kidney_1_dense - Step Loss: 2.2024
+  Batch [45/80] - Sample: kidney_2 - Step Loss: 2.5534
+  Batch [57/80] - Sample: kidney_3_sparse - Step Loss: 2.0652
+  Batch [58/80] - Sample: kidney_3_dense - Step Loss: 2.1669
+  Batch [60/80] - Sample: kidney_1_dense - Step Loss: 3.2135
+  Batch [64/80] - Sample: kidney_3_dense - Step Loss: 1.8854
+  Batch [68/80] - Sample: kidney_3_dense - Step Loss: 2.8224
+  Batch [71/80] - Sample: kidney_3_sparse - Step Loss: 2.6217
+  Batch [80/80] - Sample: kidney_1_dense - Step Loss: 2.8426
+[✓] Epoch [1/5] Complete - Avg Loss: 2.6126 (61 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 1 -> checkpoints_sweep/spacing_lora_lr0.0001_alpha0.6/best_model_spacing_lora.pth
+  Batch [3/80] - Sample: kidney_2 - Step Loss: 2.3442
+  Batch [4/80] - Sample: kidney_1_dense - Step Loss: 2.2955
+  Batch [9/80] - Sample: kidney_1_dense - Step Loss: 2.2274
+  Batch [13/80] - Sample: kidney_3_dense - Step Loss: 2.1141
+  Batch [17/80] - Sample: kidney_1_dense - Step Loss: 3.1899
+  Batch [23/80] - Sample: kidney_3_dense - Step Loss: 2.4727
+  Batch [25/80] - Sample: kidney_3_sparse - Step Loss: 1.9875
+  Batch [27/80] - Sample: kidney_2 - Step Loss: 1.8936
+  Batch [33/80] - Sample: kidney_3_sparse - Step Loss: 1.8844
+  Batch [36/80] - Sample: kidney_1_dense - Step Loss: 2.8704
+  Batch [38/80] - Sample: kidney_1_dense - Step Loss: 2.8588
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 3.0783
+  Batch [44/80] - Sample: kidney_2 - Step Loss: 1.9639
+  Batch [45/80] - Sample: kidney_2 - Step Loss: 1.9727
+  Batch [46/80] - Sample: kidney_1_dense - Step Loss: 1.9750
+  Batch [49/80] - Sample: kidney_3_sparse - Step Loss: 2.0653
+  Batch [50/80] - Sample: kidney_2 - Step Loss: 1.9994
+  Batch [52/80] - Sample: kidney_3_dense - Step Loss: 1.9266
+  Batch [56/80] - Sample: kidney_2 - Step Loss: 2.1549
+  Batch [61/80] - Sample: kidney_3_dense - Step Loss: 1.9039
+  Batch [62/80] - Sample: kidney_1_dense - Step Loss: 2.8634
+  Batch [64/80] - Sample: kidney_2 - Step Loss: 1.8962
+  Batch [65/80] - Sample: kidney_3_sparse - Step Loss: 2.3739
+  Batch [68/80] - Sample: kidney_1_dense - Step Loss: 1.8429
+  Batch [69/80] - Sample: kidney_1_dense - Step Loss: 2.6872
+  Batch [71/80] - Sample: kidney_1_dense - Step Loss: 3.0593
+  Batch [73/80] - Sample: kidney_1_dense - Step Loss: 1.9032
+  Batch [76/80] - Sample: kidney_1_dense - Step Loss: 2.4406
+  Batch [78/80] - Sample: kidney_3_sparse - Step Loss: 2.6098
+[✓] Epoch [2/5] Complete - Avg Loss: 2.3053 (51 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 2 -> checkpoints_sweep/spacing_lora_lr0.0001_alpha0.6/best_model_spacing_lora.pth
+  Batch [2/80] - Sample: kidney_1_dense - Step Loss: 2.9563
+  Batch [13/80] - Sample: kidney_1_dense - Step Loss: 2.4305
+  Batch [14/80] - Sample: kidney_1_dense - Step Loss: 2.0787
+  Batch [16/80] - Sample: kidney_1_dense - Step Loss: 2.0637
+  Batch [24/80] - Sample: kidney_3_dense - Step Loss: 2.2310
+  Batch [27/80] - Sample: kidney_1_dense - Step Loss: 2.2419
+  Batch [30/80] - Sample: kidney_1_dense - Step Loss: 2.1740
+  Batch [34/80] - Sample: kidney_1_dense - Step Loss: 2.0345
+  Batch [36/80] - Sample: kidney_2 - Step Loss: 2.1752
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 2.0260
+  Batch [53/80] - Sample: kidney_3_dense - Step Loss: 2.4967
+  Batch [55/80] - Sample: kidney_2 - Step Loss: 1.8918
+  Batch [58/80] - Sample: kidney_3_dense - Step Loss: 3.0668
+  Batch [65/80] - Sample: kidney_3_dense - Step Loss: 1.8775
+  Batch [69/80] - Sample: kidney_1_dense - Step Loss: 2.4670
+  Batch [71/80] - Sample: kidney_1_dense - Step Loss: 2.6933
+  Batch [74/80] - Sample: kidney_3_sparse - Step Loss: 2.9745
+  Batch [77/80] - Sample: kidney_1_dense - Step Loss: 1.9188
+  Batch [79/80] - Sample: kidney_1_dense - Step Loss: 2.5000
+[✓] Epoch [3/5] Complete - Avg Loss: 2.3315 (61 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 3 -> checkpoints_sweep/spacing_lora_lr0.0001_alpha0.6/best_model_spacing_lora.pth
+  Batch [1/80] - Sample: kidney_3_sparse - Step Loss: 2.1306
+  Batch [5/80] - Sample: kidney_1_dense - Step Loss: 1.9395
+  Batch [6/80] - Sample: kidney_3_sparse - Step Loss: 2.1926
+  Batch [7/80] - Sample: kidney_3_sparse - Step Loss: 2.1723
+  Batch [10/80] - Sample: kidney_3_sparse - Step Loss: 2.1054
+  Batch [11/80] - Sample: kidney_3_dense - Step Loss: 2.3325
+  Batch [12/80] - Sample: kidney_1_dense - Step Loss: 2.5217
+  Batch [13/80] - Sample: kidney_1_dense - Step Loss: 2.0567
+  Batch [15/80] - Sample: kidney_2 - Step Loss: 1.8958
+  Batch [17/80] - Sample: kidney_3_sparse - Step Loss: 2.0424
+  Batch [18/80] - Sample: kidney_1_dense - Step Loss: 2.8755
+  Batch [19/80] - Sample: kidney_3_sparse - Step Loss: 2.0105
+  Batch [20/80] - Sample: kidney_3_dense - Step Loss: 1.9804
+  Batch [22/80] - Sample: kidney_1_dense - Step Loss: 1.8048
+  Batch [25/80] - Sample: kidney_3_dense - Step Loss: 2.8928
+  Batch [31/80] - Sample: kidney_1_dense - Step Loss: 1.9898
+  Batch [35/80] - Sample: kidney_3_sparse - Step Loss: 1.9842
+  Batch [36/80] - Sample: kidney_3_sparse - Step Loss: 2.8038
+  Batch [39/80] - Sample: kidney_1_dense - Step Loss: 1.8600
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 1.8865
+  Batch [42/80] - Sample: kidney_1_dense - Step Loss: 2.3844
+  Batch [51/80] - Sample: kidney_2 - Step Loss: 1.8769
+  Batch [69/80] - Sample: kidney_2 - Step Loss: 2.2027
+  Batch [72/80] - Sample: kidney_1_dense - Step Loss: 2.6914
+  Batch [74/80] - Sample: kidney_3_dense - Step Loss: 2.0488
+  Batch [75/80] - Sample: kidney_3_dense - Step Loss: 2.2245
+  Batch [78/80] - Sample: kidney_2 - Step Loss: 2.0068
+  Batch [79/80] - Sample: kidney_1_dense - Step Loss: 1.9183
+[✓] Epoch [4/5] Complete - Avg Loss: 2.1726 (52 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 4 -> checkpoints_sweep/spacing_lora_lr0.0001_alpha0.6/best_model_spacing_lora.pth
+  Batch [7/80] - Sample: kidney_3_sparse - Step Loss: 1.8002
+  Batch [11/80] - Sample: kidney_1_dense - Step Loss: 2.5039
+  Batch [13/80] - Sample: kidney_3_sparse - Step Loss: 1.9384
+  Batch [20/80] - Sample: kidney_3_sparse - Step Loss: 1.7488
+  Batch [22/80] - Sample: kidney_3_sparse - Step Loss: 2.6698
+  Batch [25/80] - Sample: kidney_3_sparse - Step Loss: 1.7837
+  Batch [30/80] - Sample: kidney_2 - Step Loss: 1.7969
+  Batch [31/80] - Sample: kidney_1_dense - Step Loss: 2.2598
+  Batch [32/80] - Sample: kidney_1_dense - Step Loss: 1.8915
+  Batch [35/80] - Sample: kidney_1_dense - Step Loss: 2.0777
+  Batch [37/80] - Sample: kidney_2 - Step Loss: 1.7558
+  Batch [38/80] - Sample: kidney_1_dense - Step Loss: 1.7388
+  Batch [39/80] - Sample: kidney_2 - Step Loss: 1.8380
+  Batch [42/80] - Sample: kidney_2 - Step Loss: 1.6683
+  Batch [43/80] - Sample: kidney_3_sparse - Step Loss: 1.6582
+  Batch [48/80] - Sample: kidney_1_dense - Step Loss: 2.3662
+  Batch [51/80] - Sample: kidney_2 - Step Loss: 1.7319
+  Batch [52/80] - Sample: kidney_3_sparse - Step Loss: 3.5200
+  Batch [56/80] - Sample: kidney_3_dense - Step Loss: 2.0998
+  Batch [58/80] - Sample: kidney_1_dense - Step Loss: 1.8486
+  Batch [68/80] - Sample: kidney_1_dense - Step Loss: 2.3104
+  Batch [71/80] - Sample: kidney_1_dense - Step Loss: 2.5548
+  Batch [75/80] - Sample: kidney_3_dense - Step Loss: 2.1559
+  Batch [76/80] - Sample: kidney_1_dense - Step Loss: 2.1825
+  Batch [79/80] - Sample: kidney_3_dense - Step Loss: 1.8878
+[✓] Epoch [5/5] Complete - Avg Loss: 2.0715 (55 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 5 -> checkpoints_sweep/spacing_lora_lr0.0001_alpha0.6/best_model_spacing_lora.pth
+[✓] Training complete: 5 total epochs.
+[*] Running SWEEP EVAL: spacing_lora_lr0.0001_alpha0.6 on device: cuda
+[*] Loaded pretrained SAM-Med3D weights from /kaggle/working/hip-vesseladapt/external/SAM-Med3D/ckpt/sam_med3d.pth (0 missing, 0 unexpected keys)
+[*] Injected Spacing-Conditioned LoRA (r=4, alpha=1.0) into 24 attention layers
+[✓] Loaded fine-tuned model weights from checkpoints_sweep/spacing_lora_lr0.0001_alpha0.6/best_model_spacing_lora.pth
+
+================================================================================
+SWEEP EVAL: spacing_lora_lr0.0001_alpha0.6
+================================================================================
+  Samples evaluated       : 100
+  Empty-target patches    : 83/100 (excluded from Dice/IoU/clDice/HD95/ASSD below -- undefined/misleading on empty GT)
+  Mean target FG fraction : 0.2541% (over ALL patches, incl. empty)
+  Dice                    : 0.1223  (n=17)
+  IoU                     : 0.0677  (n=17)
+  clDice                  : 0.1397  (n=17)
+  HD95 (voxels)           : 39.8852  (n=17)
+  ASSD (voxels)           : 15.6882  (n=17)
+  Total parameters        : 101,985,328
+  Trainable parameters    : 9,060,400 (8.88%)
+  Mean inference time     : 258.8 ms/patch (cuda)
+================================================================================
+
+################################################################################
+# SWEEP: spacing_lora_lr0.0002_alpha0.25 (5 epochs)
+################################################################################
+[*] Training on device: cuda
+[*] Training samples: ['kidney_1_dense', 'kidney_2', 'kidney_3_dense', 'kidney_3_sparse'] (held out for OOD test: ('kidney_1_voi',))
+[*] Loaded pretrained SAM-Med3D weights from /kaggle/working/hip-vesseladapt/external/SAM-Med3D/ckpt/sam_med3d.pth (0 missing, 0 unexpected keys)
+[*] Injected Spacing-Conditioned LoRA (r=4, alpha=1.0) into 24 attention layers
+[*] Starting fresh
+[*] Trainable parameters: 9,060,400
+[*] Training epochs 1 to 5...
+  Batch [3/80] - Sample: kidney_1_dense - Step Loss: 1.8114
+  Batch [9/80] - Sample: kidney_3_dense - Step Loss: 3.8513
+  Batch [12/80] - Sample: kidney_2 - Step Loss: 1.4855
+  Batch [14/80] - Sample: kidney_2 - Step Loss: 1.3444
+  Batch [22/80] - Sample: kidney_1_dense - Step Loss: 1.4775
+  Batch [25/80] - Sample: kidney_1_dense - Step Loss: 1.2772
+  Batch [26/80] - Sample: kidney_2 - Step Loss: 3.5031
+  Batch [28/80] - Sample: kidney_2 - Step Loss: 5.0195
+  Batch [29/80] - Sample: kidney_1_dense - Step Loss: 1.5708
+  Batch [32/80] - Sample: kidney_1_dense - Step Loss: 1.7967
+  Batch [39/80] - Sample: kidney_1_dense - Step Loss: 2.0187
+  Batch [45/80] - Sample: kidney_2 - Step Loss: 2.3016
+  Batch [57/80] - Sample: kidney_3_sparse - Step Loss: 1.5926
+  Batch [58/80] - Sample: kidney_3_dense - Step Loss: 1.7595
+  Batch [60/80] - Sample: kidney_1_dense - Step Loss: 3.3636
+  Batch [64/80] - Sample: kidney_3_dense - Step Loss: 1.4843
+  Batch [68/80] - Sample: kidney_3_dense - Step Loss: 2.5015
+  Batch [71/80] - Sample: kidney_3_sparse - Step Loss: 2.3016
+  Batch [80/80] - Sample: kidney_1_dense - Step Loss: 2.4778
+[✓] Epoch [1/5] Complete - Avg Loss: 2.2599 (61 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 1 -> checkpoints_sweep/spacing_lora_lr0.0002_alpha0.25/best_model_spacing_lora.pth
+  Batch [3/80] - Sample: kidney_2 - Step Loss: 2.1300
+  Batch [4/80] - Sample: kidney_1_dense - Step Loss: 2.0181
+  Batch [9/80] - Sample: kidney_1_dense - Step Loss: 1.9020
+  Batch [13/80] - Sample: kidney_3_dense - Step Loss: 1.7695
+  Batch [17/80] - Sample: kidney_1_dense - Step Loss: 2.7521
+  Batch [23/80] - Sample: kidney_3_dense - Step Loss: 2.2809
+  Batch [25/80] - Sample: kidney_3_sparse - Step Loss: 1.6598
+  Batch [27/80] - Sample: kidney_2 - Step Loss: 1.5447
+  Batch [33/80] - Sample: kidney_3_sparse - Step Loss: 1.5620
+  Batch [36/80] - Sample: kidney_1_dense - Step Loss: 2.6733
+  Batch [38/80] - Sample: kidney_1_dense - Step Loss: 2.6507
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 2.8110
+  Batch [44/80] - Sample: kidney_2 - Step Loss: 1.6558
+  Batch [45/80] - Sample: kidney_2 - Step Loss: 1.6861
+  Batch [46/80] - Sample: kidney_1_dense - Step Loss: 1.6862
+  Batch [49/80] - Sample: kidney_3_sparse - Step Loss: 1.7960
+  Batch [50/80] - Sample: kidney_2 - Step Loss: 1.7312
+  Batch [52/80] - Sample: kidney_3_dense - Step Loss: 1.6592
+  Batch [56/80] - Sample: kidney_2 - Step Loss: 1.8826
+  Batch [61/80] - Sample: kidney_3_dense - Step Loss: 1.6152
+  Batch [62/80] - Sample: kidney_1_dense - Step Loss: 2.5521
+  Batch [64/80] - Sample: kidney_2 - Step Loss: 1.5895
+  Batch [65/80] - Sample: kidney_3_sparse - Step Loss: 2.0680
+  Batch [68/80] - Sample: kidney_1_dense - Step Loss: 1.5265
+  Batch [69/80] - Sample: kidney_1_dense - Step Loss: 2.4286
+  Batch [71/80] - Sample: kidney_1_dense - Step Loss: 2.8066
+  Batch [73/80] - Sample: kidney_1_dense - Step Loss: 1.5525
+  Batch [76/80] - Sample: kidney_1_dense - Step Loss: 2.1169
+  Batch [78/80] - Sample: kidney_3_sparse - Step Loss: 2.3300
+[✓] Epoch [2/5] Complete - Avg Loss: 2.0151 (51 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 2 -> checkpoints_sweep/spacing_lora_lr0.0002_alpha0.25/best_model_spacing_lora.pth
+  Batch [2/80] - Sample: kidney_1_dense - Step Loss: 2.7017
+  Batch [13/80] - Sample: kidney_1_dense - Step Loss: 2.1152
+  Batch [14/80] - Sample: kidney_1_dense - Step Loss: 1.7126
+  Batch [16/80] - Sample: kidney_1_dense - Step Loss: 1.7271
+  Batch [24/80] - Sample: kidney_3_dense - Step Loss: 1.9149
+  Batch [27/80] - Sample: kidney_1_dense - Step Loss: 1.9065
+  Batch [30/80] - Sample: kidney_1_dense - Step Loss: 1.8447
+  Batch [34/80] - Sample: kidney_1_dense - Step Loss: 1.6938
+  Batch [36/80] - Sample: kidney_2 - Step Loss: 1.8614
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 1.6859
+  Batch [53/80] - Sample: kidney_3_dense - Step Loss: 2.2254
+  Batch [55/80] - Sample: kidney_2 - Step Loss: 1.5609
+  Batch [58/80] - Sample: kidney_3_dense - Step Loss: 2.8103
+  Batch [65/80] - Sample: kidney_3_dense - Step Loss: 1.5705
+  Batch [69/80] - Sample: kidney_1_dense - Step Loss: 2.1774
+  Batch [71/80] - Sample: kidney_1_dense - Step Loss: 2.3916
+  Batch [74/80] - Sample: kidney_3_sparse - Step Loss: 2.7575
+  Batch [77/80] - Sample: kidney_1_dense - Step Loss: 1.6119
+  Batch [79/80] - Sample: kidney_1_dense - Step Loss: 2.1636
+[✓] Epoch [3/5] Complete - Avg Loss: 2.0228 (61 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 3 -> checkpoints_sweep/spacing_lora_lr0.0002_alpha0.25/best_model_spacing_lora.pth
+  Batch [1/80] - Sample: kidney_3_sparse - Step Loss: 1.8516
+  Batch [5/80] - Sample: kidney_1_dense - Step Loss: 1.6423
+  Batch [6/80] - Sample: kidney_3_sparse - Step Loss: 1.9085
+  Batch [7/80] - Sample: kidney_3_sparse - Step Loss: 1.8880
+  Batch [10/80] - Sample: kidney_3_sparse - Step Loss: 1.8251
+  Batch [11/80] - Sample: kidney_3_dense - Step Loss: 2.0379
+  Batch [12/80] - Sample: kidney_1_dense - Step Loss: 2.2261
+  Batch [13/80] - Sample: kidney_1_dense - Step Loss: 1.7710
+  Batch [15/80] - Sample: kidney_2 - Step Loss: 1.6103
+  Batch [17/80] - Sample: kidney_3_sparse - Step Loss: 1.7633
+  Batch [18/80] - Sample: kidney_1_dense - Step Loss: 2.6821
+  Batch [19/80] - Sample: kidney_3_sparse - Step Loss: 1.7382
+  Batch [20/80] - Sample: kidney_3_dense - Step Loss: 1.6850
+  Batch [22/80] - Sample: kidney_1_dense - Step Loss: 1.4923
+  Batch [25/80] - Sample: kidney_3_dense - Step Loss: 2.7806
+  Batch [31/80] - Sample: kidney_1_dense - Step Loss: 1.6601
+  Batch [35/80] - Sample: kidney_3_sparse - Step Loss: 1.6885
+  Batch [36/80] - Sample: kidney_3_sparse - Step Loss: 2.7220
+  Batch [39/80] - Sample: kidney_1_dense - Step Loss: 1.5174
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 1.5681
+  Batch [42/80] - Sample: kidney_1_dense - Step Loss: 2.1951
+  Batch [51/80] - Sample: kidney_2 - Step Loss: 1.5373
+  Batch [69/80] - Sample: kidney_2 - Step Loss: 2.1117
+  Batch [72/80] - Sample: kidney_1_dense - Step Loss: 2.7092
+  Batch [74/80] - Sample: kidney_3_dense - Step Loss: 1.8638
+  Batch [75/80] - Sample: kidney_3_dense - Step Loss: 1.9959
+  Batch [78/80] - Sample: kidney_2 - Step Loss: 1.6789
+  Batch [79/80] - Sample: kidney_1_dense - Step Loss: 1.6487
+[✓] Epoch [4/5] Complete - Avg Loss: 1.9214 (52 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 4 -> checkpoints_sweep/spacing_lora_lr0.0002_alpha0.25/best_model_spacing_lora.pth
+  Batch [7/80] - Sample: kidney_3_sparse - Step Loss: 1.6307
+  Batch [11/80] - Sample: kidney_1_dense - Step Loss: 2.1989
+  Batch [13/80] - Sample: kidney_3_sparse - Step Loss: 1.7560
+  Batch [20/80] - Sample: kidney_3_sparse - Step Loss: 1.5886
+  Batch [22/80] - Sample: kidney_3_sparse - Step Loss: 2.7851
+  Batch [25/80] - Sample: kidney_3_sparse - Step Loss: 1.5981
+  Batch [30/80] - Sample: kidney_2 - Step Loss: 1.4884
+  Batch [31/80] - Sample: kidney_1_dense - Step Loss: 2.1132
+  Batch [32/80] - Sample: kidney_1_dense - Step Loss: 1.4820
+  Batch [35/80] - Sample: kidney_1_dense - Step Loss: 2.2259
+  Batch [37/80] - Sample: kidney_2 - Step Loss: 1.4530
+  Batch [38/80] - Sample: kidney_1_dense - Step Loss: 1.4551
+  Batch [39/80] - Sample: kidney_2 - Step Loss: 1.7783
+  Batch [42/80] - Sample: kidney_2 - Step Loss: 1.4293
+  Batch [43/80] - Sample: kidney_3_sparse - Step Loss: 1.4138
+  Batch [48/80] - Sample: kidney_1_dense - Step Loss: 1.7047
+  Batch [51/80] - Sample: kidney_2 - Step Loss: 1.3937
+  Batch [52/80] - Sample: kidney_3_sparse - Step Loss: 3.2906
+  Batch [56/80] - Sample: kidney_3_dense - Step Loss: 2.5853
+  Batch [58/80] - Sample: kidney_1_dense - Step Loss: 1.6286
+  Batch [68/80] - Sample: kidney_1_dense - Step Loss: 1.7964
+  Batch [71/80] - Sample: kidney_1_dense - Step Loss: 2.0999
+  Batch [75/80] - Sample: kidney_3_dense - Step Loss: 1.9197
+  Batch [76/80] - Sample: kidney_1_dense - Step Loss: 1.9524
+  Batch [79/80] - Sample: kidney_3_dense - Step Loss: 1.8902
+[✓] Epoch [5/5] Complete - Avg Loss: 1.8663 (55 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 5 -> checkpoints_sweep/spacing_lora_lr0.0002_alpha0.25/best_model_spacing_lora.pth
+[✓] Training complete: 5 total epochs.
+[*] Running SWEEP EVAL: spacing_lora_lr0.0002_alpha0.25 on device: cuda
+[*] Loaded pretrained SAM-Med3D weights from /kaggle/working/hip-vesseladapt/external/SAM-Med3D/ckpt/sam_med3d.pth (0 missing, 0 unexpected keys)
+[*] Injected Spacing-Conditioned LoRA (r=4, alpha=1.0) into 24 attention layers
+[✓] Loaded fine-tuned model weights from checkpoints_sweep/spacing_lora_lr0.0002_alpha0.25/best_model_spacing_lora.pth
+
+================================================================================
+SWEEP EVAL: spacing_lora_lr0.0002_alpha0.25
+================================================================================
+  Samples evaluated       : 100
+  Empty-target patches    : 83/100 (excluded from Dice/IoU/clDice/HD95/ASSD below -- undefined/misleading on empty GT)
+  Mean target FG fraction : 0.2541% (over ALL patches, incl. empty)
+  Dice                    : 0.1077  (n=17)
+  IoU                     : 0.0608  (n=17)
+  clDice                  : 0.0860  (n=17)
+  HD95 (voxels)           : 39.5529  (n=17)
+  ASSD (voxels)           : 13.3341  (n=17)
+  Total parameters        : 101,985,328
+  Trainable parameters    : 9,060,400 (8.88%)
+  Mean inference time     : 258.7 ms/patch (cuda)
+================================================================================
+
+################################################################################
+# SWEEP: spacing_lora_lr0.0002_alpha0.6 (5 epochs)
+################################################################################
+[*] Training on device: cuda
+[*] Training samples: ['kidney_1_dense', 'kidney_2', 'kidney_3_dense', 'kidney_3_sparse'] (held out for OOD test: ('kidney_1_voi',))
+[*] Loaded pretrained SAM-Med3D weights from /kaggle/working/hip-vesseladapt/external/SAM-Med3D/ckpt/sam_med3d.pth (0 missing, 0 unexpected keys)
+[*] Injected Spacing-Conditioned LoRA (r=4, alpha=1.0) into 24 attention layers
+[*] Starting fresh
+[*] Trainable parameters: 9,060,400
+[*] Training epochs 1 to 5...
+  Batch [3/80] - Sample: kidney_1_dense - Step Loss: 2.0375
+  Batch [9/80] - Sample: kidney_3_dense - Step Loss: 4.2688
+  Batch [12/80] - Sample: kidney_2 - Step Loss: 1.8302
+  Batch [14/80] - Sample: kidney_2 - Step Loss: 1.6881
+  Batch [22/80] - Sample: kidney_1_dense - Step Loss: 1.8280
+  Batch [25/80] - Sample: kidney_1_dense - Step Loss: 1.6102
+  Batch [26/80] - Sample: kidney_2 - Step Loss: 4.0058
+  Batch [28/80] - Sample: kidney_2 - Step Loss: 5.8898
+  Batch [29/80] - Sample: kidney_1_dense - Step Loss: 1.8922
+  Batch [32/80] - Sample: kidney_1_dense - Step Loss: 2.0478
+  Batch [39/80] - Sample: kidney_1_dense - Step Loss: 2.3131
+  Batch [45/80] - Sample: kidney_2 - Step Loss: 2.7227
+  Batch [57/80] - Sample: kidney_3_sparse - Step Loss: 1.9613
+  Batch [58/80] - Sample: kidney_3_dense - Step Loss: 2.0989
+  Batch [60/80] - Sample: kidney_1_dense - Step Loss: 3.3935
+  Batch [64/80] - Sample: kidney_3_dense - Step Loss: 1.9058
+  Batch [68/80] - Sample: kidney_3_dense - Step Loss: 2.8385
+  Batch [71/80] - Sample: kidney_3_sparse - Step Loss: 2.6395
+  Batch [80/80] - Sample: kidney_1_dense - Step Loss: 2.8332
+[✓] Epoch [1/5] Complete - Avg Loss: 2.6213 (61 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 1 -> checkpoints_sweep/spacing_lora_lr0.0002_alpha0.6/best_model_spacing_lora.pth
+  Batch [3/80] - Sample: kidney_2 - Step Loss: 2.5372
+  Batch [4/80] - Sample: kidney_1_dense - Step Loss: 2.4058
+  Batch [9/80] - Sample: kidney_1_dense - Step Loss: 2.2366
+  Batch [13/80] - Sample: kidney_3_dense - Step Loss: 2.0658
+  Batch [17/80] - Sample: kidney_1_dense - Step Loss: 3.2927
+  Batch [23/80] - Sample: kidney_3_dense - Step Loss: 2.6303
+  Batch [25/80] - Sample: kidney_3_sparse - Step Loss: 1.9540
+  Batch [27/80] - Sample: kidney_2 - Step Loss: 1.8458
+  Batch [33/80] - Sample: kidney_3_sparse - Step Loss: 1.8822
+  Batch [36/80] - Sample: kidney_1_dense - Step Loss: 3.0044
+  Batch [38/80] - Sample: kidney_1_dense - Step Loss: 2.9309
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 3.1579
+  Batch [44/80] - Sample: kidney_2 - Step Loss: 2.0029
+  Batch [45/80] - Sample: kidney_2 - Step Loss: 2.0318
+  Batch [46/80] - Sample: kidney_1_dense - Step Loss: 2.0305
+  Batch [49/80] - Sample: kidney_3_sparse - Step Loss: 2.1515
+  Batch [50/80] - Sample: kidney_2 - Step Loss: 2.0859
+  Batch [52/80] - Sample: kidney_3_dense - Step Loss: 2.0272
+  Batch [56/80] - Sample: kidney_2 - Step Loss: 2.2472
+  Batch [61/80] - Sample: kidney_3_dense - Step Loss: 2.0142
+  Batch [62/80] - Sample: kidney_1_dense - Step Loss: 2.6950
+  Batch [64/80] - Sample: kidney_2 - Step Loss: 1.9925
+  Batch [65/80] - Sample: kidney_3_sparse - Step Loss: 2.4023
+  Batch [68/80] - Sample: kidney_1_dense - Step Loss: 1.9262
+  Batch [69/80] - Sample: kidney_1_dense - Step Loss: 2.5830
+  Batch [71/80] - Sample: kidney_1_dense - Step Loss: 3.0611
+  Batch [73/80] - Sample: kidney_1_dense - Step Loss: 1.9218
+  Batch [76/80] - Sample: kidney_1_dense - Step Loss: 2.4686
+  Batch [78/80] - Sample: kidney_3_sparse - Step Loss: 2.6881
+[✓] Epoch [2/5] Complete - Avg Loss: 2.3543 (51 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 2 -> checkpoints_sweep/spacing_lora_lr0.0002_alpha0.6/best_model_spacing_lora.pth
+  Batch [2/80] - Sample: kidney_1_dense - Step Loss: 3.0568
+  Batch [13/80] - Sample: kidney_1_dense - Step Loss: 2.4727
+  Batch [14/80] - Sample: kidney_1_dense - Step Loss: 2.0065
+  Batch [16/80] - Sample: kidney_1_dense - Step Loss: 2.0212
+  Batch [24/80] - Sample: kidney_3_dense - Step Loss: 2.2273
+  Batch [27/80] - Sample: kidney_1_dense - Step Loss: 2.2213
+  Batch [30/80] - Sample: kidney_1_dense - Step Loss: 2.1513
+  Batch [34/80] - Sample: kidney_1_dense - Step Loss: 1.9891
+  Batch [36/80] - Sample: kidney_2 - Step Loss: 2.1856
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 1.9965
+  Batch [53/80] - Sample: kidney_3_dense - Step Loss: 2.5909
+  Batch [55/80] - Sample: kidney_2 - Step Loss: 1.8851
+  Batch [58/80] - Sample: kidney_3_dense - Step Loss: 3.2052
+  Batch [65/80] - Sample: kidney_3_dense - Step Loss: 1.9095
+  Batch [69/80] - Sample: kidney_1_dense - Step Loss: 2.5338
+  Batch [71/80] - Sample: kidney_1_dense - Step Loss: 2.7051
+  Batch [74/80] - Sample: kidney_3_sparse - Step Loss: 3.1137
+  Batch [77/80] - Sample: kidney_1_dense - Step Loss: 1.9619
+  Batch [79/80] - Sample: kidney_1_dense - Step Loss: 2.4465
+[✓] Epoch [3/5] Complete - Avg Loss: 2.3516 (61 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 3 -> checkpoints_sweep/spacing_lora_lr0.0002_alpha0.6/best_model_spacing_lora.pth
+  Batch [1/80] - Sample: kidney_3_sparse - Step Loss: 2.1917
+  Batch [5/80] - Sample: kidney_1_dense - Step Loss: 1.9891
+  Batch [6/80] - Sample: kidney_3_sparse - Step Loss: 2.2526
+  Batch [7/80] - Sample: kidney_3_sparse - Step Loss: 2.2359
+  Batch [10/80] - Sample: kidney_3_sparse - Step Loss: 2.1715
+  Batch [11/80] - Sample: kidney_3_dense - Step Loss: 2.3888
+  Batch [12/80] - Sample: kidney_1_dense - Step Loss: 2.5670
+  Batch [13/80] - Sample: kidney_1_dense - Step Loss: 2.1394
+  Batch [15/80] - Sample: kidney_2 - Step Loss: 1.9912
+  Batch [17/80] - Sample: kidney_3_sparse - Step Loss: 2.1369
+  Batch [18/80] - Sample: kidney_1_dense - Step Loss: 2.9469
+  Batch [19/80] - Sample: kidney_3_sparse - Step Loss: 2.1277
+  Batch [20/80] - Sample: kidney_3_dense - Step Loss: 2.0679
+  Batch [22/80] - Sample: kidney_1_dense - Step Loss: 1.9045
+  Batch [25/80] - Sample: kidney_3_dense - Step Loss: 3.0335
+  Batch [31/80] - Sample: kidney_1_dense - Step Loss: 2.0311
+  Batch [35/80] - Sample: kidney_3_sparse - Step Loss: 2.0543
+  Batch [36/80] - Sample: kidney_3_sparse - Step Loss: 2.9728
+  Batch [39/80] - Sample: kidney_1_dense - Step Loss: 1.8771
+  Batch [40/80] - Sample: kidney_2 - Step Loss: 1.9175
+  Batch [42/80] - Sample: kidney_1_dense - Step Loss: 2.5753
+  Batch [51/80] - Sample: kidney_2 - Step Loss: 1.8647
+  Batch [69/80] - Sample: kidney_2 - Step Loss: 2.5037
+  Batch [72/80] - Sample: kidney_1_dense - Step Loss: 3.1388
+  Batch [74/80] - Sample: kidney_3_dense - Step Loss: 2.2130
+  Batch [75/80] - Sample: kidney_3_dense - Step Loss: 2.3788
+  Batch [78/80] - Sample: kidney_2 - Step Loss: 1.9582
+  Batch [79/80] - Sample: kidney_1_dense - Step Loss: 1.9328
+[✓] Epoch [4/5] Complete - Avg Loss: 2.2701 (52 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 4 -> checkpoints_sweep/spacing_lora_lr0.0002_alpha0.6/best_model_spacing_lora.pth
+  Batch [7/80] - Sample: kidney_3_sparse - Step Loss: 1.9297
+  Batch [11/80] - Sample: kidney_1_dense - Step Loss: 2.5918
+  Batch [13/80] - Sample: kidney_3_sparse - Step Loss: 2.1208
+  Batch [20/80] - Sample: kidney_3_sparse - Step Loss: 1.9728
+  Batch [22/80] - Sample: kidney_3_sparse - Step Loss: 3.1028
+  Batch [25/80] - Sample: kidney_3_sparse - Step Loss: 1.9953
+  Batch [30/80] - Sample: kidney_2 - Step Loss: 1.8908
+  Batch [31/80] - Sample: kidney_1_dense - Step Loss: 2.4425
+  Batch [32/80] - Sample: kidney_1_dense - Step Loss: 1.8762
+  Batch [35/80] - Sample: kidney_1_dense - Step Loss: 2.6303
+  Batch [37/80] - Sample: kidney_2 - Step Loss: 1.8300
+  Batch [38/80] - Sample: kidney_1_dense - Step Loss: 1.8205
+  Batch [39/80] - Sample: kidney_2 - Step Loss: 2.1859
+  Batch [42/80] - Sample: kidney_2 - Step Loss: 1.7941
+  Batch [43/80] - Sample: kidney_3_sparse - Step Loss: 1.7779
+  Batch [48/80] - Sample: kidney_1_dense - Step Loss: 2.0321
+  Batch [51/80] - Sample: kidney_2 - Step Loss: 1.7432
+  Batch [52/80] - Sample: kidney_3_sparse - Step Loss: 3.5588
+  Batch [56/80] - Sample: kidney_3_dense - Step Loss: 3.2767
+  Batch [58/80] - Sample: kidney_1_dense - Step Loss: 1.9741
+  Batch [68/80] - Sample: kidney_1_dense - Step Loss: 1.9238
+  Batch [71/80] - Sample: kidney_1_dense - Step Loss: 2.3743
+  Batch [75/80] - Sample: kidney_3_dense - Step Loss: 2.0401
+  Batch [76/80] - Sample: kidney_1_dense - Step Loss: 2.2370
+  Batch [79/80] - Sample: kidney_3_dense - Step Loss: 2.3503
+[✓] Epoch [5/5] Complete - Avg Loss: 2.2189 (55 empty-target patches skipped)
+[✓] Checkpoint saved at epoch 5 -> checkpoints_sweep/spacing_lora_lr0.0002_alpha0.6/best_model_spacing_lora.pth
+[✓] Training complete: 5 total epochs.
+[*] Running SWEEP EVAL: spacing_lora_lr0.0002_alpha0.6 on device: cuda
+[*] Loaded pretrained SAM-Med3D weights from /kaggle/working/hip-vesseladapt/external/SAM-Med3D/ckpt/sam_med3d.pth (0 missing, 0 unexpected keys)
+[*] Injected Spacing-Conditioned LoRA (r=4, alpha=1.0) into 24 attention layers
+[✓] Loaded fine-tuned model weights from checkpoints_sweep/spacing_lora_lr0.0002_alpha0.6/best_model_spacing_lora.pth
+
+================================================================================
+SWEEP EVAL: spacing_lora_lr0.0002_alpha0.6
+================================================================================
+  Samples evaluated       : 100
+  Empty-target patches    : 83/100 (excluded from Dice/IoU/clDice/HD95/ASSD below -- undefined/misleading on empty GT)
+  Mean target FG fraction : 0.2541% (over ALL patches, incl. empty)
+  Dice                    : 0.0598  (n=17)
+  IoU                     : 0.0316  (n=17)
+  clDice                  : 0.0496  (n=17)
+  HD95 (voxels)           : 45.2085  (n=17)
+  ASSD (voxels)           : 18.7582  (n=17)
+  Total parameters        : 101,985,328
+  Trainable parameters    : 9,060,400 (8.88%)
+  Mean inference time     : 258.8 ms/patch (cuda)
+================================================================================
+
+================================================================================
+SWEEP SUMMARY (best Dice per architecture)
+================================================================================
+plain_lora: best = plain_lora_lr3e-05_alpha0.6 (lr=3e-05, alpha=0.6, Dice=0.0320)
+spacing_lora: best = spacing_lora_lr0.0001_alpha0.25 (lr=0.0001, alpha=0.25, Dice=0.1364)
+
+[✓] SWEEP DONE
+/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\|'
+  cells[i][c] = re.sub('\\\\\|', '|', cell)
+/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\_'
+  text = re.sub(r'_', '\_', text) # Escape underscores in display text
+[NbConvertApp] Converting notebook __script__.ipynb to html
+[NbConvertApp] Writing 300180 bytes to __results__.html
