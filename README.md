@@ -8,4 +8,6 @@ LoRA (with and without spacing-conditioned FiLM) on a frozen SAM-Med3D encoder, 
 * **Layout:** `models/`, `losses/`, `utils/` (code) · `benchmark/` (test ROIs, scoring, baselines) · `kaggle_kernels/` (Kaggle jobs and notebooks) · `results/` (scores) · `first_round/` (first experiments).
 * **Tests:** `python -m pytest tests -q`
 
+<img src="first_round/figures/figure4_dice_comparison.png" width="32%"> <img src="first_round/figures/figure5_film_layers.png" width="22%"> <img src="first_round/figures/figure6_vascular_graph.png" width="38%"><br><sub>First-round figures: Dice in/out of distribution (4), FiLM γ per layer (5), connected components and branch points (6).</sub>
+
 Data: Human Organ Atlas / SenNet + HOA (Jain et al., *Nat. Commun.* 17:8273, 2026). The paper is in preparation.
