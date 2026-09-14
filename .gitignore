@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.ipynb_checkpoints/
+
+# Virtual environment
+venv/
+env/
+
+# Large / generated data (see README setup instructions to regenerate)
+data/raw/
+data/memmap/
+data/memmap_kidney_gt/
+data/pseudo_cache/
+data/*.nii.gz
+data/*.dat
+data/*.zip
+data/*.jp2
+
+# Model weights & training state (large binaries; not source)
+checkpoints/
+checkpoints_real_gt/
+checkpoints_plain_lora/
+checkpoints_spacing_lora/
+*.pth
+
+# Third-party cloned repos + downloaded checkpoints (see README setup: re-clone/re-download)
+external/SAM-Med3D/
+external/clDice/
+
+# OS / editor cruft
+.DS_Store
+*.swp

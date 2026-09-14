@@ -1,0 +1,8 @@
+sample_id,kidney_specimen_id,image_path,mask_path,voxel_spacing_um,n_image_slices,n_label_slices,split,annotation_density,vessel_gt_available,spacing_documented_or_inferred
+kidney_1_dense,LADAF-2021-17-Right,train/kidney_1_dense/images/,train/kidney_1_dense/labels/,50.0,2279,2279,train,dense,YES (real expert annotation),"documented (PMC13470036, Table 1)"
+kidney_1_voi,LADAF-2021-17-Right,train/kidney_1_voi/images/,train/kidney_1_voi/labels/,5.2,1397,1397,train,dense,YES (real expert annotation),"documented (PMC13470036, Table 1)"
+kidney_2,S-20-28-Kidney,train/kidney_2/images/,train/kidney_2/labels/,50.0,2217,2217,train,sparse (~65%),YES (real expert annotation),"documented (PMC13470036, Table 1)"
+kidney_3_dense,LADAF-2020-27-Kidney-2,train/kidney_3_dense/images/,train/kidney_3_dense/labels/,50.16,0,501,train,dense (85%+),YES (real expert annotation),"documented (PMC13470036, Table 1); shares raw images with kidney_3_sparse"
+kidney_3_sparse,LADAF-2020-27-Kidney-2,train/kidney_3_sparse/images/,train/kidney_3_sparse/labels/,50.16,1035,1035,train,sparse,YES (real expert annotation),"documented (PMC13470036, Table 1)"
+kidney_5,LADAF-2021-17-Left,test/kidney_5/images/,N/A,50.28,3,0,public_test,dense (labels NOT public),"NO (test set, labels withheld by competition)","documented (PMC13470036, Table 1); zip contains only 3 placeholder images, no labels"
+kidney_6,LADAF-2022-13-Bottom,test/kidney_6/images/,N/A,63.08,3,0,private_test,dense (labels NOT public),"NO (test set, labels withheld by competition)","documented (PMC13470036, Table 1); zip contains only 3 placeholder images, no labels"
