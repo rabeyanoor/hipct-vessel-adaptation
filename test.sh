@@ -223,6 +223,28 @@ Plain LoRA's ASSD on the identical evaluation protocol did NOT hit this
 (24.8, finite) -- worth investigating before trusting ASSD from either
 winning model.
 
+RESOLVED 2026-09-15 (diagnose_assd_inf.py): an earlier investigation had
+tested exactly this "completely empty prediction" hypothesis on 15 patches
+and confirmed 0 of them, leaving the cause open. A fresh, larger diagnostic
+run (125 non-empty patches for PhysicsAwareAdapter, 92 for Spacing-
+Conditioned LoRA, calling MONAI's SurfaceDistanceMetric per-patch instead of
+only on the batch average) DID reproduce one genuine ASSD=inf case for
+Spacing-Conditioned LoRA, and it was in fact a completely-empty prediction
+(pred_sum=0) -- on a patch with a vanishingly small annotated target (22
+voxels, 0.01% of the 64^3 patch, kidney_3_dense). PhysicsAwareAdapter's
+checkpoint produced 0/125 such cases in this same run. CONCLUSION: the
+empty-prediction hypothesis was right all along -- it's a rare,
+patch-draw-dependent event (roughly 1% of non-empty-target patches in this
+draw) tied to the model completely missing tiny/sparse vessel fragments at
+only 10 epochs, not a deterministic property of either checkpoint. The
+earlier "0 confirmed of 15" result most likely just didn't happen to draw
+one of these rare small-target patches -- 15 samples was too few to
+reliably catch a ~1%-rate event. A second, more specific hypothesis (a
+FULLY SATURATED prediction, the opposite extreme, also has no detectable
+surface and would also produce inf) was tested alongside and found 0
+occurrences of either kind for PhysicsAwareAdapter and 0 fully-saturated
+cases for Spacing-Conditioned LoRA -- ruled out as a contributing cause here.
+
 A real bug was found and fixed while building this evaluation: the external
 clDice library's soft_cldice.forward(y_true, y_pred) returns 1-clDice (a
 LOSS, same convention as soft_dice() in the same file), not the raw score.
@@ -288,33 +310,446 @@ Plain LoRA on real out-of-distribution data. This is more scientifically
 important than the in-distribution win in section 3.2 and must be reported
 as the headline finding, not buried under it. Root cause remains open.
 
+--------------------------------------------------------------
+3.4 Controlled 100-epoch GPU retrain -- CONFIRMS 3.3, not under-training
+--------------------------------------------------------------
+Real GPU retrain (100 epochs, both architectures, same data split/protocol
+as 3.2/3.3) answering the open question those 10-epoch CPU numbers left:
+was the OOD collapse real, or just too little training. Literal printed
+output of evaluate_real_gt.py from Kaggle kernel version 7
+(rabeya100x/hip-vesseladapt-100ep-gpu-train), fetched via kaggle
+kernels_logs after the kernel reached COMPLETE:
+
+  Model                                  | Trainable | In-dist Dice        | OOD Dice
+  ----------------------------------------|-----------|----------------------|----------------------
+  Plain LoRA (100ep, GPU)                | 7.75%     | 0.1838 (n=26/100)    | 0.1672 (n=5/40)
+  Spacing-Conditioned LoRA (100ep, GPU)  | 8.88%     | 0.3145 (n=18/100)    | 0.0058 (n=5/40)
+
+CONFIRMED, NOT RESOLVED BY MORE TRAINING -- IF ANYTHING SHARPER:
+- In-distribution lead widened: 0.206 vs 0.067 (10ep) -> 0.3145 vs 0.1838
+  (100ep), Spacing-Conditioned LoRA still ahead of Plain LoRA both times.
+- OOD: Spacing-Conditioned LoRA still worst by >10x (0.0058 vs Plain LoRA's
+  0.1672), and still ~98% below its OWN in-distribution score (0.0058 vs
+  0.3145). Plain LoRA degrades gracefully (0.1672 OOD vs 0.1838 in-dist);
+  Spacing-Conditioned LoRA collapses.
+- Rules out "10 epochs was too few" as the explanation. The collapse is a
+  real property of the trained model -- this is the conclusion the OOD
+  root-cause scripts (evaluate_fov_confound.py, analyze_film_layers.py,
+  run_ablation.py -- all written, section 4) now need to run against, using
+  these actual 100-epoch checkpoints, not the earlier 10-epoch ones.
+
+CAVEAT, stated honestly: only 5 of 40 sampled OOD patches had any annotated
+vessel at all, for BOTH models -- the OOD numbers above are each an average
+over just 5 patches. The gap (0.1672 vs 0.0058) is large enough to be
+suggestive even at this n, but a properly powered OOD sample size is still
+on the to-do list (section 4).
+
+TWO THINGS NOTICED IN THIS RUN'S RAW OUTPUT, reported as found:
+- Final training loss converged to nearly the same value for both models
+  (Plain LoRA 1.4737, Spacing-Conditioned LoRA 1.4900, epoch 100/100) --
+  unlike the 10-epoch run, where Spacing-Conditioned LoRA's loss was
+  visibly lower (1.56 vs 2.05). At 100 epochs, training loss no longer
+  predicts the large real-GT Dice gap between the two models.
+- HD95 and ASSD came back as nan (n=0) for ALL FOUR evaluations in this run
+  (both models, both in-dist and OOD) -- different from the CPU run, which
+  had real HD95 values and only ASSD=inf for two of three architectures.
+  evaluate_real_gt.py's _safe_metric() was silently catching whatever
+  exception MONAI's HausdorffDistanceMetric/SurfaceDistanceMetric raised on
+  every non-empty-target patch, while Dice/IoU/clDice succeeded on the
+  exact same GPU tensors in the same loop iteration -- not a device-
+  transfer problem with the tensors themselves. Fixed _safe_metric() to
+  print the real exception the first time each metric type fails instead
+  of only ever returning None -- the next run will show the actual cause.
+  Not yet diagnosed as of this writing.
+
+--------------------------------------------------------------
+3.5 Field-of-view confound test -- RUN FOR REAL, substantial support
+--------------------------------------------------------------
+100-epoch checkpoints downloaded from the Kaggle kernel's output (signed
+URLs for just the two best_model_*.pth files, not the full working
+directory) and evaluate_fov_confound.py run locally against both,
+samples=40. Method: instead of a native-scale 64^3 crop of kidney_1_voi
+(5.2um), extract a much larger cube sized so its PHYSICAL extent matches a
+64^3 patch at the training spacing (~50um), downsample to 64^3, evaluate on
+that -- same real 5.2um data, matched field of view.
+
+  Model                     | In-dist (3.2) | OOD native-scale (3.3/3.4) | OOD FOV-matched (this test)
+  ---------------------------|---------------|------------------------------|------------------------------
+  Plain LoRA                | 0.1838 (n=26) | 0.1672 (n=5/40)             | 0.2895 (n=40/40)
+  Spacing-Conditioned LoRA  | 0.3145 (n=18) | 0.0058 (n=5/40)             | 0.2215 (n=40/40)
+
+SUBSTANTIAL, NOT MARGINAL SUPPORT for the field-of-view hypothesis:
+- All 40 FOV-matched patches had real vessel (0 empty) vs 35/40 EMPTY in
+  the native-scale OOD crop -- the native 64^3 window at 5.2um covers too
+  little real tissue to reliably contain a vessel, which is a big part of
+  why that eval only had 5 usable patches to begin with.
+- Spacing-Conditioned LoRA's OOD Dice recovers from catastrophic (0.0058,
+  ~98% drop from its own in-dist score) to 0.2215 (~70% of in-dist) just by
+  matching field of view on the SAME real OOD data.
+- Plain LoRA also improves substantially (0.1672 -> 0.2895) -- FOV is not
+  the WHOLE story (Plain LoRA was never "collapsed"), but clearly a major
+  contributor for both, and the dominant one for Spacing-Conditioned LoRA.
+- Under FOV-matched conditions the in-distribution ranking reverses again:
+  Plain LoRA edges out Spacing-Conditioned LoRA. CONFIRMED SIGNIFICANT --
+  a fresh scoring pass (significance_test_fov.py, 40 fresh patches per
+  model, means differ slightly from above since evaluate_fov_confound.py
+  samples a new random cube each call: Plain LoRA 0.3681 vs
+  Spacing-Conditioned LoRA 0.2618) gives Mann-Whitney U p=0.0216,
+  significant at alpha=0.05. The gap is real, not sampling noise.
+
+INTERPRETATION (hypothesis, not proven): most of the "OOD collapse" looks
+like an ordinary never-seen-visual-scale domain shift, not something
+specific to how the FiLM mechanism uses the numeric spacing value. Section
+3.6 adds a second, complementary piece of evidence for why
+Spacing-Conditioned LoRA is hit harder than Plain LoRA by whatever
+FOV-shift remains even after this correction.
+
+--------------------------------------------------------------
+3.6 Per-layer FiLM breakdown -- RUN FOR REAL, a second lead
+--------------------------------------------------------------
+analyze_film_layers.py run against the real 100-epoch
+Spacing-Conditioned LoRA checkpoint, all 24 injected layers, in-dist (50um)
+vs OOD (5.2um) spacing -- no forward pass through the image encoder needed,
+spacing_film is a small MLP over the 3-number spacing input alone.
+
+The earlier aggregate check (3.3, 10-epoch checkpoint) refuted "FiLM
+extrapolates to wild/erratic values at unseen spacing" -- OOD gamma was, if
+anything, tamer. At 100 epochs, the per-layer breakdown shows the SAME
+direction but FAR MORE PRONOUNCED: gamma at the IN-DISTRIBUTION spacing has
+grown large during training (e.g. layer 19: gamma_mean=6.52, gamma_max=21.6
+at 50um; layer 2: gamma_max=19.7 at 50um), while the SAME layers' gamma at
+the OOD spacing stays close to identity (layer 19: gamma_mean=1.59,
+gamma_max=3.23 at 5.2um; layer 2: gamma_max=3.06 at 5.2um) -- holds broadly
+across all 24 layers, not one outlier.
+
+REVISED HYPOTHESIS (worth testing further): rather than FiLM extrapolating
+to DANGEROUS values OOD, training pushed the FiLM network toward large,
+aggressive modulation specifically TUNED TO the training spacing -- at 100
+epochs the model may be reliant on that strong modulation to segment 50um
+data well. At an unseen spacing, FiLM output reverts toward near-identity
+(gamma~1, beta~0), falling back toward something close to Plain LoRA's
+behavior for that layer -- but not exactly, since the underlying LoRA A/B
+weights were trained jointly with this strong modulation active, not
+independently. Combined with 3.5: most of the OOD failure looks like an
+ordinary field-of-view domain shift, and Spacing-Conditioned LoRA's FiLM
+mechanism compounds it by degenerating toward (not cleanly reaching) a
+plain-LoRA-like behavior it was never actually optimized for. Still a
+hypothesis -- natural next check is training on a wider range of real
+spacings so "unseen spacing" stops being confounded with "unseen FOV."
+
+--------------------------------------------------------------
+3.7 Ablation: clDice loss term, 100 epochs GPU -- RUN FOR REAL
+--------------------------------------------------------------
+run_ablation.py's 4th stage (Spacing-Conditioned LoRA with the clDice loss
+term off, via the new use_cldice=False flag on HiPVesselLoss) trained
+separately on Kaggle GPU, 100 epochs, identical protocol to 3.4 otherwise.
+
+  Model                                    | In-dist Dice     | OOD Dice
+  -------------------------------------------|-------------------|------------------
+  Spacing-Conditioned LoRA, WITH clDice (3.4)| 0.3145 (n=18/100) | 0.0058 (n=5/40)
+  Spacing-Conditioned LoRA, NO clDice        | 0.1898 (n=19/100) | 0.0015 (n=3/40)
+
+clDice loss term contributes real in-distribution performance -- removing
+it drops in-dist Dice ~40% relative (0.3145 -> 0.1898), not just the
+clDice metric itself. Does NOT explain the OOD collapse -- OOD Dice is
+catastrophically low either way (0.0058 vs 0.0015, both near noise floor
+at n=3-5). clDice ablation and the FOV/FiLM findings (3.5, 3.6) are
+independent: clDice loss helps in-distribution quality generally; OOD
+collapse looks driven mostly by FOV mismatch and FiLM's spacing-specific
+modulation, not clDice either way.
+
+--------------------------------------------------------------
+3.8 Root cause found: HD95/ASSD nan on Kaggle GPU (sections 3.4, 3.7)
+--------------------------------------------------------------
+The improved _safe_metric() logging (3.4) surfaced the real exception on
+this ablation run -- an environment problem, not a bug in this project's
+code:
+
+  HausdorffDistanceMetric raised: .../cupy/_core/include/cupy/_cccl/thrust/
+  thrust/detail/config/cpp_dialect.h(74): catastrophic error: #error
+  directive: Thrust requires at least C++17.
+
+MONAI's HausdorffDistanceMetric/SurfaceDistanceMetric route GPU tensors
+through a CuPy-JIT-compiled CUDA kernel for the distance transform; on
+Kaggle's kernel image that JIT compilation fails outright (a
+CuPy/Thrust/CUDA-toolkit version mismatch in Kaggle's Docker image, nothing
+this project controls). Dice/IoU/clDice never go through this path, which
+is exactly why only HD95/ASSD were nan while everything else computed
+normally. Fixed in evaluate_real_gt.py by moving binary_pred/targets to
+CPU specifically for the HD95/ASSD calls (.cpu() right before
+_safe_metric()), sidestepping the broken GPU/CuPy path entirely instead of
+depending on Kaggle's toolchain being fixed. Verified locally (real
+HD95/ASSD values, no regression) -- not yet re-verified on Kaggle GPU,
+since re-running a 100-epoch kernel just to check this would cost real GPU
+quota for an already reasonably-confident fix.
+
+--------------------------------------------------------------
+3.9 Kaggle GPU migration bug history (getting the 3.4 run running)
+--------------------------------------------------------------
+Section 3.2/3.3's numbers are from a 10-epoch run on this machine's CPU (no
+local GPU). To get a properly powered controlled retrain (100 epochs, both
+architectures, in-distribution + OOD eval) in reasonable wall-clock time, the
+same code was moved to a Kaggle kernel with a free GPU attached. Project
+source is pushed as a private Kaggle dataset
+(rabeya100x/hip-vesseladapt-code); the SenNet+HOA competition data is
+attached natively by Kaggle (no re-upload of the 21GB zip); the kernel
+script (kaggle_train_kernel.py) clones external/SAM-Med3D and external/clDice
+fresh, downloads the SAM-Med3D checkpoint via gdown, then runs
+train_plain_lora / train_spacing_lora (100 epochs each) followed by
+evaluate_real_gt in-distribution and on the held-out kidney_1_voi OOD set,
+for both architectures.
+
+Getting this running surfaced real, environment-specific bugs not visible on
+the local machine -- each diagnosed from the kernel's actual logs
+(kaggle kernels_logs, not guessed):
+
+  1. Input-path detection: Kaggle mounts datasets/competitions under
+     /kaggle/input/datasets/<owner>/<name>/ and
+     /kaggle/input/competitions/<slug>/, not flat. Fixed with a bounded
+     recursive search for a directory containing a known marker file.
+  2. Working-directory disk quota: materializing kidney_1_dense +
+     kidney_1_voi as np.memmap copies needs ~23GB, more than
+     /kaggle/working's quota -- filled it mid-run (Bus error, no space left
+     on device). Fixed by adding a raw_tiff_root mode to
+     RealGTKidneyDataset that reads TIFF slices directly from the read-only
+     competition mount per __getitem__ call, skipping memmap conversion.
+  3. clDice import: external/clDice's cldice.py (freshly git-cloned each
+     run) does `from .soft_skeleton import SoftSkeletonize`, a
+     package-relative import that only resolves inside an actual Python
+     package -- this project loads it as a standalone file, which always
+     fails that form. It went unnoticed locally only because an earlier,
+     uncommitted local patch to this vendored file had added a
+     try/except ImportError fallback that the fresh Kaggle clone doesn't
+     have. Fixed in utils/load_cldice.py: soft_skeleton.py is registered in
+     sys.modules first, then cldice.py's source is read and its
+     relative-import line is rewritten to a plain absolute import before
+     the module executes.
+  4. SAM-Med3D backbone reported "not importable": segment_anything's own
+     __init__.py does `from utils import *` (absolute, meant to reach
+     SAM-Med3D's own utils/ package), which collided with this project's
+     own top-level utils/ package -- whichever sits earlier on sys.path
+     wins the name, and the model files' bare `except ImportError:
+     HAS_SAM_MED3D = False` silently swallowed whatever the real error was.
+     Fixed in utils/load_sam_med3d.py: sam_med3d_path is put at the front
+     of sys.path only for the duration of that one import, and any
+     utils/utils.* entries sys.modules picked up during it are evicted
+     afterward so this project's own utils imports keep resolving
+     correctly elsewhere. The silent except was also removed so any future
+     failure here surfaces its real traceback.
+  5. CUDA "no kernel image is available for execution on the device": with
+     bugs 1-4 fixed, the kernel reached real training and immediately hit a
+     hardware/software mismatch -- Kaggle had assigned a Tesla P100 GPU
+     (compute capability sm_60), unsupported by the pre-installed PyTorch
+     build (sm_70 minimum) on the kernel's Docker image.
+     kernel-metadata.json didn't request a specific accelerator. Fixed by
+     setting "machine_shape": "NvidiaTeslaT4" in kernel-metadata.json
+     (sm_75, within the supported range).
+  6. "RuntimeError: The size of tensor a (4) must match the size of tensor
+     b (8)" in SAM-Med3D's image encoder: with a working GPU, training
+     reached the model's first real forward pass and crashed adding a
+     128^3-pretraining-sized positional embedding (8 tokens/axis at patch
+     16) to this project's 64^3-patch input (4 tokens/axis). The
+     interpolation fix for this (pos_embed in image_encoder3D.py; dense and
+     image prompt embeddings in mask_decoder3D.py) had only ever existed as
+     an uncommitted local edit to the vendored external/SAM-Med3D checkout,
+     so it silently vanished on every fresh git clone (same root pattern as
+     bug 3's clDice issue). Fixed properly this time via
+     utils/patch_external_repos.py -- an idempotent, self-checking text
+     patch (fails loudly if upstream no longer matches what it expects,
+     rather than silently doing nothing) applied right after every fresh
+     clone, locally or on Kaggle.
+
+Status as of this writing: kernel version 7 (all six fixes applied) reached
+COMPLETE on Kaggle's free GPU tier -- results are in section 3.4 above.
+
+--------------------------------------------------------------
+3.10 Vascular graph validation -- RUN FOR REAL, third independent piece of
+     evidence for the OOD collapse
+--------------------------------------------------------------
+evaluate_vascular_graph.py run locally (CPU) against both real 100-epoch GPU
+checkpoints, in-distribution (kidney_1_dense/kidney_2/kidney_3_dense/
+kidney_3_sparse, 20 samples/id, same protocol as 3.2-3.4) and OOD
+(kidney_1_voi, 40 samples), same data. Skeletonizes (skimage skeletonize,
+26-connected) the predicted mask and the real GT mask separately per patch,
+builds a graph over each skeleton (utils/vascular_graph_metrics.py), and
+compares connectivity/branching structure directly -- a check on vessel-TREE
+STRUCTURE that Dice/clDice/Betti numbers don't directly report. Median used
+below alongside mean because one single in-distribution patch (kidney_2,
+Spacing-Conditioned LoRA) is an extreme outlier (430 predicted branch points,
+123226 um predicted length vs GT's 1 branch point/3467 um on that one patch)
+that would otherwise dominate the mean; full raw per-patch numbers are in
+vascular_graph_results.json.
+
+  Model / condition          | n (non-empty) | Pred comp (med) | GT comp (med) | Pred branch (med) | GT branch (med) | Pred endp (med) | GT endp (med)
+  ----------------------------|----------------|------------------|-----------------|---------------------|--------------------|--------------------|-----------------
+  Plain LoRA, in-dist        | 23/80          | 3.0              | 3.0            | 0.0                 | 1.0                | 6.0                | 8.0
+  Plain LoRA, OOD            | 5/40           | 6.0              | 1.0            | 1.0                 | 1.0                | 10.0               | 3.0
+  Spacing LoRA, in-dist      | 22/80          | 3.0              | 1.0            | 0.5                 | 0.5                | 7.0                | 3.0
+  Spacing LoRA, OOD          | 8/40           | 11.0             | 1.0            | 15.5                | 0.5                | 20.5               | 2.5
+
+THIRD, STRUCTURALLY DIFFERENT PIECE OF EVIDENCE for the OOD collapse (adds to
+3.5's FOV confound and 3.6's FiLM near-identity lead -- all three
+independent, not yet unified into one causal story):
+- In-distribution, both models UNDER-produce vessel structure relative to
+  real GT (fewer branch points, shorter total length) -- an ordinary
+  under-segmentation, not fragmentation. Spacing-Conditioned LoRA's
+  in-distribution GT patches are mostly single-component (median 1) while
+  its predictions already run to 3 components median -- a mild
+  over-fragmentation signal even in-distribution, before OOD is even
+  considered.
+- OOD, the two architectures fail in QUALITATIVELY DIFFERENT ways, not just
+  different magnitudes: Plain LoRA's OOD predictions fragment moderately
+  (6 components vs GT's 1) but branch-point count stays close to GT (median
+  1 vs 1) -- consistent with 3.5's "graceful degradation" finding. Spacing-
+  Conditioned LoRA's OOD predictions fragment far more severely (11
+  components vs GT's 1, an 11x ratio) AND hyper-branch (median 15.5 spurious
+  branch points vs GT's 0.5, a 31x ratio) AND produce MORE total skeleton
+  length than the real vessel (median 1566 vs GT's 213 um) -- not a smaller,
+  weaker prediction of the real vessel tree, but a scattered field of small
+  disconnected over-branched fragments replacing it. This is a different,
+  independently-observed structural signature from 3.5/3.6, all three
+  pointing the same direction: Spacing-Conditioned LoRA's OOD failure is a
+  qualitative breakdown, not merely a quantitative score drop.
+- CAVEAT, stated honestly: OOD patch counts are small (5 and 8 non-empty
+  patches respectively, same underlying data-scarcity issue noted in 3.4)
+  -- these are suggestive, consistent with 3.5/3.6's independently-reached
+  conclusions, not a large-n statistical claim on their own.
+
+--------------------------------------------------------------
+3.11 Multi-seed statistical reporting -- n=3 REACHED
+--------------------------------------------------------------
+Every Dice number in sections 3.2-3.10 above is a SINGLE training run per
+architecture (the section 3.4 100-epoch checkpoints, unspecified/default
+seed). Two additional explicitly-seeded runs (seed=1, seed=2; same 100
+epochs, same protocol, same data split each time) were trained on a second
+Kaggle account's fresh GPU quota (kaggle_kernels/kaggle_multiseed_kernel.py
+and kaggle_multiseed_kernel_seed2.py; kernels nargisakterr/
+hip-vesseladapt-multiseed-seed1 and -seed2, completed 2026-09-16) once this
+project's own account's weekly quota was exhausted (section 3.9's note,
+section 2 of baki.sh) -- seed=1 used ~9788s of that account's 21600s weekly
+quota, leaving enough headroom to run seed=2 on the SAME account's
+remaining quota the same day, reaching n=3 without waiting for a reset.
+Raw per-seed numbers in multiseed_seed1_results.json /
+multiseed_seed2_results.json; combined n=3 mean+/-std (sample stdev)
+computed by generate_summary_tables.py:
+
+  Model          | In-dist Dice (n=3)      | OOD Dice (n=3)
+  ----------------|--------------------------|--------------------------
+  Plain LoRA      | 0.1838 +/- 0.0644       | 0.0990 +/- 0.0591
+  Spacing LoRA    | 0.2718 +/- 0.0464       | 0.0102 +/- 0.0079
+
+  Per-seed raw values:
+    Plain LoRA:   in-dist = [0.1838, 0.2482, 0.1194], OOD = [0.1672, 0.0620, 0.0679]
+    Spacing LoRA: in-dist = [0.3145, 0.2224, 0.2786], OOD = [0.0058, 0.0193, 0.0055]
+  (first value in each list is the original section 3.4 checkpoint,
+  unspecified seed; second is seed=1; third is seed=2)
+
+WHAT n=3 SETTLES, WHAT IT DOESN'T:
+- OOD collapse: FULLY CONFIRMED, not just replicated. Spacing-Conditioned
+  LoRA's OOD Dice was catastrophically low in ALL THREE independent runs
+  (0.0058, 0.0193, 0.0055 -- every single one under 0.02), and Plain LoRA's
+  OOD Dice beat it in ALL THREE runs too (0.1672, 0.0620, 0.0679 -- every
+  one higher, by margins ranging ~3x to ~29x). Three-for-three on both
+  claims is about as clean as a 3-seed result gets. This is now the
+  project's most solidly-supported finding.
+- In-distribution ranking: RESOLVES TOWARD Spacing-Conditioned LoRA
+  winning, though on real numbers, not by assertion. Spacing-Conditioned
+  LoRA wins in-distribution in 2 of 3 seeds, by a substantial margin both
+  times (0.3145 vs 0.1838; 0.2786 vs 0.1194); Plain LoRA wins in the
+  remaining seed, by a much smaller margin (0.2482 vs 0.2224). The n=3
+  means (0.2718 vs 0.1838, a 0.088 gap) now sit further apart than either
+  architecture's own std (0.046, 0.064) -- unlike at n=2, where the gap
+  and the std were comparable and the ranking was genuinely unresolved.
+  Still only n=3 -- nowhere near enough for a formal significance test,
+  and not being reported as one -- but the earlier "unresolved at n=2"
+  finding does not hold at n=3; the evidence now leans toward
+  Spacing-Conditioned LoRA being the real in-distribution winner.
+- CAVEAT, stated plainly: n=3 is still a small-n result by normal
+  statistical standards -- useful for saying "the OOD collapse is not a
+  single-run fluke" and "the in-distribution ranking leans one way," not
+  for a publication-grade confidence interval. No further seeds are
+  currently planned (this reaches the originally-scoped n=3 target from
+  baki.sh section 2); more would only help.
+
 ================================================================
 4. NOT YET DONE (honest status, nothing implied as complete that isn't)
 ================================================================
-- Plain LoRA: DONE -- trained (10 epochs) and evaluated in-distribution AND
-  OOD (sections 3.2, 3.3).
-- Spacing-Conditioned LoRA: DONE -- implemented, trained (10 epochs), and
-  evaluated in-distribution AND OOD (sections 3.2, 3.3). Wins in-distribution,
-  COLLAPSES out-of-distribution -- see 3.3, this is not yet a validated method.
-- Resolution-OOD test: DONE (section 3.3) -- the key finding of the project so
-  far, and it currently argues AGAINST the proposed method as-is.
+- Plain LoRA: DONE -- trained at 10 epochs (CPU) AND 100 epochs (GPU),
+  evaluated in-distribution AND OOD both times (sections 3.2, 3.3, 3.4).
+- Spacing-Conditioned LoRA: DONE -- trained at 10 epochs (CPU) AND 100
+  epochs (GPU), evaluated in-distribution AND OOD both times (sections 3.2,
+  3.3, 3.4). Wins in-distribution at both epoch counts, COLLAPSES
+  out-of-distribution at both epoch counts -- not yet a validated method.
+- Resolution-OOD test: DONE at both 10 and 100 epochs (sections 3.3, 3.4) --
+  the key finding of the project, and it argues AGAINST the proposed method
+  as-is. The 100-epoch GPU retrain (section 3.4) confirms this is NOT an
+  under-training artifact -- the collapse persists (and the gap sharpens)
+  with 10x more training.
+- Controlled 100-epoch retrain on Kaggle GPU: DONE (section 3.4). This was
+  the single most important remaining check before treating the OOD
+  collapse as a real phenomenon rather than a training-budget artifact --
+  it is now confirmed real.
 - Root cause of the OOD collapse: NOT FOUND. One hypothesis (FiLM
-  extrapolation) tested directly and refuted (section 3.3). Real cause open.
+  extrapolation) tested directly and refuted (section 3.3). Real cause open
+  -- now the single most important remaining question, and the reason
+  evaluate_fov_confound.py / analyze_film_layers.py / run_ablation.py exist
+  (see below).
 - Per-architecture hyperparameter tuning: NOT DONE. All three trained models
   used the same loss weights/LR, tuned originally for PhysicsAwareAdapter.
-- Investigate the ASSD=inf finding (PhysicsAwareAdapter AND
-  Spacing-Conditioned LoRA) in section 3.2 -- separate from the OOD collapse.
-  PARTIALLY CHECKED, INCONCLUSIVE: hypothesis (empty prediction on non-empty
-  target) tested directly on 15 fresh non-empty-target patches with the
-  PhysicsAwareAdapter checkpoint -- 0 had an empty prediction (pred_fg > 0
-  every time, target_fg ranged 7-91,928). Does not confirm or rule out the
-  hypothesis; the original inf came from a 100-patch run and could be a
-  rarer case this 15-patch spot-check missed. Needs a larger targeted check.
+  SCRIPT WRITTEN (colab_run.py, run_hyperparameter_sweep()), NOT YET RUN.
+  Moved off Kaggle (free GPU quota, 6h/week, already substantially spent on
+  the 100-epoch retrain + OOD investigation) to Google Colab -- reuses the
+  exact same train_plain_lora/train_spacing_lora/evaluate_real_gt functions,
+  pulls code + competition data through the Kaggle API. See the file's own
+  docstring for how to run it.
+- Investigate the ASSD=inf/nan finding: DONE for the 100-epoch GPU case
+  (sections 3.4, 3.7, 3.8) -- real root cause found (Kaggle's CuPy/Thrust
+  toolchain fails to JIT-compile the GPU distance-transform kernel MONAI's
+  HD95/ASSD metrics use) and fixed (move tensors to CPU for those two
+  metrics specifically). The ORIGINAL 10-epoch CPU finding (section 3.2,
+  ASSD=inf not nan) is a separate, still-partially-checked issue -- empty-
+  prediction hypothesis tested on 15 patches, 0 confirmed, inconclusive.
 - Additional baselines (nnU-Net, VesselFM, VesselSDF): not implemented.
-- Ablation study isolating adapter / spacing-conditioning / clDice
-  contributions: not done.
-- Multi-seed statistical reporting, few-shot experiments, cross-organ
-  generalization test, vascular graph validation, final figures: not done.
+- Ablation study (zero-shot -> +LoRA -> +spacing -> +clDice loss term):
+  DONE for stage 4 (section 3.7) -- Spacing-Conditioned LoRA with clDice
+  off, 100 epochs GPU, real result. Stages 1-3 already have real 100-epoch
+  numbers from sections 3.2/3.4 (zero-shot, Plain LoRA, Spacing-Conditioned
+  LoRA with clDice) so re-running run_ablation.py's stages 1-3 from scratch
+  is redundant -- the full run_ablation.py script itself remains available
+  for a from-scratch re-run if ever needed, but this ablation chain is
+  effectively complete using the checkpoints already trained.
+- Field-of-view confound test: DONE (section 3.5), against the real
+  100-epoch checkpoints (downloaded from the Kaggle kernel's output).
+  Substantial support for the FOV hypothesis -- Spacing-Conditioned LoRA's
+  OOD Dice recovers from 0.0058 to 0.2215 once field of view is matched to
+  training. Not the whole story (Plain LoRA improves too), but the
+  dominant effect for Spacing-Conditioned LoRA specifically.
+- Per-layer FiLM breakdown: DONE (section 3.6), against the real
+  100-epoch Spacing-Conditioned LoRA checkpoint. Revised hypothesis:
+  training pushed FiLM toward strong, in-distribution-spacing-specific
+  modulation that reverts toward near-identity at OOD spacing -- a second,
+  complementary lead alongside the FOV effect. Not yet confirmed as THE
+  cause, and training on a wider range of real spacings (so unseen-spacing
+  stops being confounded with unseen-FOV) is the natural next check.
+- Multi-seed statistical reporting: DONE (section 3.11) -- n=3 reached, the
+  originally-planned size (ran via two Kaggle kernels on a second account
+  instead of colab_run.py's run_multiseed(), sized to fit that account's
+  weekly quota, both seeds fitting in the same week). Real findings: the
+  OOD collapse is now 3-for-3 confirmed (every seed, both architectures,
+  same direction every time); the in-distribution ranking resolves toward
+  Spacing-Conditioned LoRA winning (2 of 3 seeds, by a wide margin both
+  times) though still only n=3, not treated as a formal significance
+  result.
+- Few-shot experiments, cross-organ generalization test, final figures: not
+  done.
+- Vascular graph validation: DONE (section 3.10) -- run for real against
+  both 100-epoch GPU checkpoints, in-dist and OOD. Third independent piece
+  of evidence for the OOD collapse, structurally distinct from 3.5/3.6:
+  Spacing-Conditioned LoRA's OOD predictions fragment (11x GT's component
+  count) and hyper-branch (31x GT's branch-point count) rather than
+  degrading gracefully, unlike Plain LoRA at the same OOD condition.
+- Significance testing for the section 3.5 FOV-matched Dice gap: DONE (see
+  3.5) -- Mann-Whitney U p=0.0216, significant at alpha=0.05.
 
 ================================================================
 5. HOW TO REPRODUCE / VERIFY ANY NUMBER ABOVE
@@ -323,11 +758,20 @@ python utils/dataset_verification.py           # Track A dataset audit
 python utils/kidney_metadata_verification.py   # Track B dataset audit
 python diagnose_dataloader.py                  # Track A pipeline sanity check (numeric output only)
 python diagnose_real_gt_dataset.py             # Track B pipeline sanity check (numeric output only)
+python diagnose_assd_inf.py                    # section 3.2 ASSD=inf root cause (numeric output only)
 python train.py                                # Track A training (resumable)
 python train_real_gt.py                        # Track B training (resumable)
 python evaluate.py                              # Track A evaluation
 python baseline_zeroshot.py                     # Track A zero-shot baseline
 python evaluate_topology.py                     # Track A Betti numbers
 python evaluate_real_gt.py                      # Track B evaluation (pass checkpoint_path=None for zero-shot)
+python train_plain_lora.py                      # Track B training, Plain LoRA baseline (resumable)
+python train_spacing_lora.py                    # Track B training, Spacing-Conditioned LoRA (resumable)
+python run_ablation.py --epochs 10              # zero-shot -> +LoRA -> +spacing -> +clDice, all in one run
+python evaluate_fov_confound.py --checkpoint <path> --model plain_lora|spacing_lora   # FOV-confound OOD test
+python analyze_film_layers.py --checkpoint <path>   # per-layer gamma/beta breakdown, Spacing-Conditioned LoRA
+python -c "from evaluate_vascular_graph import evaluate_vascular_graph; from models.plain_lora_model import PlainLoRAModel; evaluate_vascular_graph(checkpoint_path='checkpoints_plain_lora_100ep_gpu/best_model_plain_lora.pth', sample_ids=['kidney_1_dense','kidney_2','kidney_3_dense','kidney_3_sparse'], samples_per_sample=20, model_class=PlainLoRAModel)"
+                                                 # vascular graph validation (section 3.10) -- swap model_class/checkpoint_path/
+                                                 # sample_ids=['kidney_1_voi'] for the other three rows of section 3.10's table
 
 Full narrative documentation: README.md in this same directory.

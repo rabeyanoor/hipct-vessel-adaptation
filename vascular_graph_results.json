@@ -1,0 +1,1112 @@
+{
+  "plain_lora_in_dist": [
+    {
+      "sample_id": "kidney_1_dense",
+      "pred": {
+        "n_skeleton_voxels": 122,
+        "n_components": 4,
+        "n_branch_points": 2,
+        "n_endpoints": 8,
+        "total_length_um": 7460.477932315068,
+        "mean_degree": 1.9344262295081966
+      },
+      "gt": {
+        "n_skeleton_voxels": 328,
+        "n_components": 5,
+        "n_branch_points": 11,
+        "n_endpoints": 15,
+        "total_length_um": 21328.69650910347,
+        "mean_degree": 1.9878048780487805
+      }
+    },
+    {
+      "sample_id": "kidney_1_dense",
+      "pred": {
+        "n_skeleton_voxels": 109,
+        "n_components": 2,
+        "n_branch_points": 6,
+        "n_endpoints": 4,
+        "total_length_um": 7276.333346681906,
+        "mean_degree": 2.0
+      },
+      "gt": {
+        "n_skeleton_voxels": 203,
+        "n_components": 3,
+        "n_branch_points": 9,
+        "n_endpoints": 11,
+        "total_length_um": 14075.835326227749,
+        "mean_degree": 1.9901477832512315
+      }
+    },
+    {
+      "sample_id": "kidney_1_dense",
+      "pred": {
+        "n_skeleton_voxels": 58,
+        "n_components": 3,
+        "n_branch_points": 0,
+        "n_endpoints": 6,
+        "total_length_um": 3415.6125291633366,
+        "mean_degree": 1.896551724137931
+      },
+      "gt": {
+        "n_skeleton_voxels": 111,
+        "n_components": 3,
+        "n_branch_points": 1,
+        "n_endpoints": 7,
+        "total_length_um": 7032.247598388763,
+        "mean_degree": 1.945945945945946
+      }
+    },
+    {
+      "sample_id": "kidney_2",
+      "pred": {
+        "n_skeleton_voxels": 113,
+        "n_components": 1,
+        "n_branch_points": 9,
+        "n_endpoints": 5,
+        "total_length_um": 7366.355736128974,
+        "mean_degree": 2.0353982300884956
+      },
+      "gt": {
+        "n_skeleton_voxels": 175,
+        "n_components": 1,
+        "n_branch_points": 9,
+        "n_endpoints": 7,
+        "total_length_um": 11706.159438218338,
+        "mean_degree": 2.0114285714285716
+      }
+    },
+    {
+      "sample_id": "kidney_3_dense",
+      "pred": {
+        "n_skeleton_voxels": 18,
+        "n_components": 3,
+        "n_branch_points": 0,
+        "n_endpoints": 6,
+        "total_length_um": 987.2207162516229,
+        "mean_degree": 1.6666666666666667
+      },
+      "gt": {
+        "n_skeleton_voxels": 67,
+        "n_components": 5,
+        "n_branch_points": 1,
+        "n_endpoints": 11,
+        "total_length_um": 4263.246631016326,
+        "mean_degree": 1.8507462686567164
+      }
+    },
+    {
+      "sample_id": "kidney_1_dense",
+      "pred": {
+        "n_skeleton_voxels": 77,
+        "n_components": 4,
+        "n_branch_points": 4,
+        "n_endpoints": 10,
+        "total_length_um": 4488.4411831920725,
+        "mean_degree": 1.922077922077922
+      },
+      "gt": {
+        "n_skeleton_voxels": 95,
+        "n_components": 5,
+        "n_branch_points": 0,
+        "n_endpoints": 10,
+        "total_length_um": 5616.428631914875,
+        "mean_degree": 1.894736842105263
+      }
+    },
+    {
+      "sample_id": "kidney_1_dense",
+      "pred": {
+        "n_skeleton_voxels": 5,
+        "n_components": 1,
+        "n_branch_points": 0,
+        "n_endpoints": 2,
+        "total_length_um": 220.71067811865476,
+        "mean_degree": 1.6
+      },
+      "gt": {
+        "n_skeleton_voxels": 115,
+        "n_components": 6,
+        "n_branch_points": 1,
+        "n_endpoints": 13,
+        "total_length_um": 7120.285553450399,
+        "mean_degree": 1.8956521739130434
+      }
+    },
+    {
+      "sample_id": "kidney_2",
+      "pred": {
+        "n_skeleton_voxels": 45,
+        "n_components": 4,
+        "n_branch_points": 5,
+        "n_endpoints": 7,
+        "total_length_um": 2769.3723570671614,
+        "mean_degree": 1.9111111111111112
+      },
+      "gt": {
+        "n_skeleton_voxels": 121,
+        "n_components": 1,
+        "n_branch_points": 11,
+        "n_endpoints": 7,
+        "total_length_um": 8127.5623240545465,
+        "mean_degree": 2.0330578512396693
+      }
+    },
+    {
+      "sample_id": "kidney_1_dense",
+      "pred": {
+        "n_skeleton_voxels": 31,
+        "n_components": 3,
+        "n_branch_points": 0,
+        "n_endpoints": 6,
+        "total_length_um": 1904.745920072964,
+        "mean_degree": 1.8064516129032258
+      },
+      "gt": {
+        "n_skeleton_voxels": 80,
+        "n_components": 3,
+        "n_branch_points": 1,
+        "n_endpoints": 7,
+        "total_length_um": 5108.019977569786,
+        "mean_degree": 1.925
+      }
+    },
+    {
+      "sample_id": "kidney_2",
+      "pred": {
+        "n_skeleton_voxels": 105,
+        "n_components": 3,
+        "n_branch_points": 2,
+        "n_endpoints": 6,
+        "total_length_um": 6560.307942897467,
+        "mean_degree": 1.9428571428571428
+      },
+      "gt": {
+        "n_skeleton_voxels": 171,
+        "n_components": 2,
+        "n_branch_points": 12,
+        "n_endpoints": 10,
+        "total_length_um": 11482.065358924008,
+        "mean_degree": 2.0116959064327484
+      }
+    },
+    {
+      "sample_id": "kidney_3_dense",
+      "pred": {
+        "n_skeleton_voxels": 88,
+        "n_components": 2,
+        "n_branch_points": 0,
+        "n_endpoints": 4,
+        "total_length_um": 5323.602181819517,
+        "mean_degree": 1.9545454545454546
+      },
+      "gt": {
+        "n_skeleton_voxels": 193,
+        "n_components": 5,
+        "n_branch_points": 29,
+        "n_endpoints": 9,
+        "total_length_um": 16673.411885367583,
+        "mean_degree": 2.5492227979274613
+      }
+    },
+    {
+      "sample_id": "kidney_1_dense",
+      "pred": {
+        "n_skeleton_voxels": 11,
+        "n_components": 3,
+        "n_branch_points": 0,
+        "n_endpoints": 2,
+        "total_length_um": 420.71067811865476,
+        "mean_degree": 1.4545454545454546
+      },
+      "gt": {
+        "n_skeleton_voxels": 98,
+        "n_components": 5,
+        "n_branch_points": 0,
+        "n_endpoints": 10,
+        "total_length_um": 6243.697071517838,
+        "mean_degree": 1.8979591836734695
+      }
+    },
+    {
+      "sample_id": "kidney_3_dense",
+      "pred": {
+        "n_skeleton_voxels": 8,
+        "n_components": 3,
+        "n_branch_points": 0,
+        "n_endpoints": 4,
+        "total_length_um": 250.79999923706055,
+        "mean_degree": 1.25
+      },
+      "gt": {
+        "n_skeleton_voxels": 15,
+        "n_components": 1,
+        "n_branch_points": 0,
+        "n_endpoints": 2,
+        "total_length_um": 1047.2197215920692,
+        "mean_degree": 1.8666666666666667
+      }
+    },
+    {
+      "sample_id": "kidney_2",
+      "pred": {
+        "n_skeleton_voxels": 38,
+        "n_components": 6,
+        "n_branch_points": 0,
+        "n_endpoints": 12,
+        "total_length_um": 1905.8413559209557,
+        "mean_degree": 1.6842105263157894
+      },
+      "gt": {
+        "n_skeleton_voxels": 95,
+        "n_components": 3,
+        "n_branch_points": 1,
+        "n_endpoints": 7,
+        "total_length_um": 6400.8038527043855,
+        "mean_degree": 1.936842105263158
+      }
+    },
+    {
+      "sample_id": "kidney_1_dense",
+      "pred": {
+        "n_skeleton_voxels": 4,
+        "n_components": 1,
+        "n_branch_points": 0,
+        "n_endpoints": 2,
+        "total_length_um": 191.4213562373095,
+        "mean_degree": 1.5
+      },
+      "gt": {
+        "n_skeleton_voxels": 24,
+        "n_components": 3,
+        "n_branch_points": 0,
+        "n_endpoints": 4,
+        "total_length_um": 1482.9762539992685,
+        "mean_degree": 1.75
+      }
+    },
+    {
+      "sample_id": "kidney_1_dense",
+      "pred": {
+        "n_skeleton_voxels": 192,
+        "n_components": 6,
+        "n_branch_points": 14,
+        "n_endpoints": 20,
+        "total_length_um": 12034.426220037592,
+        "mean_degree": 1.96875
+      },
+      "gt": {
+        "n_skeleton_voxels": 197,
+        "n_components": 2,
+        "n_branch_points": 9,
+        "n_endpoints": 6,
+        "total_length_um": 12795.462818545566,
+        "mean_degree": 2.020304568527919
+      }
+    },
+    {
+      "sample_id": "kidney_1_dense",
+      "pred": {
+        "n_skeleton_voxels": 40,
+        "n_components": 6,
+        "n_branch_points": 1,
+        "n_endpoints": 11,
+        "total_length_um": 2168.1433796945203,
+        "mean_degree": 1.7
+      },
+      "gt": {
+        "n_skeleton_voxels": 106,
+        "n_components": 3,
+        "n_branch_points": 8,
+        "n_endpoints": 9,
+        "total_length_um": 7156.681656518292,
+        "mean_degree": 2.0
+      }
+    },
+    {
+      "sample_id": "kidney_3_dense",
+      "pred": {
+        "n_skeleton_voxels": 16,
+        "n_components": 1,
+        "n_branch_points": 0,
+        "n_endpoints": 2,
+        "total_length_um": 971.2780000811006,
+        "mean_degree": 1.875
+      },
+      "gt": {
+        "n_skeleton_voxels": 140,
+        "n_components": 2,
+        "n_branch_points": 7,
+        "n_endpoints": 9,
+        "total_length_um": 9641.255707648455,
+        "mean_degree": 1.9857142857142858
+      }
+    },
+    {
+      "sample_id": "kidney_3_dense",
+      "pred": {
+        "n_skeleton_voxels": 8,
+        "n_components": 1,
+        "n_branch_points": 0,
+        "n_endpoints": 2,
+        "total_length_um": 424.55933572379035,
+        "mean_degree": 1.75
+      },
+      "gt": {
+        "n_skeleton_voxels": 3,
+        "n_components": 2,
+        "n_branch_points": 0,
+        "n_endpoints": 2,
+        "total_length_um": 50.15999984741211,
+        "mean_degree": 0.6666666666666666
+      }
+    },
+    {
+      "sample_id": "kidney_3_sparse",
+      "pred": {
+        "n_skeleton_voxels": 32,
+        "n_components": 6,
+        "n_branch_points": 1,
+        "n_endpoints": 11,
+        "total_length_um": 1658.8081918708308,
+        "mean_degree": 1.625
+      },
+      "gt": {
+        "n_skeleton_voxels": 3,
+        "n_components": 1,
+        "n_branch_points": 0,
+        "n_endpoints": 2,
+        "total_length_um": 121.0969519202547,
+        "mean_degree": 1.3333333333333333
+      }
+    },
+    {
+      "sample_id": "kidney_3_dense",
+      "pred": {
+        "n_skeleton_voxels": 61,
+        "n_components": 6,
+        "n_branch_points": 0,
+        "n_endpoints": 12,
+        "total_length_um": 3300.4407574746565,
+        "mean_degree": 1.8032786885245902
+      },
+      "gt": {
+        "n_skeleton_voxels": 108,
+        "n_components": 3,
+        "n_branch_points": 1,
+        "n_endpoints": 7,
+        "total_length_um": 7196.588108862479,
+        "mean_degree": 1.9444444444444444
+      }
+    },
+    {
+      "sample_id": "kidney_1_dense",
+      "pred": {
+        "n_skeleton_voxels": 88,
+        "n_components": 1,
+        "n_branch_points": 4,
+        "n_endpoints": 4,
+        "total_length_um": 6019.226565495358,
+        "mean_degree": 2.0
+      },
+      "gt": {
+        "n_skeleton_voxels": 300,
+        "n_components": 6,
+        "n_branch_points": 14,
+        "n_endpoints": 16,
+        "total_length_um": 19561.235690635836,
+        "mean_degree": 1.9866666666666666
+      }
+    },
+    {
+      "sample_id": "kidney_2",
+      "pred": {
+        "n_skeleton_voxels": 24,
+        "n_components": 5,
+        "n_branch_points": 0,
+        "n_endpoints": 8,
+        "total_length_um": 1246.2037242032243,
+        "mean_degree": 1.5833333333333333
+      },
+      "gt": {
+        "n_skeleton_voxels": 79,
+        "n_components": 4,
+        "n_branch_points": 0,
+        "n_endpoints": 8,
+        "total_length_um": 4809.115413417777,
+        "mean_degree": 1.8987341772151898
+      }
+    }
+  ],
+  "plain_lora_ood": [
+    {
+      "sample_id": "kidney_1_voi",
+      "pred": {
+        "n_skeleton_voxels": 37,
+        "n_components": 6,
+        "n_branch_points": 0,
+        "n_endpoints": 10,
+        "total_length_um": 195.81184433415757,
+        "mean_degree": 1.6756756756756757
+      },
+      "gt": {
+        "n_skeleton_voxels": 159,
+        "n_components": 1,
+        "n_branch_points": 11,
+        "n_endpoints": 5,
+        "total_length_um": 1083.5313240460648,
+        "mean_degree": 2.0377358490566038
+      }
+    },
+    {
+      "sample_id": "kidney_1_voi",
+      "pred": {
+        "n_skeleton_voxels": 71,
+        "n_components": 6,
+        "n_branch_points": 3,
+        "n_endpoints": 13,
+        "total_length_um": 390.7353003304481,
+        "mean_degree": 1.8591549295774648
+      },
+      "gt": {
+        "n_skeleton_voxels": 15,
+        "n_components": 1,
+        "n_branch_points": 0,
+        "n_endpoints": 2,
+        "total_length_um": 83.06839272544785,
+        "mean_degree": 1.8666666666666667
+      }
+    },
+    {
+      "sample_id": "kidney_1_voi",
+      "pred": {
+        "n_skeleton_voxels": 19,
+        "n_components": 4,
+        "n_branch_points": 0,
+        "n_endpoints": 8,
+        "total_length_um": 95.88172065417409,
+        "mean_degree": 1.5789473684210527
+      },
+      "gt": {
+        "n_skeleton_voxels": 55,
+        "n_components": 1,
+        "n_branch_points": 0,
+        "n_endpoints": 2,
+        "total_length_um": 328.3353026192665,
+        "mean_degree": 1.9636363636363636
+      }
+    },
+    {
+      "sample_id": "kidney_1_voi",
+      "pred": {
+        "n_skeleton_voxels": 38,
+        "n_components": 6,
+        "n_branch_points": 1,
+        "n_endpoints": 9,
+        "total_length_um": 203.16575458875784,
+        "mean_degree": 1.6842105263157894
+      },
+      "gt": {
+        "n_skeleton_voxels": 32,
+        "n_components": 1,
+        "n_branch_points": 1,
+        "n_endpoints": 3,
+        "total_length_um": 203.42517245361867,
+        "mean_degree": 1.9375
+      }
+    },
+    {
+      "sample_id": "kidney_1_voi",
+      "pred": {
+        "n_skeleton_voxels": 121,
+        "n_components": 10,
+        "n_branch_points": 12,
+        "n_endpoints": 26,
+        "total_length_um": 769.5166104290715,
+        "mean_degree": 1.884297520661157
+      },
+      "gt": {
+        "n_skeleton_voxels": 159,
+        "n_components": 1,
+        "n_branch_points": 12,
+        "n_endpoints": 4,
+        "total_length_um": 1172.3286500478257,
+        "mean_degree": 2.050314465408805
+      }
+    }
+  ],
+  "spacing_lora_in_dist": [
+    {
+      "sample_id": "kidney_1_dense",
+      "pred": {
+        "n_skeleton_voxels": 21,
+        "n_components": 3,
+        "n_branch_points": 0,
+        "n_endpoints": 6,
+        "total_length_um": 1227.9874487228026,
+        "mean_degree": 1.7142857142857142
+      },
+      "gt": {
+        "n_skeleton_voxels": 15,
+        "n_components": 1,
+        "n_branch_points": 0,
+        "n_endpoints": 2,
+        "total_length_um": 844.9747468305833,
+        "mean_degree": 1.8666666666666667
+      }
+    },
+    {
+      "sample_id": "kidney_3_sparse",
+      "pred": {
+        "n_skeleton_voxels": 35,
+        "n_components": 6,
+        "n_branch_points": 3,
+        "n_endpoints": 11,
+        "total_length_um": 1889.893615595726,
+        "mean_degree": 1.7142857142857142
+      },
+      "gt": {
+        "n_skeleton_voxels": 314,
+        "n_components": 6,
+        "n_branch_points": 83,
+        "n_endpoints": 16,
+        "total_length_um": 30883.842428028867,
+        "mean_degree": 2.840764331210191
+      }
+    },
+    {
+      "sample_id": "kidney_2",
+      "pred": {
+        "n_skeleton_voxels": 75,
+        "n_components": 1,
+        "n_branch_points": 4,
+        "n_endpoints": 4,
+        "total_length_um": 5195.8514953208705,
+        "mean_degree": 2.0
+      },
+      "gt": {
+        "n_skeleton_voxels": 77,
+        "n_components": 1,
+        "n_branch_points": 1,
+        "n_endpoints": 3,
+        "total_length_um": 5327.258793112297,
+        "mean_degree": 1.974025974025974
+      }
+    },
+    {
+      "sample_id": "kidney_2",
+      "pred": {
+        "n_skeleton_voxels": 81,
+        "n_components": 3,
+        "n_branch_points": 3,
+        "n_endpoints": 7,
+        "total_length_um": 5403.54114054612,
+        "mean_degree": 1.9506172839506173
+      },
+      "gt": {
+        "n_skeleton_voxels": 59,
+        "n_components": 1,
+        "n_branch_points": 1,
+        "n_endpoints": 3,
+        "total_length_um": 4192.6745314557475,
+        "mean_degree": 1.9661016949152543
+      }
+    },
+    {
+      "sample_id": "kidney_3_dense",
+      "pred": {
+        "n_skeleton_voxels": 34,
+        "n_components": 2,
+        "n_branch_points": 0,
+        "n_endpoints": 4,
+        "total_length_um": 1996.4878593512562,
+        "mean_degree": 1.8823529411764706
+      },
+      "gt": {
+        "n_skeleton_voxels": 76,
+        "n_components": 2,
+        "n_branch_points": 0,
+        "n_endpoints": 4,
+        "total_length_um": 4775.784576222844,
+        "mean_degree": 1.9473684210526316
+      }
+    },
+    {
+      "sample_id": "kidney_1_dense",
+      "pred": {
+        "n_skeleton_voxels": 76,
+        "n_components": 2,
+        "n_branch_points": 3,
+        "n_endpoints": 5,
+        "total_length_um": 4732.526931485216,
+        "mean_degree": 1.9736842105263157
+      },
+      "gt": {
+        "n_skeleton_voxels": 50,
+        "n_components": 1,
+        "n_branch_points": 1,
+        "n_endpoints": 3,
+        "total_length_um": 3362.192680094712,
+        "mean_degree": 1.96
+      }
+    },
+    {
+      "sample_id": "kidney_2",
+      "pred": {
+        "n_skeleton_voxels": 68,
+        "n_components": 4,
+        "n_branch_points": 0,
+        "n_endpoints": 8,
+        "total_length_um": 4078.973540891942,
+        "mean_degree": 1.8823529411764706
+      },
+      "gt": {
+        "n_skeleton_voxels": 86,
+        "n_components": 2,
+        "n_branch_points": 4,
+        "n_endpoints": 6,
+        "total_length_um": 5574.970827784615,
+        "mean_degree": 1.9767441860465116
+      }
+    },
+    {
+      "sample_id": "kidney_2",
+      "pred": {
+        "n_skeleton_voxels": 621,
+        "n_components": 2,
+        "n_branch_points": 430,
+        "n_endpoints": 4,
+        "total_length_um": 123226.30305920563,
+        "mean_degree": 5.913043478260869
+      },
+      "gt": {
+        "n_skeleton_voxels": 58,
+        "n_components": 1,
+        "n_branch_points": 1,
+        "n_endpoints": 3,
+        "total_length_um": 3466.501527700777,
+        "mean_degree": 1.9655172413793103
+      }
+    },
+    {
+      "sample_id": "kidney_1_dense",
+      "pred": {
+        "n_skeleton_voxels": 94,
+        "n_components": 2,
+        "n_branch_points": 5,
+        "n_endpoints": 7,
+        "total_length_um": 6095.8514953208705,
+        "mean_degree": 1.9787234042553192
+      },
+      "gt": {
+        "n_skeleton_voxels": 47,
+        "n_components": 1,
+        "n_branch_points": 0,
+        "n_endpoints": 2,
+        "total_length_um": 2908.299310666238,
+        "mean_degree": 1.9574468085106382
+      }
+    },
+    {
+      "sample_id": "kidney_2",
+      "pred": {
+        "n_skeleton_voxels": 30,
+        "n_components": 1,
+        "n_branch_points": 0,
+        "n_endpoints": 2,
+        "total_length_um": 1792.4438962993995,
+        "mean_degree": 1.9333333333333333
+      },
+      "gt": {
+        "n_skeleton_voxels": 2,
+        "n_components": 1,
+        "n_branch_points": 0,
+        "n_endpoints": 2,
+        "total_length_um": 50.0,
+        "mean_degree": 1.0
+      }
+    },
+    {
+      "sample_id": "kidney_3_dense",
+      "pred": {
+        "n_skeleton_voxels": 33,
+        "n_components": 5,
+        "n_branch_points": 0,
+        "n_endpoints": 10,
+        "total_length_um": 1763.9624276205632,
+        "mean_degree": 1.696969696969697
+      },
+      "gt": {
+        "n_skeleton_voxels": 215,
+        "n_components": 7,
+        "n_branch_points": 15,
+        "n_endpoints": 22,
+        "total_length_um": 14622.477954789758,
+        "mean_degree": 1.972093023255814
+      }
+    },
+    {
+      "sample_id": "kidney_3_sparse",
+      "pred": {
+        "n_skeleton_voxels": 41,
+        "n_components": 1,
+        "n_branch_points": 0,
+        "n_endpoints": 2,
+        "total_length_um": 2575.0919560496113,
+        "mean_degree": 1.951219512195122
+      },
+      "gt": {
+        "n_skeleton_voxels": 22,
+        "n_components": 1,
+        "n_branch_points": 0,
+        "n_endpoints": 2,
+        "total_length_um": 1251.4610469401428,
+        "mean_degree": 1.9090909090909092
+      }
+    },
+    {
+      "sample_id": "kidney_3_sparse",
+      "pred": {
+        "n_skeleton_voxels": 60,
+        "n_components": 2,
+        "n_branch_points": 0,
+        "n_endpoints": 2,
+        "total_length_um": 3791.0662446902843,
+        "mean_degree": 1.9333333333333333
+      },
+      "gt": {
+        "n_skeleton_voxels": 134,
+        "n_components": 3,
+        "n_branch_points": 12,
+        "n_endpoints": 8,
+        "total_length_um": 9472.330607216632,
+        "mean_degree": 2.044776119402985
+      }
+    },
+    {
+      "sample_id": "kidney_1_dense",
+      "pred": {
+        "n_skeleton_voxels": 42,
+        "n_components": 5,
+        "n_branch_points": 1,
+        "n_endpoints": 9,
+        "total_length_um": 2259.3947465142296,
+        "mean_degree": 1.7619047619047619
+      },
+      "gt": {
+        "n_skeleton_voxels": 29,
+        "n_components": 1,
+        "n_branch_points": 0,
+        "n_endpoints": 2,
+        "total_length_um": 1638.8905057061259,
+        "mean_degree": 1.9310344827586208
+      }
+    },
+    {
+      "sample_id": "kidney_2",
+      "pred": {
+        "n_skeleton_voxels": 52,
+        "n_components": 6,
+        "n_branch_points": 1,
+        "n_endpoints": 11,
+        "total_length_um": 3053.274057496821,
+        "mean_degree": 1.7692307692307692
+      },
+      "gt": {
+        "n_skeleton_voxels": 32,
+        "n_components": 1,
+        "n_branch_points": 0,
+        "n_endpoints": 2,
+        "total_length_um": 2054.745920072964,
+        "mean_degree": 1.9375
+      }
+    },
+    {
+      "sample_id": "kidney_3_sparse",
+      "pred": {
+        "n_skeleton_voxels": 95,
+        "n_components": 4,
+        "n_branch_points": 1,
+        "n_endpoints": 9,
+        "total_length_um": 5764.274767097047,
+        "mean_degree": 1.9157894736842105
+      },
+      "gt": {
+        "n_skeleton_voxels": 217,
+        "n_components": 7,
+        "n_branch_points": 48,
+        "n_endpoints": 15,
+        "total_length_um": 21473.02396321067,
+        "mean_degree": 2.9308755760368665
+      }
+    },
+    {
+      "sample_id": "kidney_1_dense",
+      "pred": {
+        "n_skeleton_voxels": 194,
+        "n_components": 4,
+        "n_branch_points": 19,
+        "n_endpoints": 15,
+        "total_length_um": 13240.741096318397,
+        "mean_degree": 2.020618556701031
+      },
+      "gt": {
+        "n_skeleton_voxels": 20,
+        "n_components": 2,
+        "n_branch_points": 0,
+        "n_endpoints": 4,
+        "total_length_um": 941.4213562373095,
+        "mean_degree": 1.8
+      }
+    },
+    {
+      "sample_id": "kidney_3_dense",
+      "pred": {
+        "n_skeleton_voxels": 6,
+        "n_components": 3,
+        "n_branch_points": 0,
+        "n_endpoints": 4,
+        "total_length_um": 171.2569517676668,
+        "mean_degree": 1.0
+      },
+      "gt": {
+        "n_skeleton_voxels": 2,
+        "n_components": 1,
+        "n_branch_points": 0,
+        "n_endpoints": 2,
+        "total_length_um": 70.93695207284259,
+        "mean_degree": 1.0
+      }
+    },
+    {
+      "sample_id": "kidney_1_dense",
+      "pred": {
+        "n_skeleton_voxels": 110,
+        "n_components": 2,
+        "n_branch_points": 13,
+        "n_endpoints": 9,
+        "total_length_um": 7319.9091267222475,
+        "mean_degree": 2.036363636363636
+      },
+      "gt": {
+        "n_skeleton_voxels": 8,
+        "n_components": 1,
+        "n_branch_points": 0,
+        "n_endpoints": 2,
+        "total_length_um": 391.4213562373095,
+        "mean_degree": 1.75
+      }
+    },
+    {
+      "sample_id": "kidney_2",
+      "pred": {
+        "n_skeleton_voxels": 66,
+        "n_components": 3,
+        "n_branch_points": 0,
+        "n_endpoints": 6,
+        "total_length_um": 3976.4791382537087,
+        "mean_degree": 1.9090909090909092
+      },
+      "gt": {
+        "n_skeleton_voxels": 94,
+        "n_components": 3,
+        "n_branch_points": 6,
+        "n_endpoints": 8,
+        "total_length_um": 6169.056576077758,
+        "mean_degree": 1.9787234042553192
+      }
+    },
+    {
+      "sample_id": "kidney_3_sparse",
+      "pred": {
+        "n_skeleton_voxels": 23,
+        "n_components": 6,
+        "n_branch_points": 0,
+        "n_endpoints": 10,
+        "total_length_um": 1055.6552836054025,
+        "mean_degree": 1.4782608695652173
+      },
+      "gt": {
+        "n_skeleton_voxels": 10,
+        "n_components": 2,
+        "n_branch_points": 0,
+        "n_endpoints": 4,
+        "total_length_um": 573.7698606434467,
+        "mean_degree": 1.6
+      }
+    },
+    {
+      "sample_id": "kidney_1_dense",
+      "pred": {
+        "n_skeleton_voxels": 19,
+        "n_components": 5,
+        "n_branch_points": 0,
+        "n_endpoints": 10,
+        "total_length_um": 902.287965327682,
+        "mean_degree": 1.4736842105263157
+      },
+      "gt": {
+        "n_skeleton_voxels": 165,
+        "n_components": 6,
+        "n_branch_points": 7,
+        "n_endpoints": 13,
+        "total_length_um": 10889.208588003508,
+        "mean_degree": 1.9515151515151514
+      }
+    }
+  ],
+  "spacing_lora_ood": [
+    {
+      "sample_id": "kidney_1_voi",
+      "pred": {
+        "n_skeleton_voxels": 61,
+        "n_components": 13,
+        "n_branch_points": 0,
+        "n_endpoints": 20,
+        "total_length_um": 305.2497887140765,
+        "mean_degree": 1.5737704918032787
+      },
+      "gt": {
+        "n_skeleton_voxels": 57,
+        "n_components": 1,
+        "n_branch_points": 8,
+        "n_endpoints": 7,
+        "total_length_um": 420.16103908617544,
+        "mean_degree": 2.0350877192982457
+      }
+    },
+    {
+      "sample_id": "kidney_1_voi",
+      "pred": {
+        "n_skeleton_voxels": 118,
+        "n_components": 1,
+        "n_branch_points": 7,
+        "n_endpoints": 5,
+        "total_length_um": 733.7569539794054,
+        "mean_degree": 2.016949152542373
+      },
+      "gt": {
+        "n_skeleton_voxels": 56,
+        "n_components": 1,
+        "n_branch_points": 1,
+        "n_endpoints": 3,
+        "total_length_um": 376.9120775783868,
+        "mean_degree": 1.9642857142857142
+      }
+    },
+    {
+      "sample_id": "kidney_1_voi",
+      "pred": {
+        "n_skeleton_voxels": 342,
+        "n_components": 15,
+        "n_branch_points": 21,
+        "n_endpoints": 31,
+        "total_length_um": 2297.4991209463037,
+        "mean_degree": 1.9532163742690059
+      },
+      "gt": {
+        "n_skeleton_voxels": 48,
+        "n_components": 1,
+        "n_branch_points": 0,
+        "n_endpoints": 2,
+        "total_length_um": 278.51068445146007,
+        "mean_degree": 1.9583333333333333
+      }
+    },
+    {
+      "sample_id": "kidney_1_voi",
+      "pred": {
+        "n_skeleton_voxels": 304,
+        "n_components": 16,
+        "n_branch_points": 25,
+        "n_endpoints": 34,
+        "total_length_um": 2027.6116594376397,
+        "mean_degree": 1.9539473684210527
+      },
+      "gt": {
+        "n_skeleton_voxels": 78,
+        "n_components": 1,
+        "n_branch_points": 1,
+        "n_endpoints": 3,
+        "total_length_um": 555.7267961544866,
+        "mean_degree": 1.9743589743589745
+      }
+    },
+    {
+      "sample_id": "kidney_1_voi",
+      "pred": {
+        "n_skeleton_voxels": 277,
+        "n_components": 11,
+        "n_branch_points": 19,
+        "n_endpoints": 21,
+        "total_length_um": 1793.4383988437517,
+        "mean_degree": 1.9566787003610109
+      },
+      "gt": {
+        "n_skeleton_voxels": 20,
+        "n_components": 1,
+        "n_branch_points": 0,
+        "n_endpoints": 2,
+        "total_length_um": 109.56954860271323,
+        "mean_degree": 1.9
+      }
+    },
+    {
+      "sample_id": "kidney_1_voi",
+      "pred": {
+        "n_skeleton_voxels": 117,
+        "n_components": 6,
+        "n_branch_points": 11,
+        "n_endpoints": 15,
+        "total_length_um": 783.5916698845381,
+        "mean_degree": 1.9487179487179487
+      },
+      "gt": {
+        "n_skeleton_voxels": 19,
+        "n_components": 1,
+        "n_branch_points": 0,
+        "n_endpoints": 2,
+        "total_length_um": 106.52345923878322,
+        "mean_degree": 1.894736842105263
+      }
+    },
+    {
+      "sample_id": "kidney_1_voi",
+      "pred": {
+        "n_skeleton_voxels": 210,
+        "n_components": 8,
+        "n_branch_points": 12,
+        "n_endpoints": 14,
+        "total_length_um": 1338.476807240905,
+        "mean_degree": 1.9619047619047618
+      },
+      "gt": {
+        "n_skeleton_voxels": 18,
+        "n_components": 1,
+        "n_branch_points": 3,
+        "n_endpoints": 3,
+        "total_length_um": 116.29069780357945,
+        "mean_degree": 2.0
+      }
+    },
+    {
+      "sample_id": "kidney_1_voi",
+      "pred": {
+        "n_skeleton_voxels": 330,
+        "n_components": 11,
+        "n_branch_points": 20,
+        "n_endpoints": 30,
+        "total_length_um": 2125.5803655227487,
+        "mean_degree": 1.9696969696969697
+      },
+      "gt": {
+        "n_skeleton_voxels": 24,
+        "n_components": 1,
+        "n_branch_points": 0,
+        "n_endpoints": 2,
+        "total_length_um": 147.6008314024548,
+        "mean_degree": 1.9166666666666667
+      }
+    }
+  ]
+}

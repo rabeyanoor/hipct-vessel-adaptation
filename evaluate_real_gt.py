@@ -24,35 +24,34 @@ from utils.load_cldice import load_soft_cldice
 soft_cldice = load_soft_cldice()
 
 
+_warned_metric_failures = set()
+
+
 def _safe_metric(metric_obj, pred, target):
     try:
         metric_obj.reset()
         metric_obj(pred, target)
         val = metric_obj.aggregate().item()
         return val if val == val else None  # filter NaN
-    except Exception:
+    except Exception as e:
+        # HD95/ASSD are the ones observed to fail this way (e.g. on GPU
+        # tensors) while Dice/IoU/clDice succeed on the same batch -- print
+        # the real reason once per metric type instead of only ever
+        # returning a bare None, so a run's log says why n=0 rather than
+        # leaving it silently unexplained.
+        key = type(metric_obj).__name__
+        if key not in _warned_metric_failures:
+            _warned_metric_failures.add(key)
+            print(f"[!] {key} raised on this batch, excluding from the average "
+                  f"(further occurrences of this metric type won't be logged again): {e}")
         return None
 
 
-def evaluate_real_gt(checkpoint_path="__default__", label="Real-GT Kidney Evaluation",
-                      sample_ids=None, samples_per_sample=5, patch_size=None,
-                      model_class=HiPVesselAdaptModel, raw_tiff_root=None):
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    patch_size = patch_size or TRAIN_CONFIG["patch_size"]
-    print(f"[*] Running {label} on device: {device}")
-
-    model = model_class().to(device)
-    if checkpoint_path == "__default__":
-        checkpoint_path = TRAIN_CONFIG["best_model_path"]
-    if checkpoint_path and os.path.exists(checkpoint_path):
-        model.load_state_dict(torch.load(checkpoint_path, map_location=device))
-        print(f"[✓] Loaded fine-tuned model weights from {checkpoint_path}")
-    elif checkpoint_path:
-        print(f"[!] Warning: checkpoint not found at {checkpoint_path}, using initialized weights.")
-    else:
-        print("[*] Zero-shot: pretrained SAM-Med3D backbone, NO fine-tuning.")
-    model.eval()
-
+def evaluate_model_on_loader(model, device, loader, label):
+    """Runs `model` over every batch in `loader` and prints/returns the same
+    Dice/IoU/clDice/HD95/ASSD summary evaluate_real_gt() always has -- shared
+    so other analysis scripts (e.g. evaluate_fov_confound.py) that need a
+    differently-built loader don't have to duplicate the metric logic."""
     total_params = sum(p.numel() for p in model.parameters())
     trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
 
@@ -61,13 +60,6 @@ def evaluate_real_gt(checkpoint_path="__default__", label="Real-GT Kidney Evalua
     hd95_metric = metrics.HausdorffDistanceMetric(include_background=False, percentile=95, reduction="mean")
     assd_metric = metrics.SurfaceDistanceMetric(include_background=False, symmetric=True, reduction="mean")
     cldice_fn = soft_cldice()
-
-    dataset = RealGTKidneyDataset(sample_ids=sample_ids, patch_size=patch_size,
-                                   samples_per_epoch=samples_per_sample, raw_tiff_root=raw_tiff_root)
-    if len(dataset) == 0:
-        print("[!] No real-GT kidney data found -- run utils/convert_kidney_gt_to_memmap.py first.")
-        return None
-    loader = DataLoader(dataset, batch_size=1, shuffle=False)
 
     dice_scores, iou_scores, hd95_scores, assd_scores, cldice_scores = [], [], [], [], []
     fg_fractions, inference_times = [], []
@@ -88,12 +80,12 @@ def evaluate_real_gt(checkpoint_path="__default__", label="Real-GT Kidney Evalua
             fg_fractions.append(targets.mean().item())
 
             # Real kidney vasculature is sparse enough that most random 64^3
-            # patches contain NO annotated vessel at all -- verified empirically
-            # (12/15 test patches had zero target foreground). Segmentation-
+            # patches contain no annotated vessel at all (12/15 patches in an
+            # earlier test batch had zero target foreground). Segmentation-
             # accuracy and topology metrics (clDice, HD95, ASSD) are mathematically
-            # undefined or misleadingly favorable on an empty target (e.g. clDice
-            # was observed to silently return ~0.999 regardless of the prediction
-            # when the target is empty), so they are only meaningful -- and only
+            # undefined or misleadingly favorable on an empty target (clDice
+            # silently returns ~0.999 regardless of the prediction when the
+            # target is empty), so they are only meaningful -- and only
             # averaged here -- over patches that actually contain real vessel.
             if targets.sum().item() == 0:
                 n_empty_target_patches += 1
@@ -101,8 +93,15 @@ def evaluate_real_gt(checkpoint_path="__default__", label="Real-GT Kidney Evalua
 
             d = _safe_metric(dice_metric, binary_pred, targets)
             i = _safe_metric(iou_metric, binary_pred, targets)
-            h = _safe_metric(hd95_metric, binary_pred, targets)
-            a = _safe_metric(assd_metric, binary_pred, targets)
+            # HD95/ASSD go through a CuPy-JIT-compiled distance transform on
+            # GPU tensors; on a Kaggle kernel this JIT compile fails outright
+            # ("Thrust requires at least C++17") rather than falling back,
+            # which _safe_metric was silently swallowing as a bare None for
+            # every single patch. Dice/IoU/clDice never hit this path, so
+            # moving just these two to CPU sidesteps the broken GPU compile
+            # instead of depending on the environment's CUDA/CuPy toolchain.
+            h = _safe_metric(hd95_metric, binary_pred.cpu(), targets.cpu())
+            a = _safe_metric(assd_metric, binary_pred.cpu(), targets.cpu())
             # soft_cldice.forward(y_true, y_pred) returns 1-clDice (a LOSS, same
             # convention as soft_dice() in the same file) -- convert to the actual
             # score, and pass args in the documented (y_true, y_pred) order.
@@ -131,7 +130,7 @@ def evaluate_real_gt(checkpoint_path="__default__", label="Real-GT Kidney Evalua
     print(f"  ASSD (voxels)           : {_avg(assd_scores):.4f}  (n={len(assd_scores)})")
     print(f"  Total parameters        : {total_params:,}")
     print(f"  Trainable parameters    : {trainable_params:,} ({100*trainable_params/total_params:.2f}%)")
-    print(f"  Mean inference time     : {_avg(inference_times)*1000:.1f} ms/patch (CPU)")
+    print(f"  Mean inference time     : {_avg(inference_times)*1000:.1f} ms/patch ({device})")
     print("=" * 80)
 
     return {
@@ -139,7 +138,40 @@ def evaluate_real_gt(checkpoint_path="__default__", label="Real-GT Kidney Evalua
         "hd95": _avg(hd95_scores), "assd": _avg(assd_scores),
         "total_params": total_params, "trainable_params": trainable_params,
         "mean_inference_ms": _avg(inference_times) * 1000,
+        # Raw per-patch scores, not just the aggregate -- needed for anything
+        # that wants a significance test rather than just comparing means
+        # (e.g. the section 5.5 FOV-matched Dice gap between architectures).
+        "dice_scores": dice_scores, "iou_scores": iou_scores, "cldice_scores": cldice_scores,
     }
+
+
+def evaluate_real_gt(checkpoint_path="__default__", label="Real-GT Kidney Evaluation",
+                      sample_ids=None, samples_per_sample=5, patch_size=None,
+                      model_class=HiPVesselAdaptModel, raw_tiff_root=None):
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    patch_size = patch_size or TRAIN_CONFIG["patch_size"]
+    print(f"[*] Running {label} on device: {device}")
+
+    model = model_class().to(device)
+    if checkpoint_path == "__default__":
+        checkpoint_path = TRAIN_CONFIG["best_model_path"]
+    if checkpoint_path and os.path.exists(checkpoint_path):
+        model.load_state_dict(torch.load(checkpoint_path, map_location=device))
+        print(f"[✓] Loaded fine-tuned model weights from {checkpoint_path}")
+    elif checkpoint_path:
+        print(f"[!] Warning: checkpoint not found at {checkpoint_path}, using initialized weights.")
+    else:
+        print("[*] Zero-shot: pretrained SAM-Med3D backbone, NO fine-tuning.")
+    model.eval()
+
+    dataset = RealGTKidneyDataset(sample_ids=sample_ids, patch_size=patch_size,
+                                   samples_per_epoch=samples_per_sample, raw_tiff_root=raw_tiff_root)
+    if len(dataset) == 0:
+        print("[!] No real-GT kidney data found -- run utils/convert_kidney_gt_to_memmap.py first.")
+        return None
+    loader = DataLoader(dataset, batch_size=1, shuffle=False)
+
+    return evaluate_model_on_loader(model, device, loader, label)
 
 
 if __name__ == "__main__":

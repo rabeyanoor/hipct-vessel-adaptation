@@ -1,0 +1,15 @@
+{
+  "id": "rabeya100x/hip-vesseladapt-100ep-gpu-train",
+  "title": "hip-vesseladapt-100ep-gpu-train",
+  "code_file": "kaggle_train_kernel.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "machine_shape": "NvidiaTeslaT4",
+  "enable_internet": true,
+  "dataset_sources": ["rabeya100x/hip-vesseladapt-code"],
+  "competition_sources": ["blood-vessel-segmentation"],
+  "kernel_sources": [],
+  "model_sources": []
+}

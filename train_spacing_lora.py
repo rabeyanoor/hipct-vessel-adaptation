@@ -11,7 +11,9 @@ Resumable, checkpoints every epoch, same convention as the other two.
 
 import json
 import os
+import random
 
+import numpy as np
 import torch
 from torch.utils.data import DataLoader
 
@@ -21,15 +23,24 @@ from models.spacing_lora_model import SpacingConditionedLoRAModel
 from utils.real_gt_dataset import RealGTKidneyDataset
 
 CHECKPOINT_DIR = "checkpoints_spacing_lora"
-BEST_MODEL_PATH = os.path.join(CHECKPOINT_DIR, "best_model_spacing_lora.pth")
-STATE_PATH = os.path.join(CHECKPOINT_DIR, "train_state.json")
 
 
 def train_spacing_lora(resume=True, extra_epochs=10, samples_per_epoch=20,
-                        sample_ids=None, exclude_for_ood=("kidney_1_voi",), raw_tiff_root=None):
+                        sample_ids=None, exclude_for_ood=("kidney_1_voi",), raw_tiff_root=None,
+                        use_cldice=True, checkpoint_dir=None, lr=None,
+                        loss_alpha=0.5, loss_beta=0.05, loss_gamma=1.0, seed=None):
+    if seed is not None:
+        random.seed(seed)
+        np.random.seed(seed)
+        torch.manual_seed(seed)
+        torch.cuda.manual_seed_all(seed)
+
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"[*] Training on device: {device}", flush=True)
-    os.makedirs(CHECKPOINT_DIR, exist_ok=True)
+    checkpoint_dir = checkpoint_dir or CHECKPOINT_DIR
+    best_model_path = os.path.join(checkpoint_dir, "best_model_spacing_lora.pth")
+    state_path = os.path.join(checkpoint_dir, "train_state.json")
+    os.makedirs(checkpoint_dir, exist_ok=True)
 
     if sample_ids is None:
         from utils.kidney_metadata_verification import VERIFIED_SAMPLES
@@ -45,14 +56,14 @@ def train_spacing_lora(resume=True, extra_epochs=10, samples_per_epoch=20,
     loader = DataLoader(dataset, batch_size=TRAIN_CONFIG["batch_size"], shuffle=True)
 
     model = SpacingConditionedLoRAModel().to(device)
-    criterion = HiPVesselLoss()
+    criterion = HiPVesselLoss(alpha=loss_alpha, beta=loss_beta, gamma=loss_gamma, use_cldice=use_cldice)
     trainable_params = [p for p in model.parameters() if p.requires_grad]
-    optimizer = torch.optim.AdamW(trainable_params, lr=TRAIN_CONFIG["lr"])
+    optimizer = torch.optim.AdamW(trainable_params, lr=lr or TRAIN_CONFIG["lr"])
 
     completed_epochs = 0
-    if resume and os.path.exists(BEST_MODEL_PATH) and os.path.exists(STATE_PATH):
-        model.load_state_dict(torch.load(BEST_MODEL_PATH, map_location=device))
-        with open(STATE_PATH) as f:
+    if resume and os.path.exists(best_model_path) and os.path.exists(state_path):
+        model.load_state_dict(torch.load(best_model_path, map_location=device))
+        with open(state_path) as f:
             completed_epochs = json.load(f).get("completed_epochs", 0)
         print(f"[*] Resuming from checkpoint: {completed_epochs} epochs already completed", flush=True)
     else:
@@ -91,10 +102,10 @@ def train_spacing_lora(resume=True, extra_epochs=10, samples_per_epoch=20,
         print(f"[✓] Epoch [{epoch}/{target_epochs}] Complete - Avg Loss: {avg_loss:.4f} "
               f"({n_empty_skipped} empty-target patches skipped)", flush=True)
 
-        torch.save(model.state_dict(), BEST_MODEL_PATH)
-        with open(STATE_PATH, "w") as f:
+        torch.save(model.state_dict(), best_model_path)
+        with open(state_path, "w") as f:
             json.dump({"completed_epochs": epoch}, f)
-        print(f"[✓] Checkpoint saved at epoch {epoch} -> {BEST_MODEL_PATH}", flush=True)
+        print(f"[✓] Checkpoint saved at epoch {epoch} -> {best_model_path}", flush=True)
 
     print(f"[✓] Training complete: {target_epochs} total epochs.", flush=True)
 

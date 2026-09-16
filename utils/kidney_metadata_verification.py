@@ -17,8 +17,7 @@ the dataset's official companion paper:
 
 Every spacing value below is taken directly from that source and is marked
 "documented" -- none are guessed or inferred. Slice/label counts are counted
-directly from the actual zip contents (verified in this session via
-`unzip -l`), not assumed.
+directly from the actual zip contents (`unzip -l`), not assumed.
 """
 
 import csv

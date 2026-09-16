@@ -29,11 +29,11 @@ def generate_vessel_pseudolabel(volume, black_ridges=False, sigmas=(1, 2, 3), mi
         sigmas: Gaussian scales (in voxels) spanning the expected vessel radii.
         min_size: connected components smaller than this (in voxels) are dropped
             as vesselness-filter noise rather than real vessel segments.
-        denoise_sigma: raw HiP-CT slices are speckle-noisy enough that the Hessian
-            eigenvalues Frangi relies on are dominated by noise rather than the
-            underlying tubular structure; a light Gaussian pre-smoothing pass
-            (verified visually during development)
-            is what lets the vesselness response actually track real structure.
+        denoise_sigma: raw HiP-CT slices are speckle-noisy enough that the
+            Hessian eigenvalues Frangi relies on are dominated by noise rather
+            than the underlying tubular structure; a light Gaussian
+            pre-smoothing pass lets the vesselness response track real
+            structure instead.
 
     Returns:
         float32 binary mask, same shape as `volume`.

@@ -13,20 +13,14 @@ protocol (see train_plain_lora.py / train_real_gt.py for the others).
 """
 
 import os
-import sys
 
 import torch
 import torch.nn as nn
 
-sam_med3d_path = os.path.abspath("./external/SAM-Med3D")
-if os.path.exists(sam_med3d_path) and sam_med3d_path not in sys.path:
-    sys.path.append(sam_med3d_path)
+from utils.load_sam_med3d import import_sam_model_registry3D
 
-try:
-    from segment_anything.build_sam3D import sam_model_registry3D
-    HAS_SAM_MED3D = True
-except ImportError:
-    HAS_SAM_MED3D = False
+sam_model_registry3D = import_sam_model_registry3D()
+HAS_SAM_MED3D = sam_model_registry3D is not None
 
 from models.spacing_lora import inject_spacing_lora
 

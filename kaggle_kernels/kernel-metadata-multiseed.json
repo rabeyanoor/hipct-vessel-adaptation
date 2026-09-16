@@ -1,0 +1,15 @@
+{
+  "id": "nargisakterr/hip-vesseladapt-multiseed-seed1",
+  "title": "hip-vesseladapt-multiseed-seed1",
+  "code_file": "kaggle_multiseed_kernel.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "machine_shape": "NvidiaTeslaT4",
+  "enable_internet": true,
+  "dataset_sources": ["rabeya100x/hip-vesseladapt-code"],
+  "competition_sources": ["blood-vessel-segmentation"],
+  "kernel_sources": [],
+  "model_sources": []
+}
