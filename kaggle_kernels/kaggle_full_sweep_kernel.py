@@ -1,18 +1,13 @@
 """
-Kaggle kernel: FULL hyperparameter sweep (learning rate x Dice/clDice loss
-balance), for Plain LoRA and Spacing-Conditioned LoRA -- the grid design from
-colab_run.py's run_hyperparameter_sweep() (3 LRs x 3 loss_alphas x 2
-architectures, 15 epochs each), run here on Kaggle GPU instead of Colab since
-this environment already has working Kaggle push/fetch set up.
+Kaggle kernel: full hyperparameter sweep (learning rate x loss alpha) for Plain
+LoRA and Spacing-Conditioned LoRA, the grid from colab_run.py's
+run_hyperparameter_sweep() (3 LRs x 3 loss_alphas x 2 architectures, 15 epochs
+each), run on Kaggle instead of Colab.
 
-Follow-up to the reduced sweep (kaggle_sweep_kernel.py, kernel
-rabeya100x/hip-vesseladapt-hp-sweep, see sweep_results.json): that 3x2 grid
-at 5 epochs found loss_alpha=0.25 beating loss_alpha=0.6 at every learning
-rate tested for spacing_lora, which is DIFFERENT from the loss_alpha=0.5
-already used in README.md sections 5.2/5.4 -- this full grid adds 0.5 as the
-middle point for a direct comparison, plus more epochs (15 vs 5) for a less
-noisy signal. Setup steps identical to kaggle_kernels/kaggle_train_kernel.py
--- see that file's comments for why each one is there.
+Follow-up to the reduced sweep (kaggle_sweep_kernel.py, sweep_results.json):
+at 5 epochs loss_alpha=0.25 beat 0.6 at every LR for spacing_lora, which is
+not the 0.5 used in README 5.2/5.4. This grid adds 0.5 in the middle and uses
+15 epochs instead of 5. Setup is the same as kaggle_train_kernel.py.
 """
 
 import os
@@ -101,12 +96,8 @@ ALPHA_GRID = [0.25, 0.5, 0.75]
 
 RESULTS_PATH = "full_sweep_results.json"
 results = {}
-# A single Kaggle session's GPU time limit (or the weekly quota) can run out
-# mid-sweep -- this grid is 18 runs at 15 epochs each, several hours, vs. the
-# 12-run/5-epoch reduced sweep that already took ~115 minutes. Writing the
-# results file after EVERY run (not just once at the end) means a session
-# that gets cut off partway still leaves every run completed so far on disk,
-# instead of losing the whole sweep's output to one timeout.
+# 18 runs x 15 epochs takes hours (the reduced sweep already took ~115 min),
+# so write results after every run in case the session times out.
 for model_name, train_fn, model_cls, ckpt_name in [
     ("plain_lora", train_plain_lora, PlainLoRAModel, "best_model_plain_lora.pth"),
     ("spacing_lora", train_spacing_lora, SpacingConditionedLoRAModel, "best_model_spacing_lora.pth"),

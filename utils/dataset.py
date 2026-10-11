@@ -52,10 +52,8 @@ class MultiOrganHiPCTDataset(Dataset):
         full_d, full_h, full_w = sample["full_size"]
         pw, ph, pd = self.patch_size
 
-        # Snap patches to a fixed non-overlapping grid (instead of arbitrary pixel
-        # offsets) so that repeated visits to the same block -- across epochs, or
-        # across train/eval -- hit the pseudo-label disk cache below instead of
-        # re-running the ~10-30s/patch Frangi filter every time.
+        # Patches on a fixed grid so the pseudo-label cache below gets reused
+        # (Frangi takes ~10-30s per patch).
         grid_w = max(1, full_w // pw)
         grid_h = max(1, full_h // ph)
         grid_d = max(1, full_d // pd)
@@ -86,10 +84,7 @@ class MultiOrganHiPCTDataset(Dataset):
 
         vol_tensor = torch.from_numpy(vol).unsqueeze(0)  # Shape: (1, 128, 128, 128)
 
-        # Frangi-vesselness pseudo-label: HiP-CT raw downloads carry no expert
-        # vessel annotation, so this heuristic tubular-structure mask stands in
-        # as weak supervision (see utils/pseudo_labels.py). Cached per grid block
-        # to disk since each computation costs ~10-30s.
+        # Frangi pseudo-label (no real labels for these scans), cached on disk
         cache_path = os.path.join(
             self.pseudo_cache_dir,
             f"{sample['organ']}_{gx}-{gy}-{gz}_{pw}x{ph}x{pd}.npy",

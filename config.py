@@ -25,16 +25,15 @@ ORGAN_CONFIG = {
     }
 }
 
-# Extra kidney volumes from the Human Organ Atlas raw archive (HF mirror
-# eternalaudrey/hipct_3d) -- same donor+side as kidney_1_dense/kidney_1_voi's
-# specimen (LADAF-2021-17-Right), at additional native resolutions. Raw
-# grayscale only, no expert GT, so these are Frangi pseudo-labeled via
-# MultiOrganHiPCTDataset (utils/dataset.py) the same way ORGAN_CONFIG's
-# heart/lung/kidney are -- NOT mixed into RealGTKidneyDataset's real-GT
-# training (README.md section 6: real GT and pseudo-labels must not be
-# combined quantitatively). Addresses baki.sh item 3 (wider real-spacing
-# training data): the existing kidney_1_dense/voi pair only spans 50um/5.2um;
-# this adds three more native spacings for the same physical kidney.
+# Extra kidney volumes from the Human Organ Atlas (HF mirror
+# eternalaudrey/hipct_3d), same specimen as kidney_1_dense/kidney_1_voi
+# (LADAF-2021-17-Right) at other native resolutions. No expert GT, so they get
+# Frangi pseudo-labels through MultiOrganHiPCTDataset like the organs above.
+# Don't mix them with the RealGTKidneyDataset numbers (README section 6).
+# For baki.sh item 3: kidney_1_dense/voi only cover 50um/5.2um.
+# WARNING: do not train on the 6.5um and 2.6um entries. The 6.5um VOI is the
+# source of the 13um test volume (kidney_additional_voi_13um) and the 2.6um VOI
+# is very likely the source of kidney_1_voi (5.2um). See baki.sh section 7.
 HOA_KIDNEY_MULTISPACING_CONFIG = {
     "kidney_hoa17_25um": {
         "spacing": [25.0, 25.0, 25.0],
@@ -57,7 +56,7 @@ TRAIN_CONFIG = {
     "patch_size": (64, 64, 64),
     "batch_size": 1,
     "num_epochs": 10,
-    "samples_per_epoch": 6,  # per organ; kept at the size that has completed reliably twice on this memory-flaky machine
+    "samples_per_epoch": 6,  # per organ; larger runs got OOM-killed on this machine
     "lr": 1e-4,
     "checkpoint_dir": "checkpoints",
     "best_model_path": "checkpoints/best_model.pth"

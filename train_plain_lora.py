@@ -1,11 +1,9 @@
 # train_plain_lora.py
 """
-Trains PlainLoRAModel (frozen SAM-Med3D + LoRA + decoder, NO spacing
-conditioning) against the real SenNet+HOA kidney GT -- the "PEFT without
-spacing awareness" baseline, to compare against HiPVesselAdaptModel's
-PhysicsAwareAdapter (train_real_gt.py) on the SAME real-GT data.
+Trains PlainLoRAModel (frozen SAM-Med3D + LoRA + decoder, no spacing input) on
+the SenNet+HOA kidney labels. Baseline for the spacing-conditioned models.
 
-Resumable, checkpoints every epoch, same convention as train.py/train_real_gt.py.
+Resumable, saves a checkpoint every epoch like train_real_gt.py.
 """
 
 import json
@@ -88,7 +86,7 @@ def train_plain_lora(resume=True, extra_epochs=10, samples_per_epoch=20,
                 continue
 
             optimizer.zero_grad()
-            mask_pred, logits = model(images, spacings)  # spacing accepted but unused (no conditioning)
+            mask_pred, logits = model(images, spacings)  # spacing is ignored by this model
             loss = criterion(mask_pred, targets, spacings[0], logits=logits)
             loss.backward()
             optimizer.step()

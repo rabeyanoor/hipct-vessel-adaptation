@@ -1,14 +1,11 @@
 # utils/dataset_verification.py
 """
-Step 0 data verification: scans all HiP-CT data actually present in this project,
-cross-checks the voxel spacing declared in config.py against the spacing embedded
-in the raw ESRF filenames, checks for real ground-truth annotation availability,
-and writes the result to dataset_verification.csv.
+Data check: goes through the HiP-CT data on disk, compares the spacing in
+config.py with the spacing in the ESRF filenames, looks for any annotation
+files, and writes dataset_verification.csv.
 
-This is a factual inventory, not a judgment call -- it exists so that any
-downstream research-design decision (e.g. whether a real multi-resolution
-out-of-distribution experiment is possible with the data on this machine) is
-based on verified facts rather than assumption.
+Used to see what experiments are possible with the data I have (e.g. a
+multi-resolution OOD test).
 """
 
 import csv
@@ -23,8 +20,7 @@ from config import ORGAN_CONFIG
 
 OUTPUT_CSV = "dataset_verification.csv"
 
-# Any file whose name contains one of these tokens would indicate a real
-# annotation/label file shipped alongside the raw scan.
+# file names containing these would suggest an annotation file
 ANNOTATION_TOKENS = ["mask", "label", "seg", "annotation", "gt", "groundtruth"]
 
 
@@ -94,7 +90,7 @@ def verify():
 
     print(f"\n[✓] Wrote {OUTPUT_CSV} with {len(rows)} organ(s).")
 
-    # Explicit decision-rule verdict, per the multi-resolution OOD verification protocol.
+    # summary for the multi-resolution OOD question
     unique_spacings = {row["declared_spacing_um"] for row in rows}
     has_real_gt = any("POSSIBLE" in row["vessel_gt_available"] for row in rows)
     print("\n[Decision Rule Verdict]")

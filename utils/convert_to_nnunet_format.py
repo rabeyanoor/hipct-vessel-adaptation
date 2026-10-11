@@ -1,21 +1,15 @@
 # utils/convert_to_nnunet_format.py
 """
-Exports the real expert-annotated SenNet+HOA kidney samples (already
-converted to memmap by utils/convert_kidney_gt_to_memmap.py) into nnU-Net v2's
-raw-dataset layout, for the nnU-Net baseline flagged in README.md section 7
-("Additional baselines: nnU-Net, VesselFM, VesselSDF -- not implemented").
+Exports the SenNet+HOA kidney memmaps (from utils/convert_kidney_gt_to_memmap.py)
+to the nnU-Net v2 raw dataset format, for the nnU-Net baseline (README
+section 7).
 
-Training set matches train_spacing_lora.py/train_plain_lora.py's default
-split exactly (kidney_1_dense, kidney_2, kidney_3_dense, kidney_3_sparse;
-kidney_1_voi held out) so nnU-Net is evaluated under the SAME in-distribution/
-OOD split as this project's own models -- a baseline on a different split
-would not be a fair comparison.
+Uses the same split as train_plain_lora.py/train_spacing_lora.py
+(kidney_1_dense, kidney_2, kidney_3_dense, kidney_3_sparse for training,
+kidney_1_voi held out) so the comparison is fair.
 
-Requires: `pip install nnunetv2` (installs its own SimpleITK/batchgenerators
-deps). Does NOT run training itself -- see the printed instructions at the
-end for the nnU-Net CLI commands (plan+preprocess, then train), which need a
-GPU this environment doesn't currently have free Kaggle quota for (see
-baki.sh section 1).
+Needs `pip install nnunetv2`. Only exports the data; the nnU-Net commands for
+preprocessing and training are printed at the end (they need a GPU).
 """
 
 import gc
@@ -32,8 +26,7 @@ NNUNET_RAW_DIR = "data/nnUNet_raw"
 DATASET_ID = 1
 DATASET_NAME = f"Dataset{DATASET_ID:03d}_KidneyVessel"
 
-# Same split train_spacing_lora.py/train_plain_lora.py use by default:
-# kidney_1_voi is the OOD (5.2um) held-out specimen, never trained on.
+# same split as the LoRA training scripts; kidney_1_voi (5.2um) is OOD only
 TRAIN_SAMPLES = ["kidney_1_dense", "kidney_2", "kidney_3_dense", "kidney_3_sparse"]
 OOD_SAMPLES = ["kidney_1_voi"]
 
@@ -57,7 +50,7 @@ def _write_case(sample_id, images_dir, labels_dir):
     print(f"[*] Exporting {sample_id}: shape={shape}, spacing={spacing_mm:.5f}mm isotropic")
 
     img_mmap = np.memmap(img_path, dtype=meta["image_dtype"], mode="r", shape=shape)
-    img_arr = np.array(img_mmap)  # materialize: SimpleITK needs a real array, not a memmap view
+    img_arr = np.array(img_mmap)  # SimpleITK needs a normal array
     img_sitk = sitk.GetImageFromArray(img_arr)
     img_sitk.SetSpacing((spacing_mm, spacing_mm, spacing_mm))
     sitk.WriteImage(img_sitk, os.path.join(images_dir, f"{sample_id}_0000.nii.gz"))
@@ -80,9 +73,7 @@ def convert_all():
     dataset_dir = os.path.join(NNUNET_RAW_DIR, DATASET_NAME)
     images_tr = os.path.join(dataset_dir, "imagesTr")
     labels_tr = os.path.join(dataset_dir, "labelsTr")
-    # kidney_1_voi (OOD) is exported separately, NOT into imagesTr/labelsTr --
-    # nnU-Net would otherwise be free to train on it, breaking the OOD split
-    # this whole project's evaluation depends on.
+    # keep kidney_1_voi out of imagesTr/labelsTr so nnU-Net never trains on it
     images_ood = os.path.join(dataset_dir, "imagesOOD_not_for_training")
     labels_ood = os.path.join(dataset_dir, "labelsOOD_not_for_training")
     for d in (images_tr, labels_tr, images_ood, labels_ood):

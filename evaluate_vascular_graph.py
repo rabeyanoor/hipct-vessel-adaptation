@@ -1,12 +1,9 @@
 # evaluate_vascular_graph.py
 """
-Vascular graph validation (baki.sh section 3): skeletonizes the model's predicted
-mask and the REAL expert-annotated kidney GT (utils/real_gt_dataset.py), builds a
-networkx graph over each skeleton (utils/vascular_graph_metrics.py), and reports
-connectivity/branching statistics side by side per sample -- connected components,
-branch points, endpoints, total vessel length -- catching fragmentation/spurious-
-branching errors that Dice/clDice/Betti numbers (evaluate_topology.py) don't
-directly report as vessel-tree structure.
+Vascular graph validation: skeletonize the predicted mask and the kidney GT,
+build a networkx graph for each (utils/vascular_graph_metrics.py) and print
+components, branch points, endpoints and total length side by side. Shows
+fragmentation / extra branching that Dice and Betti numbers don't show well.
 """
 
 import os
@@ -53,9 +50,7 @@ def evaluate_vascular_graph(checkpoint_path="__default__", sample_ids=None,
             targets = batch["mask"].to(device)
             spacings = batch["spacing"].to(device)
 
-            # Skeleton-graph stats are undefined on an empty target (no vessel to
-            # compare structure against) -- same exclusion evaluate_real_gt.py
-            # applies to its segmentation/topology metrics, for the same reason.
+            # skip empty targets, same as evaluate_real_gt.py
             if targets.sum().item() == 0:
                 n_empty_target_patches += 1
                 continue

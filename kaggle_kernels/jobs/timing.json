@@ -1,0 +1,8 @@
+{"gpu0": [{"name": "timing_spacing_log_aug_refine", "cmds": [
+  "python train_lora_v2.py --model spacing --spacing-encoding log --patch 128 --fg-prob 0.5 --fov-scale 0.25 2.0 --refine --epochs 2 --iters 50 --seed 0 --workers 4 --raw-tiff-root $COMP_TRAIN --out $OUT/checkpoints/timing_a",
+  "python -c \"import time,torch,numpy as np; from benchmark.infer import build_model, predict_roi; m=build_model('spacing_lora','$OUT/checkpoints/timing_a/model.pth',refine=True,device='cuda',spacing_encoding='log'); [ (lambda s: (lambda t: (predict_roi(m,np.random.randint(0,60000,(s,s,s)).astype(np.uint16),5.2,128,'cuda'), print('patch128 native', s, round(time.time()-t,1),'s', flush=True)))(time.time()))(s) for s in (192,640)]; t=time.time(); predict_roi(m,np.random.randint(0,60000,(640,640,640)).astype(np.uint16),5.2,128,'cuda',resample_um=50.0); print('patch128 fov50 640', round(time.time()-t,1),'s')\""
+]}],
+ "gpu1": [{"name": "timing_plain_noaug", "cmds": [
+  "python train_lora_v2.py --model plain --patch 128 --fg-prob 0.5 --epochs 2 --iters 50 --seed 0 --workers 4 --raw-tiff-root $COMP_TRAIN --out $OUT/checkpoints/timing_b",
+  "python -c \"import time,torch,numpy as np; from benchmark.infer import build_model, predict_roi; m=build_model('plain_lora','$FIRST_ROUND/checkpoints_plain_lora/best_model_plain_lora.pth',device='cuda'); [ (lambda s: (lambda t: (predict_roi(m,np.random.randint(0,60000,(s,s,s)).astype(np.uint16),5.2,64,'cuda'), print('patch64 native', s, round(time.time()-t,1),'s', flush=True)))(time.time()))(s) for s in (192,640)]\""
+]}]}

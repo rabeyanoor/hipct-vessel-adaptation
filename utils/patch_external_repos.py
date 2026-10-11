@@ -1,19 +1,13 @@
 # utils/patch_external_repos.py
 """
-Applies this project's required bugfixes to freshly cloned copies of
-external/SAM-Med3D. These aren't upstream bugs in the everyday sense --
-SAM-Med3D's own pos_embed/mask_decoder code assumes every input volume is
-exactly 128^3 (the pretraining resolution), which is true for their own
-training pipeline but not for this project's 64^3 patches. Without the
-interpolation added here, a mismatched-size add crashes with a plain shape
-error.
+Patches a fresh clone of external/SAM-Med3D. Its pos_embed/mask_decoder code
+assumes 128^3 inputs (the pretraining size), but we use 64^3 patches, so the
+embeddings are interpolated to the input size; otherwise it crashes with a
+shape error.
 
-This lived as an uncommitted local edit to the vendored files for a while,
-which worked locally but silently vanished whenever the repo was re-cloned
-(a fresh `git clone` on a Kaggle kernel, for instance) -- moved here so the
-same fix applies identically everywhere, and any future upstream change that
-no longer matches the expected original text fails loudly instead of being
-silently skipped.
+I first had this as a local edit in the cloned repo, which got lost on every
+fresh clone (e.g. on Kaggle), so it lives here now. If upstream changes and the
+original text isn't found, it raises an error instead of silently skipping.
 
 Run standalone (`python -m utils.patch_external_repos`) or import
 `patch_sam_med3d(root)` and call it right after cloning.

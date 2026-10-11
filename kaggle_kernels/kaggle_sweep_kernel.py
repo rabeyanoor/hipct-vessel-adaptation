@@ -1,9 +1,7 @@
 """
-Kaggle kernel: reduced hyperparameter sweep (learning rate x Dice/clDice
-loss balance) for Plain LoRA and Spacing-Conditioned LoRA, short-epoch runs
-sized to fit a single Kaggle session comfortably. Setup steps identical to
-kaggle_kernels/kaggle_train_kernel.py -- see that file's comments for why
-each one is there.
+Kaggle kernel: reduced hyperparameter sweep (learning rate x loss alpha) for
+Plain LoRA and Spacing-Conditioned LoRA, with short runs so it fits in one
+Kaggle session. Setup is the same as kaggle_train_kernel.py.
 """
 
 import os
@@ -85,9 +83,7 @@ from evaluate_real_gt import evaluate_real_gt
 from models.plain_lora_model import PlainLoRAModel
 from models.spacing_lora_model import SpacingConditionedLoRAModel
 
-# Reduced grid, sized to finish this kernel well within an hour and well
-# within the remaining weekly GPU quota -- not the full sweep design in
-# colab_run.py's run_hyperparameter_sweep(), a smaller first pass.
+# smaller grid than colab_run.py's sweep, should finish in under an hour
 SWEEP_EPOCHS = 5
 LR_GRID = [3e-5, 1e-4, 2e-4]
 ALPHA_GRID = [0.25, 0.6]

@@ -1,32 +1,22 @@
 # colab_run.py
 """
-Self-contained Colab script for the two remaining compute-heavy items on
-this project's checklist: per-architecture hyperparameter tuning and
-multi-seed statistical reporting for Plain LoRA / Spacing-Conditioned LoRA.
-Both were deferred off Kaggle because Kaggle's free GPU tier has a fixed
-weekly quota (6 hours) already substantially used by the 100-epoch retrain
-and OOD investigation (see README.md section 5.4-5.6, test.sh section
-3.4-3.6) -- this script reuses the exact same training/evaluation functions
-those used, just run from Colab instead of a Kaggle kernel.
+Colab script for the hyperparameter sweep and the multi-seed runs (Plain LoRA /
+Spacing-Conditioned LoRA). My Kaggle GPU quota (6 h/week) was mostly used by
+the 100-epoch retrain and the OOD experiments (README 5.4-5.6), so these run on
+Colab with the same training/evaluation functions.
 
-Paste this whole file into a single Colab cell (or `!python colab_run.py`
-after uploading it) and run it. Set TASK below to choose what to run --
-"sweep" and "multiseed" are both substantial GPU jobs, not meant to run
-back to back in one sitting on a free Colab GPU.
+Paste the file into a Colab cell (or upload it and run `!python colab_run.py`).
+TASK below selects "sweep" or "multiseed"; both are long GPU jobs, so run them
+separately.
 
-Requires a Kaggle API token (kaggle.json) -- this script pulls both this
-project's code (private Kaggle dataset rabeya100x/hip-vesseladapt-code) and
-the SenNet+HOA competition data through the Kaggle API, the same way the
-Kaggle kernel did, rather than needing a separate GitHub repo or a Drive
-upload. Upload your kaggle.json via the file-browser panel on the left
-before running (Colab: click the folder icon, then the upload icon), or
-run the cell below first:
+Needs kaggle.json: the code (private Kaggle dataset
+rabeya100x/hip-vesseladapt-code) and the competition data are downloaded with
+the Kaggle API. Upload kaggle.json with the file panel on the left, or run:
 
     from google.colab import files
     files.upload()  # select your kaggle.json
 
-Never paste your actual Kaggle key into this file directly, or into a
-Colab cell you might share -- upload kaggle.json as a file instead.
+Don't put the Kaggle key in this file or in a shared cell.
 """
 
 import json
@@ -47,8 +37,7 @@ def setup_kaggle_auth():
     if os.path.exists(kaggle_json):
         os.chmod(kaggle_json, 0o600)
         return
-    # Colab's default upload target is /content -- kaggle.json may have
-    # landed there instead of ~/.kaggle.
+    # Colab uploads go to /content by default
     alt_path = "/content/kaggle.json"
     if os.path.exists(alt_path):
         os.makedirs(kaggle_dir, exist_ok=True)
@@ -62,9 +51,8 @@ def setup_kaggle_auth():
 
 
 def setup_environment():
-    """Mirrors kaggle_train_kernel.py's setup steps 1-4, adapted for Colab:
-    fetch this project's code + the competition data through the Kaggle API
-    instead of relying on Kaggle's own pre-mounted /kaggle/input."""
+    """Same setup as kaggle_train_kernel.py steps 1-4, but code and data are
+    downloaded with the Kaggle API since there is no /kaggle/input on Colab."""
     setup_kaggle_auth()
     subprocess.run([sys.executable, "-m", "pip", "install", "-q", "kaggle", "monai", "gdown"], check=True)
 
@@ -117,16 +105,11 @@ def setup_environment():
 
 
 def run_hyperparameter_sweep(raw_tiff_root, sweep_epochs=15):
-    """Short-epoch grid search over learning rate and the Dice/clDice loss
-    balance (HiPVesselLoss's alpha), for both architectures independently --
-    the 100-epoch comparison in README.md section 5.4 used the same LR/loss
-    weights for both, tuned originally against PhysicsAwareAdapter, not
-    either LoRA variant. Picks the config with the best in-distribution Dice
-    per architecture; does NOT re-run the full 100-epoch comparison with the
-    winning config automatically -- do that as a separate step once you see
-    which config wins, so a bad sweep run never silently overwrites the
-    already-validated 100-epoch checkpoints in checkpoints_plain_lora_100ep_gpu/
-    and checkpoints_spacing_lora_100ep_gpu/.
+    """Short grid search over learning rate and loss alpha (Dice vs clDice) for
+    each architecture. The 100-epoch runs (README 5.4) used LR/loss weights tuned
+    for PhysicsAwareAdapter. Only reports the best config; the 100-epoch run
+    with it has to be started separately, so the existing 100-epoch checkpoints
+    are not overwritten.
     """
     from train_plain_lora import train_plain_lora
     from train_spacing_lora import train_spacing_lora
@@ -173,10 +156,8 @@ def run_hyperparameter_sweep(raw_tiff_root, sweep_epochs=15):
 
 
 def run_multiseed(raw_tiff_root, n_seeds=3, epochs=100, lr=None, loss_alpha=0.5):
-    """Runs both architectures across n_seeds full-length trainings each,
-    evaluates in-distribution AND OOD every time, reports mean +/- std --
-    every number in README.md/test.sh so far is a single run; this is what
-    turns those into a properly powered comparison."""
+    """Trains both architectures with n_seeds seeds, evaluates in-dist and OOD
+    each time and prints mean +/- std."""
     from train_plain_lora import train_plain_lora
     from train_spacing_lora import train_spacing_lora
     from evaluate_real_gt import evaluate_real_gt

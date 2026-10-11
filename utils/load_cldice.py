@@ -1,21 +1,13 @@
 # utils/load_cldice.py
 """
-Robust loader for the external clDice repo's soft_cldice class
-(external/clDice/cldice_loss/pytorch/cldice.py).
+Loads soft_cldice from external/clDice/cldice_loss/pytorch/cldice.py.
 
-Upstream's cldice.py does `from .soft_skeleton import SoftSkeletonize` -- a
-package-relative import that only resolves when the file is imported as part
-of an actual Python package (i.e. via a proper `import external.clDice...`
-chain with __init__.py files in place). This repo instead loads it as a
-standalone file, which has no parent package, so the relative form always
-raises "attempted relative import with no known parent package" regardless
-of environment.
+cldice.py does `from .soft_skeleton import SoftSkeletonize`, a relative import
+that fails when the file is loaded on its own ("attempted relative import with
+no known parent package").
 
-soft_skeleton.py is loaded and registered in sys.modules first, then
-cldice.py's source is read and its relative import line is rewritten to a
-plain absolute import before the module is executed, so it resolves against
-the already-registered sys.modules entry instead of relying on package
-context that doesn't exist here.
+So: load soft_skeleton.py into sys.modules first, then read cldice.py, change
+the import to an absolute one and exec it.
 """
 
 import importlib.util

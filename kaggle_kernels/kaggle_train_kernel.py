@@ -1,8 +1,7 @@
 """
-Kaggle kernel: runs the 100-epoch Plain LoRA and Spacing-Conditioned LoRA
-training + in-distribution/OOD evaluation on Kaggle's free GPU, using the
-SenNet+HOA competition data attached natively (no re-upload) and this
-project's source code attached as a private dataset.
+Kaggle kernel: 100-epoch training of Plain LoRA and Spacing-Conditioned LoRA +
+in-distribution/OOD evaluation on Kaggle's free GPU. The competition data is
+attached directly and the code is attached as a private dataset.
 """
 
 import os
@@ -14,9 +13,8 @@ WORK_DIR = "/kaggle/working/hip-vesseladapt"
 
 
 def find_by_marker(root, is_match, max_depth=4):
-    """Recursively search under root (bounded depth) for a directory
-    satisfying is_match(path) -- Kaggle's /kaggle/input layout varies (flat
-    vs nested under datasets/<owner>/<name> and competitions/<slug>)."""
+    """Search under root (limited depth) for a directory where is_match(path)
+    is true; the /kaggle/input layout is not always the same."""
     stack = [(root, 0)]
     while stack:
         path, depth = stack.pop()
@@ -83,10 +81,8 @@ subprocess.run([sys.executable, "-m", "pip", "install", "-q", "monai", "gdown"],
 subprocess.run(["git", "clone", "-q", "https://github.com/openmedlab/SAM-Med3D.git", "external/SAM-Med3D"], check=True)
 subprocess.run(["git", "clone", "-q", "https://github.com/jocpae/clDice.git", "external/clDice"], check=True)
 
-# SAM-Med3D's own pos_embed/mask_decoder code assumes every input is exactly
-# 128^3 (its pretraining resolution) -- this project trains on 64^3 patches,
-# which needs an interpolation fix on top of the freshly cloned upstream
-# source. See utils/patch_external_repos.py for what's patched and why.
+# SAM-Med3D assumes 128^3 inputs, we use 64^3 -> patch the fresh clone
+# (see utils/patch_external_repos.py)
 from utils.patch_external_repos import patch_sam_med3d
 patch_sam_med3d()
 
@@ -101,12 +97,10 @@ if not os.path.exists(ckpt_path):
     ], check=True)
 print(f"[✓] Checkpoint ready: {os.path.getsize(ckpt_path)/1e9:.2f} GB")
 
-# 4. Data source: read TIFF slices directly from the attached competition
-#    folder on each access (RealGTKidneyDataset's raw_tiff_root mode) rather
-#    than materializing memmap copies -- /kaggle/working has a much smaller
-#    quota than the dataset needs (kidney_1_dense + kidney_1_voi alone need
-#    ~23GB as memmaps, which exhausted the working-directory disk mid-run).
-#    The competition mount is read-only and doesn't count against that quota.
+# 4. Data: read TIFF slices directly from the competition folder
+#    (raw_tiff_root mode). Memmaps of kidney_1_dense + kidney_1_voi need
+#    ~23GB, more than /kaggle/working allows; the read-only mount doesn't
+#    count toward the quota.
 RAW_TIFF_ROOT = os.path.join(COMP_DIR, "train")
 print(f"[*] Reading TIFF slices directly from: {RAW_TIFF_ROOT} (no memmap conversion)")
 

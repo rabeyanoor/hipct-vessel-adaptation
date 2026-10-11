@@ -1,0 +1,18 @@
+{
+  "id": "rabeya100x/hip-vesseladapt-vesselfm",
+  "title": "hip-vesseladapt-vesselfm",
+  "code_file": "kaggle_vesselfm_kernel.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "machine_shape": "NvidiaTeslaT4",
+  "enable_internet": true,
+  "kernel_sources": [],
+  "model_sources": [],
+  "dataset_sources": [
+    "rabeya100x/hip-vesseladapt-code",
+    "rabeya100x/hipct-benchmark-rois"
+  ],
+  "competition_sources": []
+}

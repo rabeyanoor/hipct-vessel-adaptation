@@ -1,0 +1,3 @@
+{"gpu0": [{"name": "film_a", "cmds": [
+ "mkdir -p $OUT/film && for r in s_base_s0 s_aug_s0 s_aug_s1; do python analyze_film_sweep.py --checkpoint $TRAINED/checkpoints/$r/model_best.pth --encoding log --output-json $OUT/film/${r}.json || exit 1; done"
+]}]}

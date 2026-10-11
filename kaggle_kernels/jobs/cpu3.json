@@ -1,0 +1,39 @@
+{
+ "gpu0": [
+  {
+   "name": "bench_r1_spacing_nocldice_s0_cpuc",
+   "cmds": [
+    "python -m benchmark.infer --model spacing_lora --checkpoint \"$ABLATION/checkpoints_spacing_lora_no_cldice/best_model_spacing_lora.pth\" --patch 64 --spacing-encoding raw  --run-name r1_spacing_nocldice_s0_native__cpuc --roi-dir $ROI_DIR --pred-root $OUT/preds --sets kidney_5 kidney_6",
+    "mkdir -p $OUT/scores && python -m benchmark.score $OUT/preds/r1_spacing_nocldice_s0_native__cpuc --roi-dir $ROI_DIR --out $OUT/scores/r1_spacing_nocldice_s0_native__cpuc.json",
+    "python -m benchmark.infer --model spacing_lora --checkpoint \"$ABLATION/checkpoints_spacing_lora_no_cldice/best_model_spacing_lora.pth\" --patch 64 --spacing-encoding raw --resample-um 50 --run-name r1_spacing_nocldice_s0_fov50__cpuc --roi-dir $ROI_DIR --pred-root $OUT/preds --sets kidney_5 kidney_6",
+    "mkdir -p $OUT/scores && python -m benchmark.score $OUT/preds/r1_spacing_nocldice_s0_fov50__cpuc --roi-dir $ROI_DIR --out $OUT/scores/r1_spacing_nocldice_s0_fov50__cpuc.json",
+    "python -m benchmark.infer --model spacing_lora --checkpoint \"$ABLATION/checkpoints_spacing_lora_no_cldice/best_model_spacing_lora.pth\" --patch 64 --spacing-encoding raw --spacing-um 50 --run-name r1_spacing_nocldice_s0_tell50__cpuc --roi-dir $ROI_DIR --pred-root $OUT/preds --sets kidney_5 kidney_6",
+    "mkdir -p $OUT/scores && python -m benchmark.score $OUT/preds/r1_spacing_nocldice_s0_tell50__cpuc --roi-dir $ROI_DIR --out $OUT/scores/r1_spacing_nocldice_s0_tell50__cpuc.json"
+   ]
+  },
+  {
+   "name": "bench_r1_spacing_nocldice_s0_cpuf",
+   "cmds": [
+    "python -m benchmark.infer --model spacing_lora --checkpoint \"$ABLATION/checkpoints_spacing_lora_no_cldice/best_model_spacing_lora.pth\" --patch 64 --spacing-encoding raw --resample-um 50 --run-name r1_spacing_nocldice_s0_fov50__cpuf --roi-dir $ROI_DIR --pred-root $OUT/preds --sets kidney_additional_voi_13um kidney_1_voi",
+    "mkdir -p $OUT/scores && python -m benchmark.score $OUT/preds/r1_spacing_nocldice_s0_fov50__cpuf --roi-dir $ROI_DIR --out $OUT/scores/r1_spacing_nocldice_s0_fov50__cpuf.json"
+   ]
+  },
+  {
+   "name": "bench_sam_zeroshot_cpuc",
+   "cmds": [
+    "python -m benchmark.infer --model plain_lora --checkpoint \"\" --patch 128  --run-name sam_zeroshot_native__cpuc --roi-dir $ROI_DIR --pred-root $OUT/preds --sets kidney_5 kidney_6",
+    "mkdir -p $OUT/scores && python -m benchmark.score $OUT/preds/sam_zeroshot_native__cpuc --roi-dir $ROI_DIR --out $OUT/scores/sam_zeroshot_native__cpuc.json",
+    "python -m benchmark.infer --model plain_lora --checkpoint \"\" --patch 128 --resample-um 50 --run-name sam_zeroshot_fov50__cpuc --roi-dir $ROI_DIR --pred-root $OUT/preds --sets kidney_5 kidney_6",
+    "mkdir -p $OUT/scores && python -m benchmark.score $OUT/preds/sam_zeroshot_fov50__cpuc --roi-dir $ROI_DIR --out $OUT/scores/sam_zeroshot_fov50__cpuc.json"
+   ]
+  },
+  {
+   "name": "bench_sam_zeroshot_cpuf",
+   "cmds": [
+    "python -m benchmark.infer --model plain_lora --checkpoint \"\" --patch 128 --resample-um 50 --run-name sam_zeroshot_fov50__cpuf --roi-dir $ROI_DIR --pred-root $OUT/preds --sets kidney_additional_voi_13um kidney_1_voi",
+    "mkdir -p $OUT/scores && python -m benchmark.score $OUT/preds/sam_zeroshot_fov50__cpuf --roi-dir $ROI_DIR --out $OUT/scores/sam_zeroshot_fov50__cpuf.json"
+   ]
+  }
+ ],
+ "gpu1": []
+}

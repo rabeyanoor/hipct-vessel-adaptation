@@ -1,25 +1,16 @@
 # evaluate_fov_confound.py
 """
-Tests whether the OOD collapse on kidney_1_voi (section 5.3/3.3 of README.md
-and test.sh) is actually a spacing-conditioning failure, or just an ordinary
-domain shift caused by field of view: a 64^3 patch at kidney_1_voi's native
-5.2um spacing covers ~333um per side, versus ~3200um for the same patch
-shape at the 50um training spacing this project's models never see anything
-smaller than.
+Checks whether the OOD collapse on kidney_1_voi (README 5.3 / test.sh 3.3) is
+about the spacing conditioning or just the field of view: a 64^3 patch at
+5.2um is ~333um wide, while at the 50um training spacing it is ~3200um.
 
-Approach: extract a much larger voxel cube from kidney_1_voi at its native
-5.2um resolution -- sized so its PHYSICAL extent matches a 64^3 patch at
-~50um (i.e. side length in voxels roughly 50/5.2 = ~9.6x larger, unless
-overridden) -- then downsample that cube to 64^3 with trilinear
-interpolation for the image and nearest-neighbor for the label. The
-downsampled patch has the same physical field of view as an in-distribution
-training patch, but its content still comes entirely from real 5.2um data
-(no synthetic upsampling of a smaller true patch).
+Take a bigger cube from kidney_1_voi at 5.2um, sized to the same physical
+extent as a 64^3 patch at ~50um (about 50/5.2 = ~9.6x larger per side), and
+downsample it to 64^3 (trilinear for the image, nearest for the label). Same
+field of view as training, but still real 5.2um data.
 
-If Dice recovers on these FOV-matched patches relative to the native-scale
-OOD eval, the collapse is a field-of-view/never-seen-visual-scale effect,
-not something specific to conditioning on the numeric spacing value. If it
-stays collapsed, FOV is not the (or not the whole) explanation.
+If Dice comes back on these patches, the collapse is mostly a field-of-view
+effect. If not, FOV is not (or not the whole) explanation.
 """
 
 import argparse
@@ -36,17 +27,14 @@ from utils.real_gt_dataset import RealGTKidneyDataset, _SAMPLE_INFO
 
 
 class FOVMatchedKidneyDataset(RealGTKidneyDataset):
-    """Same sample bookkeeping as RealGTKidneyDataset, but __getitem__ reads
-    a large native-resolution cube and downsamples it to `patch_size` so its
-    physical field of view matches `target_fov_um` instead of matching
-    `patch_size` voxel-for-voxel at native spacing."""
+    """Like RealGTKidneyDataset, but reads a large cube and downsamples it to
+    `patch_size` so the physical field of view is `target_fov_um`."""
 
     def __init__(self, sample_ids, patch_size=(64, 64, 64), samples_per_epoch=10,
                  raw_tiff_root=None, target_fov_um=None):
         super().__init__(sample_ids=sample_ids, patch_size=patch_size,
                           samples_per_epoch=samples_per_epoch, raw_tiff_root=raw_tiff_root)
-        # Default target FOV: this project's training patch size at the
-        # in-distribution 50um spacing (see TRAIN_CONFIG / config.py).
+        # default: training patch size at 50um
         self.target_fov_um = target_fov_um or (patch_size[0] * 50.0)
 
     def __getitem__(self, idx):

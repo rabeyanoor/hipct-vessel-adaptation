@@ -1,250 +1,288 @@
-HiP-VesselAdapt -- Remaining Work (backlog, not a script)
+HiP-VesselAdapt -- remaining work (todo list, not a script)
 ================================================================
-Everything below is genuinely not done yet, as of this writing. Nothing
-here is implied complete -- see README.md / test.sh for what IS done, with
-real numbers. This file exists so remaining work isn't lost when picked
-back up later, in one place, honestly stated.
+Things that are still not done. For what is done (with numbers) see
+README.md / test.sh. Keeping everything here so nothing gets lost when I
+come back to it.
 
 ================================================================
-1. DONE THIS SESSION (2026-09-15)
+1. DONE (2026-09-15)
 ================================================================
 - Reduced hyperparameter sweep (kaggle_kernels/kaggle_sweep_kernel.py,
   kernel rabeya100x/hip-vesseladapt-hp-sweep on Kaggle GPU) finished and
-  results were pulled: sweep_results.json now has all 12 configs (3 LR x
-  2 loss_alpha x {plain_lora, spacing_lora}, 5 epochs each). Winner:
-  spacing_lora, lr=1e-4, loss_alpha=0.25, dice=0.1364 -- clearly best of
+  results downloaded: sweep_results.json has all 12 configs (3 LR x
+  2 loss_alpha x {plain_lora, spacing_lora}, 5 epochs each). Best:
+  spacing_lora, lr=1e-4, loss_alpha=0.25, dice=0.1364, clearly best of
   the 12, and every spacing_lora config beat every plain_lora config.
-  lr=1e-4 matches TRAIN_CONFIG's existing default, but loss_alpha=0.25 is
-  DIFFERENT from train_spacing_lora.py's existing default (loss_alpha=0.5)
-  -- so per this section's own criterion below, the full 3x3 sweep is now
-  worth running, not skippable.
-- NOTE for next time using the Kaggle API/CLI: the `kaggle` pip package
-  (v2.2.4)'s NEWER methods -- `KaggleApi.kernels_status()`, `.kernels_list()`,
-  and the CLI's `kaggle datasets version` / `kaggle kernels push` -- go
-  through an internal kagglesdk client that authenticates via a BEARER
-  token from `KAGGLE_API_TOKEN` env var or `~/.kaggle/access_token`, NOT
-  via `~/.kaggle/kaggle.json`'s (username, key) basic auth. Using only
-  kaggle.json (which is what `KaggleApi.authenticate()` reads by default)
-  makes every one of those calls 401, REGARDLESS of whether the key in
-  kaggle.json is valid -- this cost a lot of time this session chasing it
-  as a token-scope problem before finding the actual cause. Fix: put a
-  valid KGAT_-format token in `~/.kaggle/access_token` (plain text, no
-  quotes) -- both the token you paste into kaggle.json's "key" field and
-  the one in access_token can be the same fresh token. OLDER methods
-  (`dataset_list()`, `model_list()`) and the plain legacy REST endpoints
+  lr=1e-4 is already the TRAIN_CONFIG default, but loss_alpha=0.25 is
+  NOT the default in train_spacing_lora.py (loss_alpha=0.5), so the full
+  3x3 sweep is worth running.
+- Kaggle API/CLI note for next time: the NEWER methods of the `kaggle` pip
+  package (v2.2.4) -- `KaggleApi.kernels_status()`, `.kernels_list()`,
+  and the CLI `kaggle datasets version` / `kaggle kernels push` -- go
+  through the internal kagglesdk client, which uses a BEARER token from the
+  `KAGGLE_API_TOKEN` env var or `~/.kaggle/access_token`, NOT the
+  (username, key) basic auth in `~/.kaggle/kaggle.json`. With only
+  kaggle.json (what `KaggleApi.authenticate()` reads by default) all of
+  those calls return 401, EVEN IF the key in kaggle.json is valid. Lost a
+  lot of time thinking it was a token-scope problem. Fix: put a valid
+  KGAT_ token in `~/.kaggle/access_token` (plain text, no quotes); the
+  "key" in kaggle.json and access_token can be the same new token. OLDER
+  methods (`dataset_list()`, `model_list()`) and the old REST endpoints
   (`https://www.kaggle.com/api/v1/kernels/status`, `.../kernels/output`)
-  accept kaggle.json's basic auth fine either way -- only the kagglesdk
-  path needs access_token. The `.../kernels/output` endpoint returns
+  work fine with kaggle.json basic auth; only the kagglesdk path needs
+  access_token. `.../kernels/output` returns
   {"log": <JSON-encoded STRING, not a list -- json.loads() it first>,
-  "files": [{"fileName", "url"}, ...]}; each file's "url" is a short-lived
-  signed URL, GET it directly (no auth needed) for just the one file you
-  want instead of printing the whole `files` list (228 entries last time).
+  "files": [{"fileName", "url"}, ...]}; each "url" is a short-lived
+  signed URL, just GET it (no auth) for the file you need instead of
+  printing the whole `files` list (228 entries last time).
 
 ================================================================
-2. NOT STARTED -- SCRIPT ALREADY WRITTEN, JUST NEEDS TO BE RUN
+2. SCRIPTS WRITTEN -- STATUS OF RUNS
 ================================================================
-- Full multi-seed statistical reporting: DONE 2026-09-16, n=3 reached (the
-  originally-planned size). colab_run.py's run_multiseed() (3 seeds x 2
-  architectures x 100 epochs) needs more GPU-hours than one account's
-  weekly quota allows (this project's own rabeya100x account was already
-  exhausted -- section 1), so this ran instead via two Kaggle-kernel
-  scripts (kaggle_kernels/kaggle_multiseed_kernel.py seed=1, and
+- Multi-seed results: DONE 2026-09-16, n=3 (the planned number).
+  colab_run.py's run_multiseed() (3 seeds x 2 architectures x 100 epochs)
+  needs more GPU hours than one account's weekly quota (my rabeya100x
+  quota was already used up, see section 1), so I ran it as two Kaggle
+  kernels instead (kaggle_kernels/kaggle_multiseed_kernel.py seed=1, and
   kaggle_multiseed_kernel_seed2.py seed=2) on a second Kaggle account
-  (nargisakterr) -- both fit in that account's single weekly quota
-  (seed=1 used ~9788s of 21600s, leaving room to run seed=2 the same day
-  rather than waiting for a reset). Combined with the existing 100-epoch
-  checkpoint (unspecified seed) as n=3 per architecture -- see test.sh
-  section 3.11 for the real numbers and full interpretation. Headline:
-  the OOD collapse is now 3-for-3 confirmed across independent seeds (not
-  a single-run fluke); the in-distribution ranking, unresolved at n=2,
-  now resolves toward Spacing-Conditioned LoRA winning (2 of 3 seeds, by
-  a wide margin both times) -- still only n=3, not a formal significance
-  claim, but no longer "unresolved." Raw per-seed numbers in
-  multiseed_seed1_results.json / multiseed_seed2_results.json. No further
-  seeds currently planned -- this reaches the originally-scoped target.
-- Full (not reduced) hyperparameter sweep -- DONE 2026-09-15 (kernel
+  (nargisakterr). Both fit in that account's weekly quota (seed=1 used
+  ~9788s of 21600s, so seed=2 could run the same day). Together with the
+  existing 100-epoch checkpoint (seed not set) that gives n=3 per
+  architecture -- numbers and discussion in test.sh section 3.11. Summary:
+  the OOD collapse happens in all 3 seeds, so it is not a one-off; the
+  in-distribution ranking, unclear at n=2, now leans toward
+  Spacing-Conditioned LoRA (2 of 3 seeds, both by a wide margin). Still
+  only n=3, no formal significance claim. Per-seed numbers in
+  multiseed_seed1_results.json / multiseed_seed2_results.json. No more
+  seeds planned for now.
+- Full hyperparameter sweep: DONE 2026-09-15 (kernel
   rabeya100x/hip-vesseladapt-full-hp-sweep, COMPLETE). Results in
   full_sweep_results.json (18 runs: 3 LRs x 3 loss_alphas x 2 architectures,
-  15 epochs each). **This REVERSES the reduced sweep's conclusion**: at 15
-  epochs, Dice values across all 18 configs are close together (0.126-0.172),
-  and Plain LoRA now wins overall (lr=2e-4, loss_alpha=0.5, Dice=0.1724) --
-  the reduced sweep's "loss_alpha=0.25, spacing_lora wins" call does not hold
-  up with more epochs. Best loss_alpha range at 15 epochs is 0.5-0.75, not
-  0.25. Treat the reduced sweep's config choice as superseded; if retraining
-  off sweep results, use this full sweep's numbers, not the reduced one's.
-  IMPORTANT: fetching this result burned the rest of the week's Kaggle GPU
-  quota -- `api.quota_view()` (works now with KAGGLE_API_TOKEN set) showed
-  42814s used against a 21600s weekly allowance, i.e. already ~5.9h OVER
-  the free quota, refreshing 2026-09-19. No more Kaggle GPU kernels
-  until then -- use Colab (human-driven) if GPU work is needed before that.
+  15 epochs each). **This REVERSES the reduced sweep**: at 15 epochs all 18
+  configs are close (Dice 0.126-0.172), and Plain LoRA is best overall
+  (lr=2e-4, loss_alpha=0.5, Dice=0.1724). The "loss_alpha=0.25,
+  spacing_lora wins" result from the reduced sweep does not hold with more
+  epochs. Best loss_alpha at 15 epochs is 0.5-0.75, not 0.25. If
+  retraining from sweep results, use the full sweep, not the reduced one.
+  NOTE: this used up the rest of the week's Kaggle GPU quota --
+  `api.quota_view()` (works now with KAGGLE_API_TOKEN set) showed 42814s
+  used of the 21600s weekly allowance, i.e. ~5.9h OVER, resets
+  2026-09-19. No more Kaggle GPU kernels until then; use Colab if GPU is
+  needed before that.
 - Vascular graph validation (evaluate_vascular_graph.py, utils/vascular_
-  graph_metrics.py): RUN FOR REAL 2026-09-15, locally on CPU (no GPU
-  needed -- it's mask skeletonization + graph stats, not training).
-  Against both real 100-epoch GPU checkpoints, in-distribution and OOD,
-  same protocol as test.sh sections 3.2-3.4. Full write-up in test.sh
-  section 3.10, raw per-patch numbers in vascular_graph_results.json.
-  Headline: a THIRD independent piece of evidence for the OOD collapse
-  (alongside 3.5's FOV confound and 3.6's FiLM lead), and it shows the two
-  architectures fail OOD in qualitatively different ways, not just by
-  different amounts -- Plain LoRA's OOD predictions moderately fragment
-  but keep branch-point counts close to real GT; Spacing-Conditioned
-  LoRA's OOD predictions fragment 11x worse and hyper-branch 31x worse
-  than GT, i.e. a scattered field of spurious disconnected fragments
-  replacing the real vessel tree, not a smaller/weaker version of it. This
-  item is REMOVED from section 3 below (it used to say "no script exists"
-  -- it existed already, just hadn't been run).
+  graph_metrics.py): RUN 2026-09-15, locally on CPU (no GPU needed, it is
+  only skeletonization + graph stats). Run on both 100-epoch GPU
+  checkpoints, in-distribution and OOD, same protocol as test.sh sections
+  3.2-3.4. Write-up in test.sh section 3.10, per-patch numbers in
+  vascular_graph_results.json. Summary: a THIRD separate piece of evidence
+  for the OOD collapse (besides 3.5 FOV confound and 3.6 FiLM), and the two
+  architectures fail OOD in different ways, not just by different amounts.
+  Plain LoRA's OOD predictions fragment a bit but keep branch-point counts
+  close to GT; Spacing-Conditioned LoRA's OOD predictions are 11x more
+  fragmented and have 31x more branch points than GT, i.e. scattered
+  disconnected pieces instead of the vessel tree, not a smaller version of
+  it. Removed from section 3 below (it said "no script exists", but the
+  script was already there, just not run).
 
 ================================================================
-3. IN PROGRESS -- DATA READY, TRAINING WIRING + DESIGN CALL STILL NEEDED
+3. IN PROGRESS -- DATA READY, TRAINING SETUP + DECISION NEEDED
 ================================================================
-- Train on a wider range of real spacings. CORRECTION 2026-09-16: this was
-  wrongly marked "no script yet" above -- a previous session had already
-  started on this (config.py's HOA_KIDNEY_MULTISPACING_CONFIG, utils/
-  convert_hoa_parquet_to_memmap.py) and it went unnoticed until a full
-  codebase read-through this session. Real status now:
-    - REAL DATA, ALREADY DOWNLOADED: 3 more native spacings (25um, 6.5um,
-      2.6um) of the SAME physical specimen as kidney_1_dense/kidney_1_voi
-      (LADAF-2021-17-Right), from the Human Organ Atlas HF mirror
-      (eternalaudrey/hipct_3d). Parquet shards were already pulled to
-      data/raw/hoa_kidney_right_shards/ (~1.4GB, gitignored).
-    - CONVERTED 2026-09-16 (this session): ran
-      utils/convert_hoa_parquet_to_memmap.py -- all 3 volumes now real
-      memmap arrays in data/memmap/ (2176x224x224 uint16 each, 0.22GB).
-      Needed `python3 -m utils.convert_hoa_parquet_to_memmap` (plain
+!! UPDATE 2026-09-23: DO NOT train on the 6.5um and 2.6um HOA volumes below.
+   The 6.5um VOI-02 is the same scan as the 13um test volume released by
+   Jain et al. (kidney_additional_voi_13um), and kidney_1_voi (5.2um) is very
+   likely the 2.6um VOI-01.1 binned 2x. Both are test data now (section 7).
+- Train on a wider range of real spacings. CORRECTION 2026-09-16: I had
+  marked this as "no script yet", but I had already started it earlier
+  (config.py's HOA_KIDNEY_MULTISPACING_CONFIG, utils/
+  convert_hoa_parquet_to_memmap.py) and forgot about it until I went
+  through the whole codebase again. Current status:
+    - DATA DOWNLOADED: 3 more native spacings (25um, 6.5um, 2.6um) of the
+      SAME specimen as kidney_1_dense/kidney_1_voi (LADAF-2021-17-Right),
+      from the Human Organ Atlas HF mirror (eternalaudrey/hipct_3d).
+      Parquet shards are in data/raw/hoa_kidney_right_shards/ (~1.4GB,
+      gitignored).
+    - CONVERTED 2026-09-16: ran utils/convert_hoa_parquet_to_memmap.py,
+      all 3 volumes are now memmaps in data/memmap/ (2176x224x224 uint16
+      each, 0.22GB). Has to be run as
+      `python3 -m utils.convert_hoa_parquet_to_memmap` (plain
       `python3 utils/convert_hoa_parquet_to_memmap.py` fails on the
-      `from config import ...` line -- run as a module, or from a context
-      with the project root on PYTHONPATH).
-    - DATASET WIRING: NONE NEEDED -- utils/dataset.py's
-      MultiOrganHiPCTDataset takes any config dict generically
+      `from config import ...` line -- run it as a module, or with the
+      project root on PYTHONPATH).
+    - DATASET: NO CHANGES NEEDED -- utils/dataset.py's
+      MultiOrganHiPCTDataset takes any config dict
       (`MultiOrganHiPCTDataset(config=HOA_KIDNEY_MULTISPACING_CONFIG, ...)`
-      works as-is, no code changes). No training script actually calls it
-      with this config yet, though -- that part is still not written.
-    - IMPORTANT CAVEAT, not yet resolved: this data has NO real expert GT
-      (config.py's own comment: Frangi pseudo-labeled only, must NOT be
-      combined quantitatively with RealGTKidneyDataset's real-GT numbers,
-      per README.md section 6's existing rule). It could be used to train
-      across a wider spacing range (pseudo-labeled) and then still
-      evaluated on the REAL GT OOD test (kidney_1_voi, 5.2um) -- but two
-      of the three new spacings (6.5um, 2.6um) are very close to that
-      5.2um held-out test point. Training on those specific spacings
-      before evaluating there risks weakening the OOD test's validity
-      (no longer testing a fully unseen spacing regime, even though the
-      GT itself stays held out) -- this needs a real decision (e.g. drop
-      the two closest spacings and train on 25um alone as the "third
-      point," or keep all three and reframe the claim as "interpolation"
-      rather than "extrapolation" robustness) before training anything on
-      it. NOT done unilaterally this session -- flagged for the user.
+      works as is). But no training script uses this config yet; that part
+      still has to be written.
+    - OPEN PROBLEM: this data has NO expert GT (see the comment in
+      config.py: Frangi pseudo-labels only, must NOT be mixed
+      quantitatively with the RealGTKidneyDataset numbers, same rule as
+      README.md section 6). It could be used to train over a wider spacing
+      range (pseudo-labels) and still be evaluated on the REAL GT OOD test
+      (kidney_1_voi, 5.2um). But two of the three new spacings (6.5um,
+      2.6um) are very close to the 5.2um test point. Training on them
+      before testing there makes the OOD test weaker (the spacing would
+      not really be unseen anymore, even though the GT is still held out).
+      Need to decide first (e.g. drop the two closest spacings and use
+      only 25um as the "third point", or keep all three and call it
+      "interpolation" instead of "extrapolation") before training on it.
+      NOT done yet.
 
 ================================================================
-4. EXPLICITLY OUT OF SCOPE (locked earlier this session, not forgotten)
+4. OUT OF SCOPE (decided earlier)
 ================================================================
-- Additional baselines: nnU-Net, VesselFM, VesselSDF, HyperSpace-style
-  baseline. Not implemented, not planned until the core OOD question is
-  further resolved.
-- Cross-organ generalization test (pseudo-label organs vs. real-GT
-  kidney) -- explicitly must not be mixed quantitatively per README.md
-  section 6, and not attempted.
+- More baselines: nnU-Net, VesselFM, VesselSDF, HyperSpace-style
+  baseline. Not implemented, not planned until the OOD question is
+  clearer.
+- Cross-organ generalization (pseudo-label organs vs. real-GT kidney) --
+  must not be mixed quantitatively (README.md section 6), not attempted.
 - Few-shot experiments.
-- CollapseDetectionHead training/validation (exists in
-  models/collapse_head.py, never trained or evaluated -- explicitly
-  deferred earlier in the project).
+- CollapseDetectionHead training/validation (in models/collapse_head.py,
+  never trained or evaluated, postponed earlier).
 
 ================================================================
-5. WRITING / PUBLISHING (not code, but not done)
+5. WRITING / PUBLISHING
 ================================================================
-- The paper itself -- DRAFT WRITTEN 2026-09-16, PAPER_DRAFT.md, Introduction/
-  Related Work/Conclusion COMPLETED same day (were placeholder markers,
-  now real prose). Full Abstract/Intro/Related Work/Methods/Results/
-  Discussion/Conclusion/Limitations, grounded in test.sh's real numbers.
-  10 citations now, all verified directly (title/authors/venue checked
-  live, not recalled) -- includes a real literature search this session
-  for the mechanism/baseline-relevant related work (nnU-Net, LoRA-on-SAM
-  variants, HyperSpace, FiLM-metadata-conditioning). Worth noting: an
-  earlier pass had surfaced "VesselFM/TopoLoRA-SAM/MorVess/HyperSpace" as
-  unverifiable and excluded all four -- this session's real search found
-  HyperSpace IS a real, verifiable MICCAI 2024 paper after all (now
-  cited properly); the other three still were not found and remain
-  excluded. Remaining `[NEEDS AUTHOR INPUT]` markers: target venue
-  (affects formatting/cover letter), the wider-spacing design decision,
-  public-release decision, and a few more related-work citations for a
-  fully thorough submission (see PAPER_DRAFT.md section 2's own note).
-  Not yet reviewed by a human -- do that before anything goes out.
-- Journal-formatted submission draft: DONE 2026-09-16, PAPER_SUBMISSION_SCIREP.md.
-  Target venue picked (Scientific Reports, Nature Portfolio -- chosen as
-  a concrete, realistic fit for this paper's actual scope, not a
-  guaranteed acceptance; easy to reformat for a different venue later
-  since PAPER_DRAFT.md stays the untrimmed source of truth). Verified
-  live against nature.com's real submission guidelines (cross-checked
-  against an independent mirror since the official page needs a login):
-  abstract checked at 191/200 words; main text checked at ~1621/4500
-  words; combined figures+tables checked at exactly 8/8 (the 6 figures
-  plus 2 consolidated main tables -- the other 5 results tables moved to
-  a Supplementary Information outline, nothing dropped, just relocated);
-  references renumbered and verified in strict first-appearance order
-  (caught and fixed a real ordering bug from the first pass). Added a
-  full Declarations block (Data/Code availability with real facts filled
-  in; Ethics/Competing interests/Funding/Author contributions/
-  Acknowledgements left as clearly-flagged solo-author-consistent
-  defaults, not fabricated -- confirm or correct each one). Still
-  blocked on: actually deciding this is the venue (easy to change),
-  the wider-spacing design call, and a human read-through.
-- Figures: 6 of 6 built. UPDATE 2026-09-16: the no-plotting rule was
-  explicitly reversed by the user (see feedback_no_plotting_in_repo.md
-  memory, superseded) -- figures 4-6 (the real-data ones) are now
-  generated by running generate_figures.py (matplotlib, new dependency
-  already in venv), which reads multiseed_seed*_results.json,
-  film_layer_analysis.json, and vascular_graph_results.json and saves
-  PNGs to figures/ (not yet gitignored either way -- your call whether to
-  commit the PNGs or regenerate on demand). Figures 1-3 (the mechanism
-  diagrams -- conceptual, not data, so left as a diagram tool rather than
-  matplotlib) are still a separate Claude Artifact:
-  https://claude.ai/artifact/KgJym8jrYWrfMiXR2pEXbU
-  Figure 5 needed data that didn't exist yet: analyze_film_layers.py
-  gained an --output-json flag, re-run against the 100-epoch checkpoint,
-  full 24-layer breakdown now in film_layer_analysis.json (new file).
-  Still not done: qualitative prediction renders, FOV-confound bar chart,
-  3D skeleton overlays (see PAPER_DRAFT.md's figures section).
-- Final summary tables for the paper: DONE 2026-09-15 --
-  generate_summary_tables.py (text-only, no plotting, per project rule).
-  Pulls live numbers from whatever *_results.json files exist on disk
-  (sweep_results.json, full_sweep_results.json, vascular_graph_results.json,
-  multiseed_seed1_results.json / multiseed_results.json once they exist) and
-  falls back to constants transcribed from test.sh (cited by section number)
-  for numbers that were never saved as JSON by the scripts that produced
-  them (FOV confound, FiLM breakdown, clDice ablation). Section 7
-  (multiseed) currently prints "not yet available" and will auto-populate
-  once the multiseed kernel below completes. Re-run it any time to refresh
-  the report as more results land: python generate_summary_tables.py
-- GitHub push -- explicitly deferred by the user's own choice this
-  session ("GitHub push korte hobe na"), not a blocker. If revisited
-  later: git identity (user.name/user.email) is still not configured in
-  this repo, and there is still no GitHub authentication method available
-  in this environment (no gh CLI, no SSH key, no credential helper) -- both
-  need to be set up by the user directly, not by Claude (see README.md's
-  git safety notes / this session's chat history for the exact commands).
+- Paper: DRAFT WRITTEN 2026-09-16 in PAPER_DRAFT.md; Introduction/
+  Related Work/Conclusion finished the same day. Has Abstract/Intro/
+  Related Work/Methods/Results/Discussion/Conclusion/Limitations, all
+  numbers from test.sh. 10 citations, each checked (title/authors/venue)
+  -- related-work search covered nnU-Net, LoRA-on-SAM variants,
+  HyperSpace, FiLM metadata conditioning. Some names I came across early
+  on (VesselFM/TopoLoRA-SAM/MorVess/HyperSpace) I couldn't find at first;
+  HyperSpace (MICCAI 2024) and vesselFM (CVPR 2025) turned out to be real
+  papers and are now used (see PAPER_MEDIA.md); TopoLoRA-SAM and MorVess
+  still couldn't be found, so they are left out. Remaining
+  `[TODO]`s: venue (affects formatting/cover letter), the wider-spacing
+  decision, public release, and a few more related-work citations (see
+  the note at the end of section 2 in PAPER_DRAFT.md). Needs a full
+  read-through before sending anywhere.
+- Journal version: DONE 2026-09-16, PAPER_SUBMISSION_SCIREP.md.
+  Venue: Scientific Reports (Nature Portfolio) -- fits the scope, can
+  reformat for another journal later since PAPER_DRAFT.md keeps the full
+  version. Checked against nature.com's submission guidelines (the
+  official page needs a login, so also checked a mirror): abstract
+  199/200 words; main text ~1621/4500 words; figures+tables exactly 8/8
+  (6 figures + 2 main tables; the other 5 results tables moved to
+  Supplementary Information, nothing removed); references renumbered in
+  order of first appearance (fixed an ordering mistake from the first
+  version). Declarations section added (data/code availability filled in;
+  ethics/competing interests/funding/author contributions/acknowledgements
+  are placeholders for a single author -- need to confirm each one).
+  Still to do: confirm the venue, the wider-spacing decision, and a full
+  read-through.
+- Figures: 6 of 6 done. UPDATE 2026-09-16: dropped the earlier
+  no-plotting rule -- figures 4-6 (the data ones) are now made by
+  generate_figures.py (matplotlib, already installed in venv), which reads
+  multiseed_seed*_results.json, film_layer_analysis.json and
+  vascular_graph_results.json and saves PNGs to figures/ (not gitignored;
+  still need to decide whether to commit the PNGs or regenerate them).
+  Figures 1-3 (method diagrams, not data) are drawn separately with a
+  diagram tool (not in this repo). Figure 5 needed data I didn't have yet:
+  added an --output-json flag to analyze_film_layers.py, re-ran it on the
+  100-epoch checkpoint, full 24-layer output in film_layer_analysis.json
+  (new file). Not done: qualitative prediction examples, FOV-confound bar
+  chart, 3D skeleton overlays (see the figures section of PAPER_DRAFT.md).
+- Summary tables for the paper: DONE 2026-09-15 --
+  generate_summary_tables.py (text only, no plots). Reads whichever
+  *_results.json files exist (sweep_results.json, full_sweep_results.json,
+  vascular_graph_results.json, multiseed_seed1_results.json /
+  multiseed_results.json once they exist) and uses constants copied from
+  test.sh (with the section number) for results that were never saved as
+  JSON (FOV confound, FiLM breakdown, clDice ablation). Section 7
+  (multiseed) prints "not yet available" until the multiseed kernel below
+  finishes. Re-run to refresh: python generate_summary_tables.py
+- GitHub push: postponed for now, not blocking anything. When I do it:
+  git identity (user.name/user.email) is not set in this repo yet, and
+  there is no GitHub login on this machine (no gh CLI, no SSH key, no
+  credential helper) -- both need to be set up first (see the git notes
+  in README.md).
 
 ================================================================
-6. KNOWN OPEN QUESTIONS (not tasks exactly, but not resolved)
+6. OPEN QUESTIONS
 ================================================================
-- Root cause of the OOD collapse is not FULLY confirmed, only
-  substantially narrowed: field-of-view mismatch (section 5.5, confirmed
-  significant) and FiLM's spacing-specific modulation degenerating toward
-  near-identity OOD (section 5.6, a lead, not proven) are the two current
-  best explanations, evaluated independently, not combined into one
-  unified causal story yet.
-- The original 10-epoch CPU run's ASSD=inf finding (README.md section
-  5.2) is a DIFFERENT anomaly from the 100-epoch GPU run's HD95/ASSD=nan
-  (section 5.4, root-caused and fixed in section 5.8). RESOLVED 2026-09-15
-  by diagnose_assd_inf.py (see test.sh section 3.2 addendum): the
-  "completely empty prediction" hypothesis, previously tested on 15
-  patches with 0 confirmed and left inconclusive, IS the real cause after
-  all -- a fresh, larger draw (92 non-empty patches for Spacing-Conditioned
-  LoRA) reproduced one genuine ASSD=inf case, and it was a fully-empty
-  prediction (pred_sum=0) on a patch with a vanishingly small annotated
-  target (22 voxels, 0.01% of the patch). It's a rare, patch-draw-dependent
-  event tied to the model completely missing tiny/sparse vessel fragments
-  at 10 epochs, not a deterministic property of either checkpoint -- the
-  same script's run against PhysicsAwareAdapter's checkpoint found 0/125
-  such cases, consistent with rarity rather than absence. The earlier "0
-  confirmed of 15" result most likely just didn't happen to draw one of
-  these rare small-target patches.
+- The cause of the OOD collapse is not FULLY confirmed, only narrowed
+  down: field-of-view mismatch (section 5.5, significant) and FiLM's
+  spacing-specific modulation going back to near-identity OOD (section
+  5.6, a lead, not proven) are the two best explanations right now. They
+  were tested separately and not yet combined into one explanation.
+- The ASSD=inf in the original 10-epoch CPU run (README.md section 5.2)
+  is a DIFFERENT problem from the HD95/ASSD=nan in the 100-epoch GPU run
+  (section 5.4, cause found and fixed in section 5.8). RESOLVED
+  2026-09-15 with diagnose_assd_inf.py (see test.sh section 3.2
+  addendum): the "completely empty prediction" idea, earlier tested on 15
+  patches with 0 confirmed, IS the cause after all. A new, bigger draw
+  (92 non-empty patches for Spacing-Conditioned LoRA) gave one ASSD=inf
+  case, and it was a fully empty prediction (pred_sum=0) on a patch with
+  a tiny annotated target (22 voxels, 0.01% of the patch). It is a rare
+  event that depends on which patches are drawn, caused by the model
+  completely missing tiny/sparse vessel pieces at 10 epochs, not a fixed
+  property of either checkpoint. The same script on PhysicsAwareAdapter's
+  checkpoint found 0/125 such cases, which fits "rare" rather than
+  "never". The earlier "0 of 15" result most likely just did not draw
+  one of these rare patches.
+
+================================================================
+7. PLAN FOR MEDICAL IMAGE ANALYSIS (MedIA) -- written 2026-09-23
+================================================================
+Paper draft: PAPER_MEDIA.md (all [TODO]s there depend on the runs below).
+Main things I learned from reading the related work and re-checking the code:
+
+  a) The old "in-distribution" numbers were measured on random patches from
+     the TRAINING kidneys. Not a held-out test. MedIA reviewers will reject
+     that. -> new held-out benchmark (benchmark/), see step 1.
+  b) Jain et al. (Nat Commun 2026) released the test labels + an extra 13um
+     VOI + the top-5 teams' predictions on Zenodo 19685381. So we now have
+     labelled test data at 63.08 / 50.28 / 13 / 5.2 um. Top-5 teams can be
+     scored without any GPU.
+  c) The FiLM input never varied in training (50.00/50.16 um only). HyperSpace
+     trains with every batch resampled to a random spacing. -> spacing
+     augmentation (--fov-scale 0.25 2.0).
+  d) SAM-Med3D gives a 16^3 mask for a 64^3 input (checked on CPU), 32^3 for
+     128^3. Thin vessels can't be represented. -> 128^3 patches +
+     models/refine_head.py (--refine).
+  e) Old training skipped empty patches: ~5 real steps per epoch. -> 250
+     steps/epoch with 50% foreground-centred patches (utils/slab_dataset.py).
+  f) The published nnU-Net baseline on the same kidneys gets Dice 0.86-0.95
+     (Yagis et al., Sci Rep 2024); the Kaggle winner gets Dice ~0.82 on our
+     kidney_6 ROIs. Our models are far below. Must be reported openly.
+  g) HyperSpace also collapses at its highest resolutions and fixes it by
+     resampling to the training spacing -> our FOV finding agrees with it.
+     The old drafts said the opposite; fixed.
+  h) Zenodo VOI-13um: 3729 of 5955 image files are empty; only slices
+     0-2225 are usable.
+
+Steps (in order):
+  1. [ ] Build benchmark ROIs on Kaggle (CPU, internet on):
+         kaggle_kernels/kaggle_rois_kernel.py -> save output as dataset
+         rabeya100x/hipct-benchmark-rois. (kidney_6 ROIs + team scores were
+         already made locally; Zenodo is too slow here for the VOIs.)
+  2. [ ] Upload the code again as rabeya100x/hip-vesseladapt-code (now needs
+         benchmark/, train_lora_v2.py, utils/slab_dataset.py,
+         models/refine_head.py).
+  3. [ ] Score the Kaggle top-5 on all ROIs (CPU, local or Kaggle):
+         python -m utils.fetch_zenodo_subset team_predictions
+         python -m benchmark.import_team_rle && python -m benchmark.score ...
+  4. [ ] Benchmark the OLD 100-epoch checkpoints (3 seeds x 2 models) on the
+         new ROIs: kaggle_v2_kernel.py with RUN["checkpoint"] set.
+  5. [ ] New training runs, kaggle_v2_kernel.py, 3 seeds each:
+         - plain_base      --model plain   --patch 128 (no fov-scale, no refine)
+         - spacing_base    --model spacing --patch 128
+         - spacing_aug     --model spacing --patch 128 --fov-scale 0.25 2.0
+         - plain_aug       --model plain   --patch 128 --fov-scale 0.25 2.0
+         - spacing_aug_ref --model spacing --patch 128 --fov-scale 0.25 2.0 --refine
+         - plain_aug_ref   --model plain   --patch 128 --fov-scale 0.25 2.0 --refine
+         = 18 runs. Each ~6-8 h on a T4 (estimate; check after epoch 1).
+         Kaggle free quota is far too small for this -> need Colab Pro /
+         university GPU / a cloud credit grant. Minimum set if GPU is short:
+         spacing_base, spacing_aug, plain_aug_ref, spacing_aug_ref with 3 seeds.
+  6. [ ] Baselines: kaggle_nnunet_kernel.py, kaggle_vesselfm_kernel.py,
+         SAM-Med3D zero-shot (benchmark.infer with no checkpoint).
+  7. [ ] Spacing/FOV 2x2 (native / tell50 / fov50) comes out of step 4/5
+         automatically. Also re-run analyze_film_layers.py on the new models.
+  8. [ ] Optional but strong for MedIA: HyperSpace-style baseline (their
+         models.py with our loader), a second organ, or fine-tuned vesselFM.
+  9. [ ] Fill every [TODO] in PAPER_MEDIA.md, make the figures (graphical
+         abstract is required and must not be AI-generated), convert to the
+         Elsevier LaTeX template (elsarticle), write the cover letter.
+ 10. [ ] Fill in the Elsevier declarations truthfully, incl. the generative AI
+         declaration.

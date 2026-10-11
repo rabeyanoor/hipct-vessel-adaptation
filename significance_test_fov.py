@@ -1,17 +1,12 @@
 # significance_test_fov.py
 """
-Significance test for section 5.5's FOV-matched OOD Dice gap between Plain
-LoRA (0.2895) and Spacing-Conditioned LoRA (0.2215), n=40 each -- that
-section reported the gap as real but not yet backed by a significance test.
+Significance test for the FOV-matched OOD Dice gap in README 5.5 (Plain LoRA
+0.2895 vs Spacing-Conditioned LoRA 0.2215, n=40 each).
 
-Re-runs evaluate_fov_confound.py for both real 100-epoch checkpoints,
-collects the raw per-patch Dice scores (evaluate_real_gt.py's
-evaluate_model_on_loader now returns these, not just the aggregate), and
-runs a Mann-Whitney U test -- the two models' FOV-matched patches are
-independent random draws (evaluate_fov_confound.py samples a fresh random
-cube each call), not the same 40 patches for both models, so this is an
-unpaired test; Mann-Whitney rather than a t-test since Dice scores are
-bounded in [0,1] and not assumed normal.
+Runs the FOV-matched evaluation for both 100-epoch checkpoints, gets the
+per-patch Dice scores and does a Mann-Whitney U test. Unpaired, because each
+model gets its own random patches; Mann-Whitney because Dice is in [0,1] and
+not normal.
 """
 
 from scipy import stats

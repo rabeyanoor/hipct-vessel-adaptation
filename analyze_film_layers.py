@@ -1,22 +1,14 @@
 # analyze_film_layers.py
 """
-Per-layer breakdown of SpacingConditionedLoRALinear's FiLM output
-(gamma/beta), for a trained checkpoint, at two spacing values: the
-in-distribution training spacing (50um) and the OOD kidney_1_voi spacing
-(5.2um).
+Per-layer FiLM output (gamma/beta) of a trained Spacing-Conditioned LoRA
+checkpoint at the training spacing (50um) and the OOD spacing (5.2um).
 
-README.md/test.sh already report an AGGREGATE gamma/beta check across all
-injected layers (the "FiLM-extrapolation" hypothesis -- refuted: OOD gamma
-values were, if anything, tamer than in-distribution ones). This script
-answers a narrower question the aggregate check can't: does any SINGLE
-layer (out of the 24 injected into qkv/proj) produce an extreme gamma/beta
-at the OOD spacing even though the mean across all 24 looks tame -- i.e. is
-there a bad layer hiding inside a fine-looking average, rather than the
-whole mechanism behaving uniformly.
+The aggregate check in README/test.sh looked fine (OOD gamma was closer to 1),
+so this checks whether a single layer out of the 24 behaves badly even though
+the average looks OK.
 
-No forward pass through the image encoder is needed for this -- spacing_film
-is a small (3 -> spacing_hidden -> 2*out_features) MLP taking only the
-spacing tensor, so it's evaluated directly per layer.
+spacing_film is a small MLP (3 -> spacing_hidden -> 2*out_features) on the
+spacing only, so no encoder forward pass is needed.
 """
 
 import argparse

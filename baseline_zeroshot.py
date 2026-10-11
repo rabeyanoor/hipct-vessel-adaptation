@@ -1,12 +1,8 @@
 # baseline_zeroshot.py
 """
-Zero-shot SAM-Med3D baseline: pretrained image_encoder + pretrained mask_decoder,
-with the PhysicsAwareAdapter and CollapseDetectionHead left at their freshly
-initialized (untrained) state -- i.e. no HiP-VesselAdapt fine-tuning at all.
-
-This is Table 1's baseline row: it establishes how well the generic foundation
-model does on HiP-CT vessel pseudo-labels before any physics-aware adaptation,
-which is what justifies the adapter's contribution.
+Zero-shot SAM-Med3D baseline: pretrained image_encoder + mask_decoder, with the
+PhysicsAwareAdapter and CollapseDetectionHead left untrained (no fine-tuning).
+Baseline row for Table 1.
 """
 
 from evaluate import evaluate
